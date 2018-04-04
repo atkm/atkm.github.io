@@ -6,10 +6,22 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learning Resources</title>
+      <link>http://akumano.xyz/posts/learning-resources/</link>
+      <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/learning-resources/</guid>
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
+Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.
+ Stanford CS229 Machine Learning
+ One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</description>
+    </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Part 3</title>
