@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://akumano.xyz/posts/arxiv-keyword-extraction-part3/</loc>
+    <lastmod>2017-10-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/posts/arxiv-keyword-extraction-part2/</loc>
+    <lastmod>2017-10-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/posts/arxiv-keyword-extraction-part1/</loc>
+    <lastmod>2017-10-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/posts/heteroskedasticity/</loc>
+    <lastmod>2017-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/posts/linear-classifiers/</loc>
+    <lastmod>2017-08-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/</loc>
+    <lastmod>2017-10-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/about/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/teaching/141-sum16/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/teaching/141-sum16/lecnotes/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/teaching/141-sum16/miniexams/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/teaching/141-sum16/past-miniexams/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/posts/</loc>
+    <lastmod>2017-10-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/projects/</loc>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://akumano.xyz/teaching/</loc>
+  </url>
+  
+</urlset>
