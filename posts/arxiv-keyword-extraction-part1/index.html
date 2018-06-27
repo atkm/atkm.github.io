@@ -25,7 +25,7 @@
   
   
   
-  <meta name="generator" content="Hugo 0.40.3" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <meta name="generator" content="Hugo 0.42.1" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
   <link rel="stylesheet" href="http://akumano.xyz/css/style.css" />
   <link rel='icon' type='image/x-icon' href="http://akumano.xyz/favicon.ico" />
   <script type="text/javascript" src="http://akumano.xyz/js/bundle.js"></script>
@@ -216,13 +216,13 @@ The techniques described in the linked articles seem successful, but too involve
 These are some other keyword extraction techniques that are readily available:</p>
 
 <ul>
-<li>TextRank: application of Google&rsquo;s PageRank algorithm to graph of sentences, or, in our case, n-grams.</li>
 <li>tf-idf: a modification of bag-of-words to put greater weights on rare words.</li>
 <li>Latent Semantic Indexing (LSI or LSA): a low-rank approximation of bag-of-words (or tf-idf) by taking its the principal components. pLSI and Latent Dirichlet Allocation extends LSI.</li>
+<li>TextRank: application of Google&rsquo;s PageRank algorithm to graph of sentences, or, in our case, n-grams.</li>
 <li>Rapid Automatic Keyword Extraction</li>
 </ul>
 
-<p>I tried TextRank and tf-idf, and the latter works reasonably well.
+<p>I tried tf-idf and TextRank, and the former works reasonably well.
 This is the outline of our tf-idf-based keyword extraction algorithm:</p>
 
 <ol>
