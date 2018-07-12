@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Keyword Extraction from arXiv - Summary</title>
+      <link>http://akumano.xyz/posts/arxiv-keyword-extraction-summary/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-summary/</guid>
+      <description>In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.
+Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &amp;mdash; whenever the speaker used a term that I wasn&amp;rsquo;t familiar with, I would write it down and look it up later.</description>
+    </item>
     
     <item>
       <title>Learning Resources</title>
@@ -41,7 +51,7 @@ var categoryDropdown = new Vue({ el: &#39;#category-dropdown&#39;, data: { selec
       <pubDate>Thu, 12 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-part2/</guid>
-      <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows what our finished product will look like.
+      <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.
 We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:</description>
     </item>
     

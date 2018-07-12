@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Benchmarking Linear Classifiers</title>
-  <meta property="og:title" content="Benchmarking Linear Classifiers" />
-  <meta name="twitter:title" content="Benchmarking Linear Classifiers" />
+  <title>Keyword Extraction from arXiv - Summary</title>
+  <meta property="og:title" content="Keyword Extraction from arXiv - Summary" />
+  <meta name="twitter:title" content="Keyword Extraction from arXiv - Summary" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.xyz/posts/linear-classifiers/" />
+  <meta property="og:url" content="http://akumano.xyz/posts/arxiv-keyword-extraction-summary/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -78,12 +78,12 @@
 
 <article class="p-article">
   <header>
-    <h1>Benchmarking Linear Classifiers</h1>
+    <h1>Keyword Extraction from arXiv - Summary</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2017-08-03T00:00:00Z">
-          Aug 3, 2017
+        <time datetime="2018-07-11T00:00:00Z">
+          Jul 11, 2018
         </time>
       </div>
       
@@ -91,9 +91,95 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>I ran linear classifiers on a credit card fraud data.
-Parallelization. Lasso and ridge. Grid search.
-Published on <a href="https://www.kaggle.com/akumano/cc-fraud-detection-with-linear-classifiers/">kaggle</a>.</p>
+    
+
+<p>In <a href="/posts/arxiv-keyword-extraction-part1">the previous articles</a> on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm.
+Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform.
+This article a more high-level overview of the end product.</p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>I built this app to help myself keep learning mathematics.
+When I was in graduate school, I learned the terminology of my area of study through attending seminars &mdash; whenever the speaker used a term that I wasn&rsquo;t familiar with, I would write it down and look it up later.
+A keyword is a good starting point to learn about a research area, as googling for it usually leads to lecture notes, Stack Exchange posts, or a Wikipedia article.</p>
+
+
+<figure>
+    
+        <img src="/images/keyword-extraction-screenshot-at.png" width="100%" />
+    
+    
+    <figcaption>
+        <h4>screenshot</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="data">Data</h2>
+
+<p>I used <a href="https://github.com/miku/metha">metha</a> to obtain all metadata of math articles.
+The fields of an article metadata are:</p>
+
+<ul>
+<li>article ID</li>
+<li>title</li>
+<li>authors</li>
+<li>abstract</li>
+<li>categories</li>
+<li>submitted.</li>
+</ul>
+
+<p>In PostgreSQL, metadata are modeled by many-to-many relationships between &ldquo;articles&rdquo;, &ldquo;authors&rdquo;, and &ldquo;categories&rdquo; tables.
+The tables are managed with SQLAlchemy.</p>
+
+<h2 id="method">Method</h2>
+
+<p>The keyword extraction algorithm acts on the set of all articles in a category selected by the user.
+The algorithm consists of three steps:</p>
+
+<ol>
+<li>Represent each metadata with the concatenation of its title and abstract. Create tf-idf vectors of 1-grams from the representation.</li>
+<li>Run a k-means clustering of the metadata using their tf-idf vector representations. Clusters represent sub-categories.</li>
+<li>Within each cluster, rank 2- and 3-grams with tf-idf. Return the top 5 keywords from each cluster.</li>
+</ol>
+
+<p>I inspected resulting keywords from the math.DS category, which was my field of study, to judge the quality of the algorithm.</p>
+
+<p>Ideas that went into this algorithm:</p>
+
+<ul>
+<li>I chose to run k-means on tf-idf vectors instead of bag-of-words vectors to increase the weight of significant terms when generating clusters.</li>
+<li>If the tf-idf ranking is run without clustering, general terms that describe the category dominate the ranking. For math.DS, for example, such terms would be &ldquo;dynamical systems&rdquo;, &ldquo;differential equations&rdquo;, &ldquo;mechanics&rdquo;, &ldquo;flows&rdquo;, and so on.
+Such terms are too general to serve as a pointer to a research area.
+The tf-idf ranking results in more interesting terms when run on clusters, because it looks for significant terms in sub-categories.
+Furthermore, increasing the number of clusters results in identifying a finer division of articles into more specialized disciplines.
+I call this level of specialization as &ldquo;specificity&rdquo;.
+The algorithm exposes the control of specificity, and the user may choose its value.
+The algorithm returns keywords from more specialized disciplines when specificity is higher.</li>
+<li>Words that appear frequently in academic papers (e.g. &ldquo;we prove&rdquo;, &ldquo;in this paper&rdquo;) are removed.</li>
+<li>Characters used for LaTeX formatting (e.g. backslash, dollar, umlauts) are removed.</li>
+</ul>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>The algorithm is deployed to a GCP Compute Engine instance as a Flask app.
+PostgreSQL and Redis run in the same instance.</p>
+
+<h2 id="ideas-for-further-work">Ideas for Further Work</h2>
+
+<ul>
+<li>Convert plural nouns to their singular form to prevent both the singular and plural forms from appearing in the ranking.</li>
+<li>Parallelize the tf-idf ranking computation by cluster.</li>
+<li>Support other disciplines on arXiv, such as physics, computer science, and statistics.</li>
+<li>Implement scheduled updates of articles on the Compute Engine instance.</li>
+<li>Implement a &ldquo;new keywords&rdquo; feature by comparing keywords extracted from newer articles with those from older articles.</li>
+<li>This app is a derivative of a far more ambitious idea, which is to generate summaries of prominent research interests.
+A summary may contain a description of the research interest, pointers to influential arXiv articles, and pointers to relevant expository articles.
+The keyword extraction algorithm presented in this article is a tiny step in that direction.
+I don&rsquo;t see the idea coming to fruition anytime soon, but it&rsquo;d be great to see a product like that someday!</li>
+</ul>
 
   </section>
   <footer>
@@ -102,12 +188,11 @@ Published on <a href="https://www.kaggle.com/akumano/cc-fraud-detection-with-lin
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.xyz/posts/heteroskedasticity/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.xyz/teaching/141-sum16/lecnotes/">Older</a>
+          <a href="http://akumano.xyz/posts/learning-resources/">Older</a>
           
         </div>
       </div>
