@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Keyword Extraction from arXiv - Part 1</title>
-  <meta property="og:title" content="Keyword Extraction from arXiv - Part 1" />
-  <meta name="twitter:title" content="Keyword Extraction from arXiv - Part 1" />
+  <title>Articles---mainly ML Deployment and Streaming Systems</title>
+  <meta property="og:title" content="Articles---mainly ML Deployment and Streaming Systems" />
+  <meta name="twitter:title" content="Articles---mainly ML Deployment and Streaming Systems" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.xyz/posts/arxiv-keyword-extraction-part1/" />
+  <meta property="og:url" content="http://akumano.xyz/posts/taxi-project-reading-list/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -78,12 +78,12 @@
 
 <article class="p-article">
   <header>
-    <h1>Keyword Extraction from arXiv - Part 1</h1>
+    <h1>Articles---mainly ML Deployment and Streaming Systems</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2017-10-11T00:00:00Z">
-          Oct 11, 2017
+        <time datetime="2018-08-21T00:00:00Z">
+          Aug 21, 2018
         </time>
       </div>
       
@@ -93,267 +93,82 @@
   <section id="js-article" class="p-article__body">
     
 
-<p>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background.
-We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input.
-We then set up an infrastructure to serve the resulting algorithm.
-This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary.
-The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.
-Find my deployment <a href="https://arxiv-math-kws-stage.herokuapp.com/">here</a>.</p>
+<p>Articles and talks that I referred to while working on the taxi data project.
+Published here as a note to myself.</p>
 
-<p>Outline:</p>
-
-<ol>
-<li>Scrape articles from arXiv (Part 1; we are here)</li>
-<li>Keyword extraction prototype in Pandas (Part 1)</li>
-<li>Modify keyword extraction to use Postgres (<a href="/posts/arxiv-keyword-extraction-part2">Part 2</a>)</li>
-<li>Configure Flask and Redis (Part 2)</li>
-<li>Build UI in Vue.js (<a href="/posts/arxiv-keyword-extraction-part3">Part 3</a>)</li>
-<li>Deploy to Heroku (Part 3)</li>
-</ol>
-
-<p>My Flask setup is based on the one described in this tutorial:
-<a href="https://realpython.com/blog/python/flask-by-example-part-1-project-setup/">Flask by Example</a>.</p>
-
-<p>If Flask by Example is incomprehensible, I recommend going through the following tutorials first:</p>
+<h2 id="model-serving">Model Serving</h2>
 
 <ul>
-<li><a href="https://www.railstutorial.org/book">Rails Tutorial</a>: this is a good web development primer.</li>
-<li><a href="https://angular.io/tutorial">Angular&rsquo;s Official Tutorial</a>: doing this tutorial helps understanding other frameworks, as concepts are similar accross front-end frameworks.</li>
+<li><a href="https://cwiki.apache.org/confluence/display/FLINK/FLIP-23+-+Model+Serving">FLIP-23</a>.
+The document also discusses implementing model training as well as model serving.
+Two linked documents&mdash;&ldquo;Flink ML Roadmap&rdquo; and &ldquo;Flink-MS&rdquo;&mdash;are also worth reading.</li>
+<li>Boris Lublinsky&rsquo;s book &ldquo;Serving Machine Learning Models&rdquo;, and <a href="https://www.youtube.com/watch?v=YmrCv5onW_E">talk</a>.</li>
 </ul>
 
-<p>Tools used: Flask, PostgreSQL, SQLAlchemy, Alembic, Redis, Pandas, Scikit-learn, Vue.js, Heroku</p>
-
-<h2 id="1-scrape-articles-from-arxiv">1. Scrape articles from arXiv</h2>
-
-<p>arXiv provides three APIs&mdash;OAI-PMH, arXiv API, and RSS&mdash;to access article metadata.
-The data available via OAI-PMH is updated on a daily basis, while the arXiv API provides access to real-time data.
-We use <a href="https://arxiv.org/help/oa/index">OAI-PMH</a>, which is what they recommend for bulk access, and <a href="https://github.com/miku/metha">metha</a> (thanks!) to scrape data.
-Once installed, run:</p>
-
-<pre><code>./metha-sync -format arXiv -set math http://export.arxiv.org/oai2
-</code></pre>
-
-<p>This downloads all metadata of math articles to <code>~/.metha</code>.
-The choice of format is not crucial, though those who have used arXiv will find the arXiv format more familiar than the oai_dc format.
-The command takes several hours to complete.</p>
-
-<p>Now, we have gunzipped xml files in a directory inside <code>~/.metha</code>.
-The data is just over 100MB, so all metadata can be loaded into memory.
-We will eventually develop an algorithm that loads necessary data from a database to memory; developing a functioning code from scratch, however, takes many small iterations, so we start with a function that acts on in-memory data.</p>
-
-<p>The code below parses the xml files, creates a Pandas DataFrame, and saves it to a pickle file.
-Each record in a xml file has a structure like <a href="http://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:0804.2273&amp;metadataPrefix=arXiv">this</a>, which Python&rsquo;s ElementTree handles.</p>
-
-<p><details open>
-<summary><code>metha_to_df.py</code></summary></p>
-
-<pre><code>import os, gzip, glob
-import pickle
-from datetime import datetime
-import xml.etree.ElementTree as ET
-import pandas as pd
-
-if __name__=='__main__':
-    files = glob.glob('/home/atkm/.metha/20170923/*.xml.gz')
-    arXiv_prefix = '{http://arxiv.org/OAI/arXiv/}'
-
-    def parse_author(a):
-        keyname = a.find(arXiv_prefix + &quot;keyname&quot;)
-        keyname = keyname.text if keyname is not None else ''
-        forenames = a.find(arXiv_prefix + &quot;forenames&quot;)
-        forenames = forenames.text if forenames is not None else ''
-        return ' '.join( (forenames, keyname) )
-
-
-    identifier, title, authors, abstract, categories, submitted = ([] for i in range(6))
-    for xmlgz in files:
-        print(os.path.basename(xmlgz), end=' ')
-        with gzip.open(xmlgz, 'rb') as f:
-            xml = ET.parse(f)
-            root = xml.getroot()
-            for record in root.find('ListRecords').findall(&quot;record&quot;):
-                metadata = record.find('metadata').find(arXiv_prefix + &quot;arXiv&quot;)
-                if metadata is None:
-                    continue
-
-                identifier.append( metadata.find(arXiv_prefix + &quot;id&quot;).text )
-                s = metadata.find(arXiv_prefix + &quot;created&quot;).text
-                submitted.append( datetime.strptime(s, &quot;%Y-%m-%d&quot;) )
-                title.append( metadata.find(arXiv_prefix + &quot;title&quot;).text )
-                abstract.append( metadata.find(arXiv_prefix + &quot;abstract&quot;).text.strip() )
-
-                authors_list = metadata.find(arXiv_prefix + 'authors')
-                authors.append( tuple( [parse_author(a) for a in authors_list] ) )
-
-                categories_list = metadata.find(arXiv_prefix + &quot;categories&quot;).text
-                categories.append( tuple( categories_list.split() ) )
-        print(' Done.')
-
-    df = pd.DataFrame({
-        'identifier': identifier,
-        'title': title,
-        'authors': authors,
-        'abstract': abstract,
-        'categories': categories,
-        'submitted': submitted
-        })
-
-    with open('metha-all-math.pkl', 'rb') as f:
-      pickle.dump(df, f)
-</code></pre>
-
-<p></details></p>
-
-<h2 id="2-keyword-extraction-prototype-in-pandas">2. Keyword extraction prototype in Pandas</h2>
-
-<p>The algorithm that we wish to develop falls into the category of text summarization.
-There are recent developments in the field (
-<a href="https://www.salesforce.com/blog/2017/05/ai-salesforce-research-text-summarization.html">Salesforce</a>,
-<a href="https://research.googleblog.com/2016/08/text-summarization-with-tensorflow.html">Google Brain</a>,
-<a href="https://research.fb.com/publications/abstractive-summarization-with-attentive-rnn-naacl-2016/">Facebook Research</a>
-).
-The techniques described in the linked articles seem successful, but too involved for our purpose.
-These are some other keyword extraction techniques that are readily available:</p>
+<h2 id="distributed-systems">Distributed Systems</h2>
 
 <ul>
-<li>tf-idf: a modification of bag-of-words to put greater weights on rare words.</li>
-<li>Latent Semantic Indexing (LSI or LSA): a low-rank approximation of bag-of-words (or tf-idf) by taking its the principal components. pLSI and Latent Dirichlet Allocation extends LSI.</li>
-<li>TextRank: application of Google&rsquo;s PageRank algorithm to graph of sentences, or, in our case, n-grams.</li>
-<li>Rapid Automatic Keyword Extraction</li>
+<li><a href="https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html">Please Stop Calling Database Systems AP or CP</a>.</li>
+<li>Kate Matsudaira on <a href="http://www.aosabook.org/en/distsys.html">distributed systems</a></li>
+<li><a href="https://martinfowler.com/articles/microservices.html">Distributed Systems for Fun and Profit</a></li>
+<li>Martin Kleppmann&rsquo;s <a href="http://shop.oreilly.com/product/0636920032175.do">book</a> and <a href="https://softwareengineeringdaily.com/2017/05/02/data-intensive-applications-with-martin-kleppmann/">interview</a>.</li>
+<li><a href="http://lamport.azurewebsites.net/tla/amazon.html">Use of Formal Methods at Amazon Web Services</a></li>
+<li><a href="https://www.oreilly.com/ideas/a-tale-of-two-clusters-mesos-and-yarn">A tale of two clusters: Mesos and YARN</a></li>
+<li>A visual explanation of Raft: <a href="http://thesecretlivesofdata.com/raft/">link</a></li>
 </ul>
 
-<p>I tried tf-idf and TextRank, and the former works reasonably well.
-This is the outline of our tf-idf-based keyword extraction algorithm:</p>
+<h2 id="streaming-systems">Streaming Systems</h2>
 
-<ol>
-<li>Load the pickled DataFrame and extract articles of a category.
-Extract title and abstract from each article.</li>
-<li>Vectorize the articles by tf-idf and run k-means clustering. Each cluster corresponds to a subdiscipline.</li>
-<li>Within each cluster, compute tf-idf of n-grams of articles to find significant terms.</li>
-</ol>
+<h3 id="the-dataflow-model-apache-beam-and-cloud-dataflow">The Dataflow Model, Apache Beam, and Cloud Dataflow</h3>
 
-<p>As I said in the introduction, the algorithm is kept simple&mdash;working just well enough to illustrate steps involved in deploying an algorithm.</p>
+<ul>
+<li>Tyler Akidau&rsquo;s <a href="https://www.oreilly.com/ideas/the-world-beyond-batch-streaming-101">article</a> on the Dataflow model.</li>
+<li>Frances Perry&rsquo;s <a href="https://www.youtube.com/watch?v=3UfZN59Nsk8">talk</a> covers the same topics as the aforementioned article by Tyler Akidau.</li>
+<li><a href="https://labs.spotify.com/2017/10/16/big-data-processing-at-spotify-the-road-to-scio-part-1/">Big Data Processing at Spotify</a></li>
+<li>Hands-on exercises to try out the Dataflow model created by <a href="http://training.data-artisans.com/">dataArtisans</a>.</li>
+<li>Jay Kreps&rsquo; <a href="https://www.oreilly.com/ideas/questioning-the-lambda-architecture">article</a> &ldquo;Questioning the Lambda Architecture&rdquo;.</li>
+<li>Martin Kleppmann <a href="https://samza.apache.org/learn/documentation/latest/comparisons/introduction.html">compares</a> Samza to other stream processing systems.</li>
+<li><a href="https://flink.apache.org/blog/">Flink Blog</a>: articles that discuss how exactly-once processing, checkpointing, joins, etc. are implemented in Flink.</li>
+</ul>
 
-<p>The main purpose of this section is to discuss out-of-core computation.
-Although the entire text data easily fits in memory (~100MB), and a slice of the data by category is even smaller (18k rows for math.DS), computation that uses it can have a large memory footprint.
-In our case, a bag of 2-grams for math.DS has 600k columns, and k-means clustering using sklearn&rsquo;s KMeans requires gigabytes of memory, which will render clustering infeasible on a small machine like mine (4GB of RAM).
-An attempt to run SVD on the term-document matrix to reduce the dimension faces the same challenge.
-A solution to such computational difficulty is to use incremental algorithms.
-<a href="http://scikit-learn.org/stable/modules/scaling_strategies.html">This page</a> provides a list of out-of-core-enabled algorithms.
-In our case, we use MiniBatchKMeans instead of KMeans.
-This not only solves our space complexity issue, but also expedites computation.
-There is, however, a tradeoff that the clustering obtained by the minibatch variant is an approximation.</p>
+<h3 id="kafka-and-inverted-database">Kafka and Inverted Database</h3>
 
-<h3 id="2-1-load-data">2.1 Load data</h3>
+<ul>
+<li>Martin Kleppmann&rsquo;s <a href="https://www.confluent.io/blog/turning-the-database-inside-out-with-apache-samza/">talk</a> &ldquo;Turning the Database Inside Out with Apache Samza&rdquo;.</li>
+<li>Jay Kreps&rsquo; articles: <a href="https://www.confluent.io/blog/okay-store-data-apache-kafka/">It&rsquo;s Okay to Store Data in Kafka</a>,
+<a href="https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">The Log: What Every Software Engineer Should Know About Real-time Data&rsquo;s Unifying Abstraction</a></li>
+<li><a href="http://www.michael-noll.com/blog/2014/08/18/apache-kafka-training-deck-and-tutorial/">Tutorial</a></li>
+<li>Neha Narkhede on <a href="https://www.confluent.io/blog/event-sourcing-cqrs-stream-processing-apache-kafka-whats-connection/">&ldquo;event sourcing&rdquo;</a></li>
+<li><a href="https://labs.spotify.com/2016/02/25/spotifys-event-delivery-the-road-to-the-cloud-part-i/">Spotify&rsquo;s Event Delivery</a></li>
+<li>Boerge Svingen, Publishing with Kafka at NY Times (SWE daily, Confluent blog)</li>
+</ul>
 
-<p>Load the Pandas DataFrame from the pickle file created in the previous section,
-slice the title and abstract columns, and concatenate title and abstract.
-So each article is represented by a single string which is a concatenation of its title and abstract.</p>
+<h2 id="data-pipelines">Data Pipelines</h2>
 
-<p><details open>
-<summary><code>load_data</code></summary></p>
+<ul>
+<li><a href="https://www.dremio.com/library/#explainer">Explainer articles</a> on Dremio website.
+Topics include data engineering, Apache Arrow, Data Warehouses, Data Pipelines, ETL Tools.</li>
+<li>Quizlet on Airflow: <a href="https://medium.com/tech-quizlet/going-with-the-flow-how-quizlet-uses-apache-airflow-to-execute-complex-data-processing-pipelines-1ca546f8cc68">link</a>.</li>
+<li>Rebuilding Yelp&rsquo;s Data Pipeline with Justin Cunningham (Data Engineering Podcast)</li>
+<li>Danny Yuan on Real-Time, Time Series Forecasting @Uber: <a href="https://www.infoq.com/podcasts/streaming-real-time-uber-time-series-danny-yuan">link</a></li>
+</ul>
 
-<pre><code>from nltk.corpus import stopwords
+<h2 id="microservices">Microservices</h2>
 
-def load_data(category):
-    print('Loading data')
-    with open('metha-all-math.pkl','rb') as f:
-        df = pickle.load(f)
+<ul>
+<li>Josh Evans, A Netflix Guide to Microservices (InfoQ talk)</li>
+<li>Beyond Buzzwords: A Brief History of Microservice Patterns (Kyle Brown, IBM)</li>
+<li>Martin Fowler on <a href="https://martinfowler.com/articles/microservices.html">microservices</a></li>
+</ul>
 
-    df['abstract'] = df['abstract'].apply(lambda t: t.replace('\n',' '))\
-            .apply(remove_stopwords)
-    df['title'] = df['title'].apply(lambda t: t.replace('\n',' '))\
-            .apply(remove_stopwords)
+<h2 id="others">Others</h2>
 
-    mask = df['categories'].apply(lambda cs: True if category in cs else False)
-    df_c = df[mask]
-    abs_c = df_c.apply(lambda row: 
-            '. '.join([row['title'], row['abstract']]), axis=1)
-    print('Data loaded')
-    return abs_c
-
-def remove_stopwords(text):
-    stopWords = set(stopwords.words('english'))
-    return ' '.join([w for w in text.split() if w not in stopWords])
-</code></pre>
-
-<p></details></p>
-
-<h3 id="2-2-vectorization-of-articles-and-clustering">2.2 Vectorization of articles and clustering</h3>
-
-<p>This is where we use MiniBatchKMeans as discussed above.
-MiniBatchKMeans approximates the usual KMeans better when the batch size is closer to the sample size.</p>
-
-<p><details open>
-<summary><code>cluster_docs</code></summary></p>
-
-<pre><code>def cluster_docs(abstracts, K):
-    tfidf_vect = TfidfVectorizer()
-    abs_tfidf = tfidf_vect.fit_transform(abstracts)
-    print('Running kmeans')
-    kmeans = MiniBatchKMeans(n_clusters=K, batch_size=1000, reassignment_ratio=0).fit(abs_tfidf)
-    print('Kmeans finished')
-    cluster = kmeans.predict(abs_tfidf)
-    return cluster
-</code></pre>
-
-<p></details></p>
-
-<h3 id="2-3-compute-keywords">2.3 Compute keywords</h3>
-
-<p>It computes the tf-idf score of each 2-, 3-, and 4-grams.</p>
-
-<p><details open>
-<summary><code>rank_phrases</code></summary></p>
-
-<pre><code>import heapq
-
-def rank_phrases(text, n):
-    tfidf_vect = TfidfVectorizer(ngram_range=(2,4))
-    text_vect = tfidf_vect.fit_transform(text)
-    text_vect = np.asarray(text_vect.sum(axis=0)).ravel()
-    tfidf_dict = dict()
-    idf = tfidf_vect.idf_
-    for k, v in tfidf_vect.vocabulary_.items():
-        tfidf_dict[k] = text_vect[v]
-    return heapq.nlargest(n, tfidf_dict, key=tfidf_dict.get)
-</code></pre>
-
-<p></details></p>
-
-<p>Putting together the snippets above, we get our keyword extraction prototype.
-It extracts top 2 keywords from each cluster.</p>
-
-<p><details open>
-<summary><code>extract_keywords</code></summary></p>
-
-<pre><code>def extract_keywords(category):
-    K = 100
-    abs_c = load_data(category)
-    cluster = cluster_docs(abs_c, K)
-    abs_clusters = pd.DataFrame({
-        'cluster': cluster,
-        'text': abs_c
-    })
-
-    keywords = []
-    for j in range(K):
-        c = abs_clusters[abs_clusters['cluster']==j]
-        for phrase in rank_phrases(c['text'], 2):
-            keywords.append(phrase)
-
-    print(keywords)
-    return keywords
-</code></pre>
-
-<p></details></p>
-
-<h2 id="conclusion-of-part-1">Conclusion of Part 1</h2>
-
-<p>Our prototype is ready.
-Run it with your favorite math category to check that the algorithm returns reasonable keywords.
-In the next article, we modify the function to use Postgres so it is deployment-ready.
-<a href="/posts/arxiv-keyword-extraction-part2">Go to Part 2</a>.</p>
+<ul>
+<li>William Morgan on Scaling Twitter (SWE daily)</li>
+<li>Josh Wills&rsquo; <a href="https://www.youtube.com/watch?v=qNAw7mUgx34">talk</a> at MLconf.</li>
+<li>Scaling Uber with Matt Ranney (SWE daily)</li>
+<li>Cassandra with Tim Berglund (SWE daily)</li>
+</ul>
 
   </section>
   <footer>
@@ -362,12 +177,11 @@ In the next article, we modify the function to use Postgres so it is deployment-
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.xyz/posts/arxiv-keyword-extraction-part2/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.xyz/posts/heteroskedasticity/">Older</a>
+          <a href="http://akumano.xyz/posts/arxiv-keyword-extraction-summary/">Older</a>
           
         </div>
       </div>

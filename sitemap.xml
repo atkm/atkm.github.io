@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://akumano.xyz/posts/taxi-project-reading-list/</loc>
+    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://akumano.xyz/posts/arxiv-keyword-extraction-summary/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>http://akumano.xyz/</loc>
-    <lastmod>2018-07-11T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -65,7 +70,7 @@
   
   <url>
     <loc>http://akumano.xyz/posts/</loc>
-    <lastmod>2018-07-11T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

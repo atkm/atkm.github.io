@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Articles---mainly ML Deployment and Streaming Systems</title>
+      <link>http://akumano.xyz/posts/taxi-project-reading-list/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/taxi-project-reading-list/</guid>
+      <description>Articles and talks that I referred to while working on the taxi data project. Published here as a note to myself.
+Model Serving  FLIP-23. The document also discusses implementing model training as well as model serving. Two linked documents&amp;mdash;&amp;ldquo;Flink ML Roadmap&amp;rdquo; and &amp;ldquo;Flink-MS&amp;rdquo;&amp;mdash;are also worth reading. Boris Lublinsky&amp;rsquo;s book &amp;ldquo;Serving Machine Learning Models&amp;rdquo;, and talk.  Distributed Systems  Please Stop Calling Database Systems AP or CP. Kate Matsudaira on distributed systems Distributed Systems for Fun and Profit Martin Kleppmann&amp;rsquo;s book and interview.</description>
+    </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Summary</title>
