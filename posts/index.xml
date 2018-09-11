@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Prediction of NYC Taxi Demand</title>
+      <link>http://akumano.xyz/posts/taxi-demand-prediction/</link>
+      <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/taxi-demand-prediction/</guid>
+      <description>1. Narrative (TODO) Code published on GitHub.
+2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.
+For each year, there are about 170 million records, which amount to about 25GB.</description>
+    </item>
     
     <item>
       <title>Articles---mainly about Streaming Systems</title>
