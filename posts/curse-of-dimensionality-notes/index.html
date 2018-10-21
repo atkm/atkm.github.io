@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Prediction of NYC Taxi Demand</title>
-  <meta property="og:title" content="Prediction of NYC Taxi Demand" />
-  <meta name="twitter:title" content="Prediction of NYC Taxi Demand" />
+  <title>Notes: Curse of Dimensionality</title>
+  <meta property="og:title" content="Notes: Curse of Dimensionality" />
+  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.xyz/posts/taxi-demand-prediction/" />
+  <meta property="og:url" content="http://akumano.xyz/posts/curse-of-dimensionality-notes/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,6 +33,24 @@
 
 </head>
 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    // inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    //displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
 
 <body>
   
@@ -79,12 +97,12 @@
 
 <article class="p-article">
   <header>
-    <h1>Prediction of NYC Taxi Demand</h1>
+    <h1>Notes: Curse of Dimensionality</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-09-11T00:00:00Z">
-          Sep 11, 2018
+        <time datetime="2018-10-20T00:00:00Z">
+          Oct 20, 2018
         </time>
       </div>
       
@@ -94,376 +112,42 @@
   <section id="js-article" class="p-article__body">
     
 
-<h2 id="1-narrative-todo">1. Narrative (TODO)</h2>
+<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
 
-<p>Code published on <a href="https://github.com/atkm/taxi-demand-prediction">GitHub</a>.</p>
+<h2 id="geometry">Geometry</h2>
 
-<h2 id="2-data">2. Data</h2>
-
-<h3 id="2-1-taxi">2.1 Taxi</h3>
-
-<p>We use the yellow cab trip CSV data available <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">here</a>.
-The columns that we use are the pickup location (in latitude and longitude), and pickup datetime.
-The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.</p>
-
-<p>For each year, there are about 170 million records, which amount to about 25GB.</p>
-
-<table>
-<thead>
-<tr>
-<th>year</th>
-<th align="right">nRecords</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>2009</td>
-<td align="right">170896055</td>
-</tr>
-
-<tr>
-<td>2010</td>
-<td align="right">168994353</td>
-</tr>
-
-<tr>
-<td>2011</td>
-<td align="right">176897199</td>
-</tr>
-
-<tr>
-<td>2012</td>
-<td align="right">178544324</td>
-</tr>
-
-<tr>
-<td>2013</td>
-<td align="right">173179759</td>
-</tr>
-
-<tr>
-<td>2014</td>
-<td align="right">165114361</td>
-</tr>
-
-<tr>
-<td>2015</td>
-<td align="right">146112989</td>
-</tr>
-
-<tr>
-<td>2016</td>
-<td align="right">131165043</td>
-</tr>
-</tbody>
-</table>
-
-<p>The format of the CSV files has changed over time.
-Column names changed between 2009 and 2010, 2013 and 2014, and 2014 and 2015.
-More significantly, starting in <sup>2016</sup>&frasl;<sub>07</sub>, location IDs are used instead of latitude-longitude pairs for location data.
-The website provides shape files to match location IDs with geographical areas.
-In this analysis, we use the 2014 and 2015 data.</p>
-
-<h3 id="2-2-weather">2.2 Weather</h3>
-
-<p>Our objective is to join precipitation and temperature information to the rides data.
-We use <a href="https://en.wikipedia.org/wiki/METAR">METAR</a> data from <a href="http://mesonet.agron.iastate.edu/request/download.phtml?network=NY_ASOS">New York ASOS</a>.
-I wrote a Python <a href="https://github.com/atkm/taxi-demand-prediction/blob/master/data/metar_data/lga_scraper.py">script</a>, which is based on an example provided by the site, to obtain weather data at LGA.</p>
-
-<p>We want an hourly weather information for our analysis, but the raw data contains multiple rows for every hour.
-For temperature, we take the average of reported values for each hour.
-For precipitation, we use the value reported at the 51st minute of each hour (<a href="https://earthscience.stackexchange.com/questions/10598/how-are-daily-precipitation-totals-computed">ref</a>).</p>
-
-<h2 id="3-method">3. Method</h2>
-
-<h3 id="3-1-problem-statement">3.1 Problem Statement</h3>
-
-<p>This section discusses the formal specification of our problem.
-The schemas of raw taxi rides and weather data are as follows.</p>
-
-<p>Rides:</p>
-
-<table>
-<thead>
-<tr>
-<th>Pick-up Datetime</th>
-<th>Pick-up Latitude</th>
-<th>Pick-up Longitude</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>%Y-%m-%d %H:%M:%s</td>
-<td>double</td>
-<td>double</td>
-</tr>
-</tbody>
-</table>
-
-<p>Weather:</p>
-
-<table>
-<thead>
-<tr>
-<th>Datetime</th>
-<th>Temperature</th>
-<th>Precipitation</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>%Y-%m-%d %H:%M:%s</td>
-<td>double</td>
-<td>double</td>
-</tr>
-</tbody>
-</table>
-
-<p>We only consider rides that originated in NYC, which we define to be 40.5 &lt; latitude &lt; 41.0 and -74.05 &lt; longitude &lt; -73.7.
-We partition the area inside the bounds into cells of size approximately 1 km^2; this corresponds to a grid with 30 cells in the longitudinal direction and 55 cells in the latitudinal.
-The following heatmap of the number of taxi pick-ups per grid cell should give the reader an intuitive idea of what our grid is.
-The plot is created from a small subset (less than 5% of the entire data set) of the 2015 rides data.
-The area around 4 &lt;= grid_x &lt;= 8 &amp; 24 &lt;= grid_y &lt;= 30 corresponds to Manhattan.</p>
-
-<p><img src="/images/taxi-demand-prediction/demand-by-grid-cell-2015-small.png" alt="A plot of taxi demand by grid cell" /></p>
-
-<p>We then perform an aggregation of the rides table by (hour, weekday, grid cell) followed by a count operation.
-The resulting schema is as follows.</p>
-
-<p>Aggregated Rides:</p>
-
-<table>
-<thead>
-<tr>
-<th>Pick-up Datetime</th>
-<th>Pick-up Cell</th>
-<th>Hour</th>
-<th>Weekday</th>
-<th>Count</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>%Y-%m-%d %H:%M:%s</td>
-<td>(x, y)-coord of the cell</td>
-<td>H</td>
-<td>Mon-Sun</td>
-<td>Int</td>
-</tr>
-</tbody>
-</table>
-
-<p>The weather table is aggregated by the hour to compute the average temperature and total precipitation of each hour.</p>
-
-<p>Aggregated Weather:</p>
-
-<table>
-<thead>
-<tr>
-<th>Datetime</th>
-<th>Avg Temperature</th>
-<th>Total Precipitation</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>%Y-%m-%d %H</td>
-<td>double</td>
-<td>double</td>
-</tr>
-</tbody>
-</table>
-
-<p>Finally, we join the weather table with the aggregated rides table based on the datetime columns, ignoring minutes and seconds.
-The datetime column is dropped, as it is not used in the prediction model.</p>
-
-<p>Rides and Weather Joined:</p>
-
-<table>
-<thead>
-<tr>
-<th>Pick-up Cell</th>
-<th>Hour</th>
-<th>Weekday</th>
-<th>Count</th>
-<th>Avg Temperature</th>
-<th>Total Precipitation</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>(x, y)-coord of the cell</td>
-<td>H</td>
-<td>Mon-Sun</td>
-<td>Int</td>
-<td>double</td>
-<td>double</td>
-</tr>
-</tbody>
-</table>
-
-<p>This is the schema that the model takes as its argument.
-Our goal is to predict the count column from the others.</p>
-
-<h3 id="3-2-partition-into-train-dev-test-sets">3.2 Partition Into Train/Dev/Test Sets</h3>
-
-<p>Since our task is prediction, the training set should not contain data that we wish to perform prediction on.
-We train our model on the 2014 data and predict on the 2015 data; so the training set consists of 2014 data, and the dev and test sets consist of 2015 data.
-The prediction cannot be successful if the distribution of the test set differs significantly from that of the training set.
-Homogeneity becomes a greater concern when including data from years further apart from 2015.
-The growth of Uber and Lyft has had impacts on the ridership of NYC Taxis (the number of rides has decreased monotonically since 2013).
-Some neighborhoods in Brooklyn and Bronx are seeing an increasing number of wealthier residents, who are more likely to opt for taxis rather than public transits.
-Changes in the distribution of rides should be understood and reflected in the design of models.</p>
-
-<p>Furthermore, there are many levels of magnification in which to study the distribution.
-Here we list a few of them:</p>
+<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
 
 <ul>
-<li>Compare one year with another</li>
-<li>Compare one month of a year with another month of the same year</li>
-<li>Compare one month of a year with the same month of a different year</li>
-<li>Study the distribution of counts in each cell</li>
-<li>Study the distribution of counts in each cell of the high-demand area</li>
+<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
+<li>Most of the volume of a high-dimensional ball is concentrated around its shell.</li>
+<li>Pick two vectors on the surface of the unit ball independently.
+The two are orthogonal with high probability.</li>
+<li>Johnson-Lindenstrauss lemma: a set of points can be embedded (almost isometrically w.r.t. \( L_2 \)) into a space of a much lower dimension.
+The \( L_1 \) analogue doesn&rsquo;t hold.
+Look up fast JL transform.</li>
+<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
 </ul>
 
-<p>Here are some methods to study the homogeneity of rides data:</p>
+<h2 id="ml">ML</h2>
+
+<p>Suppose the data has \( p \) features,</p>
 
 <ul>
-<li>Study the empirical CDF of counts at each cell. The Kolmogorov-Smirnov test is one method to do so.</li>
-<li>KMeans clustering</li>
-<li>Compute the pairwise RMSE of counts per grid cell, which is an approach that is more computationally expensive, but feasible in our case.</li>
+<li>Suppose that the features are binary categorical.
+The cardinality of the feature space grows exponentially with \( p \).
+Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
+<li>Suppose that the features are continuous and in \( [0,1] \).
+Then, most points are located outside of the sphere inscribed in the cube.</li>
 </ul>
 
-<p>A rudimentary cluster analysis is done in <a href="https://github.com/atkm/taxi-demand-prediction/blob/master/Demand%20Homogeneity.ipynb">Demand Homogeneity ipynb</a>.</p>
-
-<h3 id="3-3-prediction-target-and-evaluation-metric">3.3 Prediction Target and Evaluation Metric</h3>
-
-<p>For a regression task, we should use either RMSE, MSE, or mean absolute error as a model evaluation metric.
-(What about R-squared? Refer to Section 3 of this <a href="http://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/10/lecture-10.pdf">lecture note</a>.)</p>
-
-<p>For this project, we use the RMSE of counts scaled to [0,1] to evaluate our models.
-Scaled counts are created by dividing the counts column by max(counts) taken over all (location, hour, weekday) tuples.
-Using scaled counts allows for a more flexible model evaluation process.
-If unscaled counts were used, the prediction depends on the size of the data set it is trained on, so the training, dev, and test sets must have the same cardinality.</p>
-
-<p>To make a prediction from a scaled count, one could multiply the scaled count by the estimated max(counts).
-For example, suppose we wish to predict the counts for 2015/03/01; among many others, one way to estimate the max(counts) is by using the max(counts) of 2014/03/01.
-The average max(counts) in an hour is about 1200.
-The scaled count multiplied by max(counts), however, is not an unbiased estimate of the unscaled count.
-For a production use, the model should be trained on unscaled counts.</p>
-
-<p>Another shortcoming of using scaled counts is the difficulty in computing the standard error of predictions.
-If the counts were not scaled, the RMSE provides an estimate (though biased) of the standard error.
-If <code>unscaled predictions = max(counts) * scaled predictions</code>, then one can show that <code>unscaled RMSE = max(counts) * scaled RMSE</code>, but, as noted in the previous paragraph, <code>unscaled predictions = max(counts) * scaled predictions</code> does not hold.</p>
-
-<h2 id="4-models-and-results">4. Models and Results</h2>
-
-<h3 id="4-0-modeling">4.0 Modeling</h3>
-
-<p>Whether to model the variables as continuous or categorical.
-Location and datetime variables need to be treated non-linearly.</p>
-
-<h3 id="4-1-summary-of-results">4.1 Summary of Results</h3>
-
-<p>In all models, points with lower counts are over-estimated, and those with higher counts are under-estimated as shown in the residual plots in the following sections.
-The baseline model, which does not use weather data, shows the best performance.
-In addition, the baseline model trains much faster than the random forest model, which can have quadratic time complexity in the number of samples.</p>
-
-<p>Statistics.</p>
-
-<p>Baseline model.
-Trained on a subset of the 2014 data of size 6,000,000 (500,000 each month * 12 months), and tested on a subset of the 2015 of the same size.</p>
+<h2 id="reference">Reference</h2>
 
 <ul>
-<li>01m11s to train; 05m11s to predict.</li>
-<li>scaled RMSE:  0.031028932423957583</li>
-<li>RMSE:  4.0838978039637</li>
-<li>Residual stats (unscaled): mean -0.092445; std 4.082855</li>
-<li>Residual stats (scaled): mean -0.004678; std 0.030674</li>
-</ul>
-
-<p>Random Forest:</p>
-
-<ul>
-<li>Parameters used: numTrees = 100; maxDepth = 30.</li>
-<li>More than 10 hours to train on a set of size 5,000,000.
-Since the time complexity of training can grow quadratically, training on a set of size 6,000,000 as we do for the baseline model is unrealistic.</li>
-<li>Prediction on a set of size 500,000 takes 32s.</li>
-<li>scaled RMSE: 0.041826952672794036</li>
-<li>Residual stats (scaled): mean -0.004084; std 0.041628</li>
-</ul>
-
-<h3 id="4-2-baseline-model">4.2 Baseline Model</h3>
-
-<p>The model and its analyses are found in <a href="https://github.com/atkm/taxi-demand-prediction/blob/master/Baseline%20Prediction%20Model.ipynb">this notebook</a>.</p>
-
-<p>The baseline model returns the average count at each cell given hour and weekday.
-This model does not use weather information.
-&ldquo;Aggregated Rides&rdquo; in the Problem Statement section is the schema that this model takes as its argument.</p>
-
-<p>This is the residual plot of this model.</p>
-
-<p><img src="/images/taxi-demand-prediction/baseline-train-on-2014-small-predict-on-2015-small.png" alt="Baseline Model Residual Plot" /></p>
-
-<p>The bias in the plot is due to the variance in counts for each (location, hour, weekday) tuple.
-Naturally, most under- and over-estimated points are from the high-demand area (shown in section 3.1 of this article).
-We would like to find a factor that demarcate under- and over-estimated points from accurately predicted points.</p>
-
-<p>An analysis of under-estimated points suggests that including precipitation levels may improve the model.
-The points with a high precipitation level is marked red in the following residual plot (the model used to generate this plot is trained on a different data).</p>
-
-<p><img src="/images/taxi-demand-prediction/baseline-model-residual-plot-heavy-rain-marked.png" alt="Residual Plot - Heavy Rain" /></p>
-
-<p>The resulting model did not perform better than the original baseline model (see notebook linked in the head of this sub-section).</p>
-
-<p>Other things tried in the notebook:</p>
-
-<ul>
-<li>High- vs low-demand areas</li>
-<li>Points with extreme temperatures (very cold or hot) vs others</li>
-<li>Under- and over-estimated points by location, date, hour, and weekday</li>
-</ul>
-
-<p>None of these seems to be a promising direction.</p>
-
-<h3 id="4-3-random-forest-model">4.3 Random Forest Model</h3>
-
-<p>We did a 5-fold cross-validation on a small training set to tune numTrees, maxDepth, and minInstancesPerNode.
-Changing minInstancesPerNode did not affect model performance.</p>
-
-<p>Since the random forest model requires far more computational resources than the baseline model, we implemented the model in PySpark + MLlib and ran on GCP DataProc.
-The DataProc image version 1.3 comes with Python 3.4, although the cluster is configured to use Python 2.7 by default.
-We configured the cluster to use Python 3 with this <a href="https://github.com/atkm/taxi-demand-prediction/blob/master/python3-initscript.sh">initialization action</a>.</p>
-
-<h2 id="conclusion-and-future-work">Conclusion and Future Work</h2>
-
-<p>The best model is the baseline model which recorded 0.031 as its scaled RMSE.
-Training a random forest model takes hundreds of times as long as the baseline model.
-The average max(counts) in an hour is about 1200, so this RMSE value corresponds to a standard error of 1200 * 0.031 = 37.2 (counts) per cell per hour.</p>
-
-<p>To build on the baseline model:</p>
-
-<ul>
-<li>Keep searching for factors that explains the variance in counts for each (location, hour, weekday) tuple.</li>
-<li>Make the <code>predict</code> function faster.
-In the current implementation, it looks for a (location, hour, weekday) key in a multi-index DataFrame.
-Is it the case that this implementation is effectively equivalent to a hash table lookup?
-Otherwise, re-implement the function using a hash map.</li>
-<li>kNN to smooth out predictions. What is an appropriate metric for the space of (location, hour, weekday) tuple?</li>
-<li>Interactions of variables.</li>
-</ul>
-
-<p>To build on the random forest model:</p>
-
-<ul>
-<li>Try modeling the location and/or datetime variables as categoricals.</li>
-<li>Interactions of variables.</li>
+<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
+<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
+<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
+<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
 </ul>
 
   </section>
@@ -473,12 +157,11 @@ Otherwise, re-implement the function using a hash map.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.xyz/posts/curse-of-dimensionality-notes/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.xyz/posts/taxi-project-reading-list/">Older</a>
+          <a href="http://akumano.xyz/posts/taxi-demand-prediction/">Older</a>
           
         </div>
       </div>

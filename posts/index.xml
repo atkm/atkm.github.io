@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Notes: Curse of Dimensionality</title>
+      <link>http://akumano.xyz/posts/curse-of-dimensionality-notes/</link>
+      <pubDate>Sat, 20 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/curse-of-dimensionality-notes/</guid>
+      <description>&amp;ldquo;Curse of Dimensionality&amp;rdquo;, in the sense of Bellman as well as in machine learning.
+Geometry In \( \mathbb{R}^n \) where \( n \) is large,
+ The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a high-dimensional ball is concentrated around its shell. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.</description>
+    </item>
     
     <item>
       <title>Prediction of NYC Taxi Demand</title>
