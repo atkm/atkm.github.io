@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   
   
-  <meta name="generator" content="Hugo 0.49.2" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <meta name="generator" content="Hugo 0.51" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
   <link rel="stylesheet" href="http://akumano.xyz/css/style.css" />
   <link rel='icon' type='image/x-icon' href="http://akumano.xyz/favicon.ico" />
   <script type="text/javascript" src="http://akumano.xyz/js/bundle.js"></script>
@@ -80,6 +80,31 @@
 
 <article class="c-article p-list-article">
   <header>
+    <h2 class="c-title c-article__title"><a href="http://akumano.xyz/posts/click-thru-rate-prediction/">Avazu Click-Through Rate Prediction</a></h2>
+    <p class="c-article__meta">
+      Posted on
+      <time datetime="2018-11-09T00:00:00Z">
+        Nov 9, 2018
+      </time>
+    </p>
+  </header>
+  <div class="c-article__summary">
+    Draft.
+1. Narrative (TODO) Code published on GitHub.
+The data is from a Kaggle competition hosted by Avazu.
+2. Data The columns are:
+ id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).  In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.
+  </div>
+  
+  <a href="http://akumano.xyz/posts/click-thru-rate-prediction/" class="c-article__btn p-list-article__btn">Read more</a>
+  
+</article>
+
+
+
+
+<article class="c-article p-list-article">
+  <header>
     <h2 class="c-title c-article__title"><a href="http://akumano.xyz/posts/curse-of-dimensionality-notes/">Notes: Curse of Dimensionality</a></h2>
     <p class="c-article__meta">
       Posted on
@@ -91,7 +116,7 @@
   <div class="c-article__summary">
     &ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.
 Geometry In \( \mathbb{R}^n \) where \( n \) is large,
- The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a high-dimensional ball is concentrated around its shell. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.
+ The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.
   </div>
   
   <a href="http://akumano.xyz/posts/curse-of-dimensionality-notes/" class="c-article__btn p-list-article__btn">Read more</a>
@@ -278,25 +303,6 @@ We use the end product of Flask by Example tutorial as a boilerplate. Complete P
 </article>
 
 
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.xyz/posts/linear-classifiers/">Benchmarking Linear Classifiers</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2017-08-03T00:00:00Z">
-        Aug 3, 2017
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    I ran linear classifiers on a credit card fraud data. Parallelization. Lasso and ridge. Grid search. Published on kaggle.
-  </div>
-  
-</article>
-
-
 <nav class="c-pagination p-pagination">
   <div class="c-pagination__ctrl">
     <div class="c-pagination__newer">
@@ -304,8 +310,10 @@ We use the end product of Flask by Example tutorial as a boilerplate. Complete P
     </div>
     <div class="c-pagination__older">
       
+      <a href="/posts/page/2/">Older</a>
+      
     </div>
   </div>
-  <span class="c-pagination__count p-pagination__count">Page 1 of 1</span>
+  <span class="c-pagination__count p-pagination__count">Page 1 of 2</span>
 </nav>
 

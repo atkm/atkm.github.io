@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Keyword Extraction from arXiv - Part 1</title>
-  <meta property="og:title" content="Keyword Extraction from arXiv - Part 1" />
-  <meta name="twitter:title" content="Keyword Extraction from arXiv - Part 1" />
+  <title>Avazu Click-Through Rate Prediction</title>
+  <meta property="og:title" content="Avazu Click-Through Rate Prediction" />
+  <meta name="twitter:title" content="Avazu Click-Through Rate Prediction" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.xyz/posts/arxiv-keyword-extraction-part1/" />
+  <meta property="og:url" content="http://akumano.xyz/posts/click-thru-rate-prediction/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -79,12 +79,12 @@
 
 <article class="p-article">
   <header>
-    <h1>Keyword Extraction from arXiv - Part 1</h1>
+    <h1>Avazu Click-Through Rate Prediction</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2017-10-11T00:00:00Z">
-          Oct 11, 2017
+        <time datetime="2018-11-09T00:00:00Z">
+          Nov 9, 2018
         </time>
       </div>
       
@@ -94,267 +94,167 @@
   <section id="js-article" class="p-article__body">
     
 
-<p>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background.
-We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input.
-We then set up an infrastructure to serve the resulting algorithm.
-This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary.
-The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.
-Find my deployment <a href="https://arxiv-math-kws-stage.herokuapp.com/">here</a>.</p>
+<p>Draft.</p>
 
-<p>Outline:</p>
+<h2 id="1-narrative-todo">1. Narrative (TODO)</h2>
 
-<ol>
-<li>Scrape articles from arXiv (Part 1; we are here)</li>
-<li>Keyword extraction prototype in Pandas (Part 1)</li>
-<li>Modify keyword extraction to use Postgres (<a href="/posts/arxiv-keyword-extraction-part2">Part 2</a>)</li>
-<li>Configure Flask and Redis (Part 2)</li>
-<li>Build UI in Vue.js (<a href="/posts/arxiv-keyword-extraction-part3">Part 3</a>)</li>
-<li>Deploy to Heroku (Part 3)</li>
-</ol>
+<p>Code published on <a href="https://github.com/atkm/avazu-ctr">GitHub</a>.</p>
 
-<p>My Flask setup is based on the one described in this tutorial:
-<a href="https://realpython.com/blog/python/flask-by-example-part-1-project-setup/">Flask by Example</a>.</p>
+<p>The data is from <a href="https://www.kaggle.com/c/avazu-ctr-prediction">a Kaggle competition</a> hosted by Avazu.</p>
 
-<p>If Flask by Example is incomprehensible, I recommend going through the following tutorials first:</p>
+<h2 id="2-data">2. Data</h2>
+
+<p>The columns are:</p>
 
 <ul>
-<li><a href="https://www.railstutorial.org/book">Rails Tutorial</a>: this is a good web development primer.</li>
-<li><a href="https://angular.io/tutorial">Angular&rsquo;s Official Tutorial</a>: doing this tutorial helps understanding other frameworks, as concepts are similar accross front-end frameworks.</li>
+<li>id</li>
+<li>click</li>
+<li>hour (YYMMDDHH)</li>
+<li>banner_pos</li>
+<li>site/app_id/domain/category.</li>
+<li>device variables: id, ip, model, type, conn_type</li>
+<li>C1, C14, C15, &hellip;, C21: anonymous features.
+Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).</li>
 </ul>
 
-<p>Tools used: Flask, PostgreSQL, SQLAlchemy, Alembic, Redis, Pandas, Scikit-learn, Vue.js, Heroku</p>
+<p>In most columns, hashed values are given.
+(As the raw values were not salted prior to hashing, the original strings can be recovered.
+See <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10853">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10853</a> .)
+Null values are also hashed, which is a nuisance, but it is possible to deduce which hashed value corresponds to null for each feature.
+For example, we can use the fact that, since an ad is shown on either an app or a site, site_id is null if and only if app_id is not null.
+Also, null is usually the most frequent value of a column.
+Hashed values of null have been publicly discussed by the participants: see <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10852">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10852</a> and <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10819">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10819</a> .</p>
 
-<h2 id="1-scrape-articles-from-arxiv">1. Scrape articles from arXiv</h2>
+<h2 id="3-logistic-regression">3. Logistic Regression</h2>
 
-<p>arXiv provides three APIs&mdash;OAI-PMH, arXiv API, and RSS&mdash;to access article metadata.
-The data available via OAI-PMH is updated on a daily basis, while the arXiv API provides access to real-time data.
-We use <a href="https://arxiv.org/help/oa/index">OAI-PMH</a>, which is what they recommend for bulk access, and <a href="https://github.com/miku/metha">metha</a> (thanks!) to scrape data.
-Once installed, run:</p>
+<h3 id="3-1-cross-validation">3.1 Cross-validation</h3>
 
-<pre><code>./metha-sync -format arXiv -set math http://export.arxiv.org/oai2
-</code></pre>
+<p>Negative log loss is the model evaluation metric required in the competition.</p>
 
-<p>This downloads all metadata of math articles to <code>~/.metha</code>.
-The choice of format is not crucial, though those who have used arXiv will find the arXiv format more familiar than the oai_dc format.
-The command takes several hours to complete.</p>
+<p>We split the data into training, validation, and test sets.
+The data spans over 11 days.
+Since the data is a time series, a training set must be temporally before a prediction set&mdash;especially if a feature like click history is used.
+We reserve rows from the 11th day as the test set, and use the 1st-10th day for cross-validation.</p>
 
-<p>Now, we have gunzipped xml files in a directory inside <code>~/.metha</code>.
-The data is just over 100MB, so all metadata can be loaded into memory.
-We will eventually develop an algorithm that loads necessary data from a database to memory; developing a functioning code from scratch, however, takes many small iterations, so we start with a function that acts on in-memory data.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Training</th>
+<th align="right">Validation</th>
+</tr>
+</thead>
 
-<p>The code below parses the xml files, creates a Pandas DataFrame, and saves it to a pickle file.
-Each record in a xml file has a structure like <a href="http://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:0804.2273&amp;metadataPrefix=arXiv">this</a>, which Python&rsquo;s ElementTree handles.</p>
+<tbody>
+<tr>
+<td align="right">1-9</td>
+<td align="right">10</td>
+</tr>
 
-<p><details open>
-<summary><code>metha_to_df.py</code></summary></p>
+<tr>
+<td align="right">1-8</td>
+<td align="right">9, 10</td>
+</tr>
 
-<pre><code>import os, gzip, glob
-import pickle
-from datetime import datetime
-import xml.etree.ElementTree as ET
-import pandas as pd
+<tr>
+<td align="right">&hellip;</td>
+<td align="right">&hellip;</td>
+</tr>
 
-if __name__=='__main__':
-    files = glob.glob('/home/atkm/.metha/20170923/*.xml.gz')
-    arXiv_prefix = '{http://arxiv.org/OAI/arXiv/}'
+<tr>
+<td align="right">1-5</td>
+<td align="right">6-10</td>
+</tr>
+</tbody>
+</table>
 
-    def parse_author(a):
-        keyname = a.find(arXiv_prefix + &quot;keyname&quot;)
-        keyname = keyname.text if keyname is not None else ''
-        forenames = a.find(arXiv_prefix + &quot;forenames&quot;)
-        forenames = forenames.text if forenames is not None else ''
-        return ' '.join( (forenames, keyname) )
+<p>The cross-validation logis is implemented in <code>tools.cv_tools</code>.</p>
 
+<h3 id="3-2-feature-engineering">3.2 Feature engineering</h3>
 
-    identifier, title, authors, abstract, categories, submitted = ([] for i in range(6))
-    for xmlgz in files:
-        print(os.path.basename(xmlgz), end=' ')
-        with gzip.open(xmlgz, 'rb') as f:
-            xml = ET.parse(f)
-            root = xml.getroot()
-            for record in root.find('ListRecords').findall(&quot;record&quot;):
-                metadata = record.find('metadata').find(arXiv_prefix + &quot;arXiv&quot;)
-                if metadata is None:
-                    continue
+<p>Dealing with high-cardinality categorical features.</p>
 
-                identifier.append( metadata.find(arXiv_prefix + &quot;id&quot;).text )
-                s = metadata.find(arXiv_prefix + &quot;created&quot;).text
-                submitted.append( datetime.strptime(s, &quot;%Y-%m-%d&quot;) )
-                title.append( metadata.find(arXiv_prefix + &quot;title&quot;).text )
-                abstract.append( metadata.find(arXiv_prefix + &quot;abstract&quot;).text.strip() )
+<p>Encoding by count.</p>
 
-                authors_list = metadata.find(arXiv_prefix + 'authors')
-                authors.append( tuple( [parse_author(a) for a in authors_list] ) )
+<p>Encoding by average click-through rate.
+This feature is useless for linear models.</p>
 
-                categories_list = metadata.find(arXiv_prefix + &quot;categories&quot;).text
-                categories.append( tuple( categories_list.split() ) )
-        print(' Done.')
+<p>Since version 0.20, sklearn&rsquo;s OneHotEncoder supports string features.
+The ColumnTransformer class, which is also new in version 0.20, is useful for feature engineering.
+A sklearn.compose.ColumnTransformer combines multiple transformers, while letting the user specify which columns are supplied to each transformer.
+The outputs of the transformers are merged, and passed on to the next pipeline stage.</p>
 
-    df = pd.DataFrame({
-        'identifier': identifier,
-        'title': title,
-        'authors': authors,
-        'abstract': abstract,
-        'categories': categories,
-        'submitted': submitted
-        })
+<p>A custom pipeline stage is written as a subclass of sklearn.base.BaseEstimator with sklearn.base.TransformerMixin.
+I wrote ClickRateEncoder and CountEncoder classes which, given a list of columns, produces the average click-through rate and counts grouped by the given columns.</p>
 
-    with open('metha-all-math.pkl', 'rb') as f:
-      pickle.dump(df, f)
-</code></pre>
+<h2 id="4-the-winning-model">4. The Winning Model</h2>
 
-<p></details></p>
+<h3 id="4-1-guestwalk-s-solution">4.1 guestwalk&rsquo;s solution</h3>
 
-<h2 id="2-keyword-extraction-prototype-in-pandas">2. Keyword extraction prototype in Pandas</h2>
-
-<p>The algorithm that we wish to develop falls into the category of text summarization.
-There are recent developments in the field (
-<a href="https://www.salesforce.com/blog/2017/05/ai-salesforce-research-text-summarization.html">Salesforce</a>,
-<a href="https://research.googleblog.com/2016/08/text-summarization-with-tensorflow.html">Google Brain</a>,
-<a href="https://research.fb.com/publications/abstractive-summarization-with-attentive-rnn-naacl-2016/">Facebook Research</a>
-).
-The techniques described in the linked articles seem successful, but too involved for our purpose.
-These are some other keyword extraction techniques that are readily available:</p>
+<p><a href="https://www.kaggle.com/c/avazu-ctr-prediction/leaderboard">The winner</a> of the competition achieved the los-loss score of 0.3791.
+I referred to the following sources to understand their solution.</p>
 
 <ul>
-<li>tf-idf: a modification of bag-of-words to put greater weights on rare words.</li>
-<li>Latent Semantic Indexing (LSI or LSA): a low-rank approximation of bag-of-words (or tf-idf) by taking its the principal components. pLSI and Latent Dirichlet Allocation extends LSI.</li>
-<li>TextRank: application of Google&rsquo;s PageRank algorithm to graph of sentences, or, in our case, n-grams.</li>
-<li>Rapid Automatic Keyword Extraction</li>
+<li><a href="https://www.csie.ntu.edu.tw/~r01922136/slides/kaggle-avazu.pdf">Slides</a></li>
+<li><a href="https://www.andrew.cmu.edu/user/yongzhua/conferences/ffm.pdf">Paper</a></li>
+<li><a href="https://github.com/guestwalk/kaggle-avazu">Source</a></li>
+<li><a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/12608">Kaggle Discussion of their solution</a></li>
 </ul>
 
-<p>I tried tf-idf and TextRank, and the former works reasonably well.
-This is the outline of our tf-idf-based keyword extraction algorithm:</p>
+<p>Although their FFM model results in the best score, the paper suggests that a logistic regression model comes close&mdash;it can achieve a log-loss score of 0.387 after the same feature engineering.</p>
 
-<ol>
-<li>Load the pickled DataFrame and extract articles of a category.
-Extract title and abstract from each article.</li>
-<li>Vectorize the articles by tf-idf and run k-means clustering. Each cluster corresponds to a subdiscipline.</li>
-<li>Within each cluster, compute tf-idf of n-grams of articles to find significant terms.</li>
-</ol>
+<p>TODO: narrate <a href="https://github.com/atkm/avazu-ctr/issues/12">this</a></p>
 
-<p>As I said in the introduction, the algorithm is kept simple&mdash;working just well enough to illustrate steps involved in deploying an algorithm.</p>
+<h3 id="4-1-ffm">4.1 FFM</h3>
 
-<p>The main purpose of this section is to discuss out-of-core computation.
-Although the entire text data easily fits in memory (~100MB), and a slice of the data by category is even smaller (18k rows for math.DS), computation that uses it can have a large memory footprint.
-In our case, a bag of 2-grams for math.DS has 600k columns, and k-means clustering using sklearn&rsquo;s KMeans requires gigabytes of memory, which will render clustering infeasible on a small machine like mine (4GB of RAM).
-An attempt to run SVD on the term-document matrix to reduce the dimension faces the same challenge.
-A solution to such computational difficulty is to use incremental algorithms.
-<a href="http://scikit-learn.org/stable/modules/scaling_strategies.html">This page</a> provides a list of out-of-core-enabled algorithms.
-In our case, we use MiniBatchKMeans instead of KMeans.
-This not only solves our space complexity issue, but also expedites computation.
-There is, however, a tradeoff that the clustering obtained by the minibatch variant is an approximation.</p>
+<p><a href="https://github.com/atkm/avazu-ctr/issues/11">Reading list</a></p>
 
-<h3 id="2-1-load-data">2.1 Load data</h3>
+<p>I use <a href="https://github.com/aksnzhy/xlearn">xLearn</a> as an implementation of FFM.</p>
 
-<p>Load the Pandas DataFrame from the pickle file created in the previous section,
-slice the title and abstract columns, and concatenate title and abstract.
-So each article is represented by a single string which is a concatenation of its title and abstract.</p>
+<h3 id="4-2-the-ffm-format">4.2 The FFM format</h3>
 
-<p><details open>
-<summary><code>load_data</code></summary></p>
+<p>FFM assumes that all columns are categorical.
+In the FFM terminology, a column is referred to as a &ldquo;field&rdquo;, and a category in a column as a &ldquo;feature&rdquo;.
+We define an FFM row to be a line in the format &ldquo;label,field_1:feature_1:1,field_2:feature_2:1 &hellip;&ldquo;, where field_i and feature_i are non-negative integers.
+To convert a pd.DataFrame to the FFM format, define field_i := column_index, and encode categories with the same logic as sklearn&rsquo;s LabelEncoder to define feature_i.</p>
 
-<pre><code>from nltk.corpus import stopwords
+<p>An inefficient implementation of the conversion does not work for a large DataFrame.
+See <code>tools.ffm_tools.df_to_ffm</code>.
+There is a trade-off between space and time.
+Iterating through each row + converting and writing line-by-line uses little memory, but is very slow.
+pd.DataFrame.replace(dict) is fast, but uses a large amount of memory; pd.Series.map(dict) uses less memory, but it can still run into a memory issue.
+Converting each entry of a DataFrame to the desired string (i.e. &ldquo;field:feature:1&rdquo;) and writing it to a file with tocsv() maintains a good balance between space and time, although this method can also have space issue, because each column changes its dtype to &ldquo;object&rdquo;.</p>
 
-def load_data(category):
-    print('Loading data')
-    with open('metha-all-math.pkl','rb') as f:
-        df = pickle.load(f)
+<h3 id="4-3-evaluation">4.3 Evaluation</h3>
 
-    df['abstract'] = df['abstract'].apply(lambda t: t.replace('\n',' '))\
-            .apply(remove_stopwords)
-    df['title'] = df['title'].apply(lambda t: t.replace('\n',' '))\
-            .apply(remove_stopwords)
+<p>The model performs far better on the &ldquo;app&rdquo; subset (validaton score ~= 0.34) than on the &ldquo;site&rdquo; subset (~= 0.44).</p>
 
-    mask = df['categories'].apply(lambda cs: True if category in cs else False)
-    df_c = df[mask]
-    abs_c = df_c.apply(lambda row: 
-            '. '.join([row['title'], row['abstract']]), axis=1)
-    print('Data loaded')
-    return abs_c
+<h2 id="5-conclusion-and-future-work">5. Conclusion and Future Work</h2>
 
-def remove_stopwords(text):
-    stopWords = set(stopwords.words('english'))
-    return ' '.join([w for w in text.split() if w not in stopWords])
-</code></pre>
+<p>Features of guestwalk&rsquo;s &ldquo;base&rdquo; solution that are implemented in none of the models presented above:</p>
 
-<p></details></p>
+<ul>
+<li>Hash features instead of encoding them.
+Count features are hashed, as well.</li>
+<li>Thresholding count features (1000 for device_id and device_ip, 30 for user/hourly )</li>
+<li>Click history</li>
+<li>Hourly impression, which is defined as &ldquo;concatenating all raw features together&rdquo; in their slides.
+Not quite sure what that means.</li>
+</ul>
 
-<h3 id="2-2-vectorization-of-articles-and-clustering">2.2 Vectorization of articles and clustering</h3>
+<p>Other feature ideas:</p>
 
-<p>This is where we use MiniBatchKMeans as discussed above.
-MiniBatchKMeans approximates the usual KMeans better when the batch size is closer to the sample size.</p>
+<ul>
+<li>Bucket infrequent features (say, the count is less than 10) into one &ldquo;infrequent feature&rdquo;.</li>
+<li>More sophisticated count features, such as user count grouped by app_id.</li>
+<li>The number of hours since the last click by the user.</li>
+</ul>
 
-<p><details open>
-<summary><code>cluster_docs</code></summary></p>
+<p>Others:</p>
 
-<pre><code>def cluster_docs(abstracts, K):
-    tfidf_vect = TfidfVectorizer()
-    abs_tfidf = tfidf_vect.fit_transform(abstracts)
-    print('Running kmeans')
-    kmeans = MiniBatchKMeans(n_clusters=K, batch_size=1000, reassignment_ratio=0).fit(abs_tfidf)
-    print('Kmeans finished')
-    cluster = kmeans.predict(abs_tfidf)
-    return cluster
-</code></pre>
-
-<p></details></p>
-
-<h3 id="2-3-compute-keywords">2.3 Compute keywords</h3>
-
-<p>It computes the tf-idf score of each 2-, 3-, and 4-grams.</p>
-
-<p><details open>
-<summary><code>rank_phrases</code></summary></p>
-
-<pre><code>import heapq
-
-def rank_phrases(text, n):
-    tfidf_vect = TfidfVectorizer(ngram_range=(2,4))
-    text_vect = tfidf_vect.fit_transform(text)
-    text_vect = np.asarray(text_vect.sum(axis=0)).ravel()
-    tfidf_dict = dict()
-    idf = tfidf_vect.idf_
-    for k, v in tfidf_vect.vocabulary_.items():
-        tfidf_dict[k] = text_vect[v]
-    return heapq.nlargest(n, tfidf_dict, key=tfidf_dict.get)
-</code></pre>
-
-<p></details></p>
-
-<p>Putting together the snippets above, we get our keyword extraction prototype.
-It extracts top 2 keywords from each cluster.</p>
-
-<p><details open>
-<summary><code>extract_keywords</code></summary></p>
-
-<pre><code>def extract_keywords(category):
-    K = 100
-    abs_c = load_data(category)
-    cluster = cluster_docs(abs_c, K)
-    abs_clusters = pd.DataFrame({
-        'cluster': cluster,
-        'text': abs_c
-    })
-
-    keywords = []
-    for j in range(K):
-        c = abs_clusters[abs_clusters['cluster']==j]
-        for phrase in rank_phrases(c['text'], 2):
-            keywords.append(phrase)
-
-    print(keywords)
-    return keywords
-</code></pre>
-
-<p></details></p>
-
-<h2 id="conclusion-of-part-1">Conclusion of Part 1</h2>
-
-<p>Our prototype is ready.
-Run it with your favorite math category to check that the algorithm returns reasonable keywords.
-In the next article, we modify the function to use Postgres so it is deployment-ready.
-<a href="/posts/arxiv-keyword-extraction-part2">Go to Part 2</a>.</p>
+<ul>
+<li>A more efficient cross-validation for xLearn.
+Currently, the model and data are read from the disk for each evaluation of a parameter.</li>
+</ul>
 
   </section>
   <footer>
@@ -363,12 +263,11 @@ In the next article, we modify the function to use Postgres so it is deployment-
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.xyz/posts/arxiv-keyword-extraction-part2/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.xyz/posts/heteroskedasticity/">Older</a>
+          <a href="http://akumano.xyz/posts/curse-of-dimensionality-notes/">Older</a>
           
         </div>
       </div>

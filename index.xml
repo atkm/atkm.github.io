@@ -6,10 +6,23 @@
     <description>Recent content in About on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Avazu Click-Through Rate Prediction</title>
+      <link>http://akumano.xyz/posts/click-thru-rate-prediction/</link>
+      <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/click-thru-rate-prediction/</guid>
+      <description>Draft.
+1. Narrative (TODO) Code published on GitHub.
+The data is from a Kaggle competition hosted by Avazu.
+2. Data The columns are:
+ id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &amp;hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).  In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.</description>
+    </item>
     
     <item>
       <title>Notes: Curse of Dimensionality</title>
@@ -19,7 +32,7 @@
       <guid>http://akumano.xyz/posts/curse-of-dimensionality-notes/</guid>
       <description>&amp;ldquo;Curse of Dimensionality&amp;rdquo;, in the sense of Bellman as well as in machine learning.
 Geometry In \( \mathbb{R}^n \) where \( n \) is large,
- The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a high-dimensional ball is concentrated around its shell. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.</description>
+ The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.</description>
     </item>
     
     <item>
