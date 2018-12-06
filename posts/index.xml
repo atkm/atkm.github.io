@@ -6,10 +6,22 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learning Resources - Computer Science (Systems)</title>
+      <link>http://akumano.xyz/posts/learning-resources-cs/</link>
+      <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://akumano.xyz/posts/learning-resources-cs/</guid>
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems.
+Intro Courses that are usually covered in the 1st and 2nd years of a CS curriculum (ref: CMU).
+ CMU 15-213 Introduction to Computer Systems (Fall 2015)
+ Discusses on higher levels of abstraction than MIT 6.004 Computation Structures. This course doesn&amp;rsquo;t cover circuits or writing assembly code, for example. Starter code for the assignemnts are available on the website for the companion textbook.</description>
+    </item>
     
     <item>
       <title>Avazu Click-Through Rate Prediction</title>

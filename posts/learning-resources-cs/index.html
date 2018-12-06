@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Math 141 Miniexams from the previous year</title>
-  <meta property="og:title" content="Math 141 Miniexams from the previous year" />
-  <meta name="twitter:title" content="Math 141 Miniexams from the previous year" />
+  <title>Learning Resources - Computer Science (Systems)</title>
+  <meta property="og:title" content="Learning Resources - Computer Science (Systems)" />
+  <meta name="twitter:title" content="Learning Resources - Computer Science (Systems)" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.xyz/teaching/141-sum16/past-miniexams/" />
+  <meta property="og:url" content="http://akumano.xyz/posts/learning-resources-cs/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -79,22 +79,203 @@
 
 <article class="p-article">
   <header>
-    <h1>Math 141 Miniexams from the previous year</h1>
+    <h1>Learning Resources - Computer Science (Systems)</h1>
     <div>
-      
+      <div class="c-time">
+        Posted on
+        <time datetime="2018-12-06T00:00:00Z">
+          Dec 6, 2018
+        </time>
+      </div>
       
     </div>
   </header>
   
   <section id="js-article" class="p-article__body">
-    <ul>
-<li><a href="/teaching/141-sum16/past-miniexams/q1.pdf">1</a></li>
-<li><a href="/teaching/141-sum16/past-miniexams/q2.pdf">2</a></li>
-<li><a href="/teaching/141-sum16/past-miniexams/q3.pdf">3</a></li>
-<li><a href="/teaching/141-sum16/past-miniexams/q4.pdf">4</a></li>
-<li><a href="/teaching/141-sum16/past-miniexams/q5.pdf">5</a></li>
-<li><a href="/teaching/141-sum16/past-miniexams/q6.pdf">6</a></li>
+    
+
+<p>Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems.</p>
+
+<h2 id="intro">Intro</h2>
+
+<p>Courses that are usually covered in the 1st and 2nd years of a CS curriculum (ref: <a href="https://www.csd.cs.cmu.edu/sample-undergraduate-course-sequence">CMU</a>).</p>
+
+<ul>
+<li><p><a href="http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/">CMU 15-213 Introduction to Computer Systems</a> (Fall 2015)</p>
+
+<ul>
+<li>Discusses on higher levels of abstraction than MIT 6.004 Computation Structures.
+This course doesn&rsquo;t cover circuits or writing assembly code, for example.</li>
+<li>Starter code for the assignemnts are available on the <a href="http://csapp.cs.cmu.edu/3e/labs.html">website</a> for the companion textbook.</li>
+<li><a href="https://scs.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx#folderID=%22b96d90ae-9871-4fae-91e2-b1627b43e25e%22">Video lectures</a></li>
+<li>Alternatives are Stanford CS 107 &amp; 110 (which teach from the same textbook) and Berkeley 61C.</li>
+</ul></li>
+
+<li><p>MIT 6.005 Software Construction (OCW)</p>
+
+<ul>
+<li>Software engineering best practices. What constitutes a good specification and test?
+Immutability. Interfaces. Equality of types. Specification and tests for abstract data types and concurrent programs.</li>
+</ul></li>
+
+<li><p>Algorithms Part 1 &amp; 2 by Princeton (Coursera)</p>
+
+<ul>
+<li>A first course on algorithms, which does not cover analyses of algorithms in depth.</li>
+<li>The instructor sprinkles historical overview, &ldquo;war stories&rdquo;, and applications of algorithms in each of his lectures, which are entertaining.</li>
+<li>Good set of assignments to work through. They don&rsquo;t merely ask you to write a data structure introduced in lecture; each assignment requires some problem solving, such as figuring out what data structures should be used to achieve given performance requirements.</li>
+<li>The assignments are the same as Princeton&rsquo;s <a href="http://www.cs.princeton.edu/courses/archive/fall18/cos226/syllabus.php">COS226</a>.</li>
+<li>Each assignment (reading + coding) takes one day to complete.</li>
+</ul></li>
+
+<li><p>Functional Programming in Scala Specialization (Coursera)</p>
+
+<ul>
+<li>Assignments are fun (i.e. moderately challenging) unlike most Coursera courses.</li>
+<li>Course 1 &amp; 2 comprise an introduction to functional programming and the Scala type system.
+Most of lecture time is spent on discussing various functional programming constructs, but the instructor (Odersky) dips toes into theoretical details sometimes, which I liked.</li>
+<li>Course 3 covers data parallelism, parallel scan (aka prefix sum), and combiners.
+The discussion on combiners using conc-tree as an example is interesting. Programming assignments on Week 2 (reductions and prefix sums) and Week 4 (Barnes-Hut simulation) are great.</li>
+</ul></li>
+</ul>
+
+<h2 id="systems-ongoing">Systems (Ongoing)</h2>
+
+<p>Beyond CMU 15-213.</p>
+
+<ul>
+<li><p>Stanford CS 140 (Operating systems)</p>
+
+<ul>
+<li>The text (Anderson &amp; Dahlin, Operating Systems: Principles and Practice) is readable.</li>
+<li>Alternatives are Berkeley CS 162 (also uses Pintos), Harvard CS 161 (uses OS/161), ops-class.org (uses OS/161).
+CMU 15-410 doesn&rsquo;t make all projects available for non-CMU people.</li>
+</ul></li>
+
+<li><p><a href="http://15445.courses.cs.cmu.edu/">CMU 15-445 Intro to Database Systems</a></p>
+
+<ul>
+<li>Great lecturer</li>
+<li>Video lectures from Fall 2017 as well as Fall 2018 are available.</li>
+<li>Discusses details of database systems unlike Stanford&rsquo;s CS145.</li>
+<li>This course is a pre-req to <a href="http://15721.courses.cs.cmu.edu/">CMU 15-721 Advanced Database Systems</a>, which covers in-memory systems. The first lecture of the advanced course (History of Database Systems) is a fun watch.</li>
+</ul></li>
+
+<li><p>Other systems courses</p>
+
+<ul>
+<li>Distributed systems: CMU 15-440 (materials are different for Fall and Spring semesters), MIT 6.824</li>
+<li>Compilers: CMU 15-411, Stanford CS 143 (is the one on Stanford Lagunita comparable?)</li>
+<li>CMU 15-418 Parallel Computer Architecture. Video lectures available.</li>
+</ul></li>
+</ul>
+
+<h2 id="others">Others</h2>
+
+<ul>
+<li><p><a href="http://www.itu.dk/people/sestoft/itu/PCPP/E2016/">Practical Concurrent and Parallel Programming</a></p>
+
+<ul>
+<li>Covers most of &ldquo;Java Concurrency in Practice&rdquo; by Goetz with a Java 8 twist, and a bit of &ldquo;The Art of Multiprocessor Programming&rdquo;.</li>
+<li>Each week comes with a simple coding assignment, which takes about an hour.
+11 assignments in total.</li>
+</ul></li>
+
+<li><p><a href="https://homes.cs.washington.edu/~djg/teachingMaterials/spac/">Sophomoric Parallelism and Concurrency</a> (Dan Grossman, U of W)</p>
+
+<ul>
+<li>A short introductory course on parallel data structures and concurrency using Java&rsquo;s fork-join framework.</li>
+<li>Homework problems are food for thought.</li>
+</ul></li>
+
+<li><p>Computer Networks (David Wetherall, U of W)</p>
+
+<ul>
+<li>An overview of networking from the physical layer all the way up to the application layer.</li>
+<li><a href="http://media.pearsoncmg.com/ph/streaming/esm/tanenbaum5e_videonotes/tanenbaum_videoNotes.html">Video lectures</a>.
+There used to be a course on Coursera based on the same videos.</li>
+<li>The lecturer is an author of &ldquo;Computer Networks&rdquo; (5th ed).</li>
+</ul></li>
 </ul>
 
   </section>
+  <footer>
+    
+    <nav class="p-pagination c-pagination">
+      <div class="c-pagination__ctrl">
+        <div class="c-pagination__newer">
+          
+          
+        </div>
+        <div class="c-pagination__older">
+          
+          <a href="http://akumano.xyz/posts/click-thru-rate-prediction/">Older</a>
+          
+        </div>
+      </div>
+    </nav>
+    
+
+
+    
+
+  </footer>
 </article>
+  </main>
+  
+<nav class="l-nav p-menu">
+  <ul class="p-menu__lists">
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/">About</a>
+      </li>
+      
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/posts">Posts</a>
+      </li>
+      
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/projects">Projects</a>
+      </li>
+      
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/teaching">Teaching</a>
+      </li>
+      
+    
+  </ul>
+</nav>
+
+
+  <footer class="l-footer">
+    
+
+
+    <p class="p-copyright">
+      
+        
+        &nbsp;&bull;&nbsp;
+        2018
+
+        
+          &nbsp;&bull;&nbsp;
+          <a href="http://akumano.xyz/">Atsuya Kumano</a>
+        
+      
+    </p>
+  </footer>
+
+  
+    
+  
+
+</body>
+</html>
+
