@@ -25,7 +25,7 @@
   
   
   
-  <meta name="generator" content="Hugo 0.52" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <meta name="generator" content="Hugo 0.53" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
   <link rel="stylesheet" href="http://akumano.xyz/css/style.css" />
   <link rel='icon' type='image/x-icon' href="http://akumano.xyz/favicon.ico" />
   <script type="text/javascript" src="http://akumano.xyz/js/bundle.js"></script>
@@ -83,8 +83,8 @@
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-12-06T00:00:00Z">
-          Dec 6, 2018
+        <time datetime="2019-01-11T00:00:00Z">
+          Jan 11, 2019
         </time>
       </div>
       
@@ -94,9 +94,60 @@
   <section id="js-article" class="p-article__body">
     
 
-<p>Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems.</p>
+<p>Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems.
+Initially posted on 2018-12-06.</p>
 
-<h2 id="intro">Intro</h2>
+<h2 id="systems">Systems</h2>
+
+<p>Beyond CMU 15-213.</p>
+
+<ul>
+<li><p><a href="https://www.synergylabs.org/courses/15-440/syllabus.html">CMU 15-440 (Fall version)</a> (Ongoing)</p>
+
+<ul>
+<li>The textbook (Van Steen &amp; Tanenbaum) is readable.
+The slides are informative as supplements to corresponding textbook chapters and referenced articles.</li>
+<li>Lab assignments are done in Go. Tons of debugging concurrency issues.
+
+<ol>
+<li>Go warm-up. A simple key-value database server.</li>
+<li>Implement a subset of TCP starting with UDP.</li>
+<li>(WIP) Raft</li>
+<li>?</li>
+</ol></li>
+</ul></li>
+
+<li><p>Stanford CS 140 (Operating systems) (Ongoing)</p>
+
+<ul>
+<li>The text (Anderson &amp; Dahlin, Operating Systems: Principles and Practice) is readable.</li>
+<li>Alternatives are Berkeley CS162 (also uses Pintos, non-Pintos assignments overlap with 15-213), Harvard CS161 (uses OS/161), ops-class.org (uses OS/161).
+CMU 15-410 (next: Spring 2019) doesn&rsquo;t make all projects available for non-CMU people.</li>
+</ul></li>
+
+<li><p><a href="http://15445.courses.cs.cmu.edu/">CMU 15-445 Intro to Database Systems</a></p>
+
+<ul>
+<li>Great lecturer</li>
+<li>Video lectures from Fall 2017 as well as Fall 2018 are available.</li>
+<li>Lab assignment starter code is not available outside CMU.</li>
+<li>Discusses details of database systems unlike Stanford&rsquo;s CS145.</li>
+<li>This course is a pre-req to <a href="http://15721.courses.cs.cmu.edu/">CMU 15-721 Advanced Database Systems</a>, which covers in-memory systems. The first lecture of the advanced course (History of Database Systems) is a fun watch.</li>
+<li>Alternatives are courses that use SimpleDB assignments (e.g. MIT 6.830, HMC CS133, U of W CSE444, Berkeley CS186).</li>
+</ul></li>
+
+<li><p>Other systems courses</p>
+
+<ul>
+<li>CMU courses tend not to make starter code public, while Stanford and MIT are much more likely to have theirs available to the public.</li>
+<li>Networks: CMU 15-441 (next: Spring 2019), Stanford CS144</li>
+<li>Compilers: CMU 15-411 (next: Fall 2019?), Stanford CS143, MIT 6.035, Harvard CS153</li>
+<li>Distributed systems: CMU 15-440 Spring (differs from the Fall version), MIT 6.824</li>
+<li>CMU 15-418 Parallel Computer Architecture. Video lectures available.</li>
+</ul></li>
+</ul>
+
+<h2 id="intro-done">Intro (Done)</h2>
 
 <p>Courses that are usually covered in the 1st and 2nd years of a CS curriculum (ref: <a href="https://www.csd.cs.cmu.edu/sample-undergraduate-course-sequence">CMU</a>).</p>
 
@@ -105,7 +156,16 @@
 
 <ul>
 <li>Discusses on higher levels of abstraction than MIT 6.004 Computation Structures.
-This course doesn&rsquo;t cover circuits or writing assembly code, for example.</li>
+This course doesn&rsquo;t cover circuits or make you write assembly code, for example.</li>
+<li>Took 5 weeks to complete (lab assignments, video lectures, textbook chapter reading).
+Highlights:
+
+<ul>
+<li>malloclab &ndash; segregated-list implementation of malloc. Analyze trace files to optimize performance.</li>
+<li>shlab &ndash; processes, signal handling. Getting signal concurrency right.</li>
+<li>attacklab &ndash; stack discipline. Buffer overflow attack and ROP attack!</li>
+<li>bomblab  &ndash; understand a program behavior from an assembly code.</li>
+</ul></li>
 <li>Starter code for the assignemnts are available on the <a href="http://csapp.cs.cmu.edu/3e/labs.html">website</a> for the companion textbook.</li>
 <li><a href="https://scs.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx#folderID=%22b96d90ae-9871-4fae-91e2-b1627b43e25e%22">Video lectures</a></li>
 <li>Alternatives are Stanford CS 107 &amp; 110 (which teach from the same textbook) and Berkeley 61C.</li>
@@ -125,7 +185,7 @@ Immutability. Interfaces. Equality of types. Specification and tests for abstrac
 <li>The instructor sprinkles historical overview, &ldquo;war stories&rdquo;, and applications of algorithms in each of his lectures, which are entertaining.</li>
 <li>Good set of assignments to work through. They don&rsquo;t merely ask you to write a data structure introduced in lecture; each assignment requires some problem solving, such as figuring out what data structures should be used to achieve given performance requirements.</li>
 <li>The assignments are the same as Princeton&rsquo;s <a href="http://www.cs.princeton.edu/courses/archive/fall18/cos226/syllabus.php">COS226</a>.</li>
-<li>Each assignment (reading + coding) takes one day to complete.</li>
+<li>Each assignment (reading + coding) takes one day to complete, so 11 days in total.</li>
 </ul></li>
 
 <li><p>Functional Programming in Scala Specialization (Coursera)</p>
@@ -135,38 +195,8 @@ Immutability. Interfaces. Equality of types. Specification and tests for abstrac
 <li>Course 1 &amp; 2 comprise an introduction to functional programming and the Scala type system.
 Most of lecture time is spent on discussing various functional programming constructs, but the instructor (Odersky) dips toes into theoretical details sometimes, which I liked.</li>
 <li>Course 3 covers data parallelism, parallel scan (aka prefix sum), and combiners.
-The discussion on combiners using conc-tree as an example is interesting. Programming assignments on Week 2 (reductions and prefix sums) and Week 4 (Barnes-Hut simulation) are great.</li>
-</ul></li>
-</ul>
-
-<h2 id="systems-ongoing">Systems (Ongoing)</h2>
-
-<p>Beyond CMU 15-213.</p>
-
-<ul>
-<li><p>Stanford CS 140 (Operating systems)</p>
-
-<ul>
-<li>The text (Anderson &amp; Dahlin, Operating Systems: Principles and Practice) is readable.</li>
-<li>Alternatives are Berkeley CS 162 (also uses Pintos), Harvard CS 161 (uses OS/161), ops-class.org (uses OS/161).
-CMU 15-410 doesn&rsquo;t make all projects available for non-CMU people.</li>
-</ul></li>
-
-<li><p><a href="http://15445.courses.cs.cmu.edu/">CMU 15-445 Intro to Database Systems</a></p>
-
-<ul>
-<li>Great lecturer</li>
-<li>Video lectures from Fall 2017 as well as Fall 2018 are available.</li>
-<li>Discusses details of database systems unlike Stanford&rsquo;s CS145.</li>
-<li>This course is a pre-req to <a href="http://15721.courses.cs.cmu.edu/">CMU 15-721 Advanced Database Systems</a>, which covers in-memory systems. The first lecture of the advanced course (History of Database Systems) is a fun watch.</li>
-</ul></li>
-
-<li><p>Other systems courses</p>
-
-<ul>
-<li>Distributed systems: CMU 15-440 (materials are different for Fall and Spring semesters), MIT 6.824</li>
-<li>Compilers: CMU 15-411, Stanford CS 143 (is the one on Stanford Lagunita comparable?)</li>
-<li>CMU 15-418 Parallel Computer Architecture. Video lectures available.</li>
+The discussion on combiners using conc-tree as an example is interesting.
+Programming assignments on Week 2 (reductions and prefix sums) and Week 4 (Barnes-Hut simulation) are great.</li>
 </ul></li>
 </ul>
 
@@ -262,7 +292,7 @@ There used to be a course on Coursera based on the same videos.</li>
       
         
         &nbsp;&bull;&nbsp;
-        2018
+        2019
 
         
           &nbsp;&bull;&nbsp;
