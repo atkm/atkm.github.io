@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,13 +14,13 @@
     <item>
       <title>Learning Resources - Computer Science (Systems)</title>
       <link>http://akumano.xyz/posts/learning-resources-cs/</link>
-      <pubDate>Fri, 11 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>http://akumano.xyz/posts/learning-resources-cs/</guid>
-      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Initially posted on 2018-12-06.
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Most recently updated on 2019-01-25.
 Systems Beyond CMU 15-213.
  CMU 15-440 (Fall version) (Ongoing)
- The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues.  Go warm-up. A simple key-value database server. Implement a subset of TCP starting with UDP.</description>
+ The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues.  Go warm-up. A simple key-value database server.</description>
     </item>
     
     <item>
