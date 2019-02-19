@@ -17,10 +17,10 @@
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>http://akumano.xyz/posts/learning-resources-cs/</guid>
-      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Most recently updated on 2019-01-25.
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Most recently updated on 2019-02-18.
 Systems Beyond CMU 15-213.
- CMU 15-440 (Fall version) (Ongoing)
- The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues.  Go warm-up. A simple key-value database server.</description>
+ CMU 15-440 (Fall version)
+ The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues.  Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
     </item>
     
     <item>
