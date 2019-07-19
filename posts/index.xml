@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Atsuya Kumano</title>
-    <link>http://akumano.xyz/posts/</link>
+    <link>http://akumano.site/posts/</link>
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://akumano.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://akumano.site/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Learning Resources - Computer Science (Systems)</title>
-      <link>http://akumano.xyz/posts/learning-resources-cs/</link>
+      <link>http://akumano.site/posts/learning-resources-cs/</link>
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/learning-resources-cs/</guid>
+      <guid>http://akumano.site/posts/learning-resources-cs/</guid>
       <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Most recently updated on 2019-02-18.
 Systems Beyond CMU 15-213.
  CMU 15-440 (Fall version)
@@ -25,10 +25,10 @@ Systems Beyond CMU 15-213.
     
     <item>
       <title>Avazu Click-Through Rate Prediction</title>
-      <link>http://akumano.xyz/posts/click-thru-rate-prediction/</link>
+      <link>http://akumano.site/posts/click-thru-rate-prediction/</link>
       <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/click-thru-rate-prediction/</guid>
+      <guid>http://akumano.site/posts/click-thru-rate-prediction/</guid>
       <description>Draft.
 1. Narrative (TODO) Code published on GitHub.
 The data is from a Kaggle competition hosted by Avazu.
@@ -38,10 +38,10 @@ The data is from a Kaggle competition hosted by Avazu.
     
     <item>
       <title>Notes: Curse of Dimensionality</title>
-      <link>http://akumano.xyz/posts/curse-of-dimensionality-notes/</link>
+      <link>http://akumano.site/posts/curse-of-dimensionality-notes/</link>
       <pubDate>Sat, 20 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/curse-of-dimensionality-notes/</guid>
+      <guid>http://akumano.site/posts/curse-of-dimensionality-notes/</guid>
       <description>&amp;ldquo;Curse of Dimensionality&amp;rdquo;, in the sense of Bellman as well as in machine learning.
 Geometry In \( \mathbb{R}^n \) where \( n \) is large,
  The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability.</description>
@@ -49,10 +49,10 @@ Geometry In \( \mathbb{R}^n \) where \( n \) is large,
     
     <item>
       <title>Prediction of NYC Taxi Demand</title>
-      <link>http://akumano.xyz/posts/taxi-demand-prediction/</link>
+      <link>http://akumano.site/posts/taxi-demand-prediction/</link>
       <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/taxi-demand-prediction/</guid>
+      <guid>http://akumano.site/posts/taxi-demand-prediction/</guid>
       <description>1. Narrative (TODO) Code published on GitHub.
 2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.
 For each year, there are about 170 million records, which amount to about 25GB.</description>
@@ -60,30 +60,30 @@ For each year, there are about 170 million records, which amount to about 25GB.<
     
     <item>
       <title>Articles---mainly about Streaming Systems</title>
-      <link>http://akumano.xyz/posts/taxi-project-reading-list/</link>
+      <link>http://akumano.site/posts/taxi-project-reading-list/</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/taxi-project-reading-list/</guid>
+      <guid>http://akumano.site/posts/taxi-project-reading-list/</guid>
       <description>Articles and talks that I referred to while working on the taxi data project. Published here as a note to myself.
 Model Serving  FLIP-23. The document also discusses implementing model training as well as model serving. Two linked documents&amp;mdash;&amp;ldquo;Flink ML Roadmap&amp;rdquo; and &amp;ldquo;Flink-MS&amp;rdquo;&amp;mdash;are also worth reading. Boris Lublinsky&amp;rsquo;s book &amp;ldquo;Serving Machine Learning Models&amp;rdquo;, and talk.  Distributed Systems  Please Stop Calling Database Systems AP or CP. Kate Matsudaira on distributed systems Distributed Systems for Fun and Profit Martin Kleppmann&amp;rsquo;s book and interview.</description>
     </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Summary</title>
-      <link>http://akumano.xyz/posts/arxiv-keyword-extraction-summary/</link>
+      <link>http://akumano.site/posts/arxiv-keyword-extraction-summary/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-summary/</guid>
+      <guid>http://akumano.site/posts/arxiv-keyword-extraction-summary/</guid>
       <description>In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.
 Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &amp;mdash; whenever the speaker used a term that I wasn&amp;rsquo;t familiar with, I would write it down and look it up later.</description>
     </item>
     
     <item>
       <title>Learning Resources</title>
-      <link>http://akumano.xyz/posts/learning-resources/</link>
+      <link>http://akumano.site/posts/learning-resources/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/learning-resources/</guid>
+      <guid>http://akumano.site/posts/learning-resources/</guid>
       <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
 Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.
  Stanford CS229 Machine Learning
@@ -92,10 +92,10 @@ Statistics and Machine Learning ML Expositions on machine learning that are free
     
     <item>
       <title>Keyword Extraction from arXiv - Part 3</title>
-      <link>http://akumano.xyz/posts/arxiv-keyword-extraction-part3/</link>
+      <link>http://akumano.site/posts/arxiv-keyword-extraction-part3/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-part3/</guid>
+      <guid>http://akumano.site/posts/arxiv-keyword-extraction-part3/</guid>
       <description>This is the final part of the tutorial. We furnish the app with an UI, and deploy it to Heroku.
 5. Build UI 5.1 index.html and main.js We first create a dropdown list. The selected category is stored in selected, and it is posted to /start when submit is called. Afterwards, the component polls /results.
 main.js - categoryDropdown
@@ -104,38 +104,38 @@ var categoryDropdown = new Vue({ el: &#39;#category-dropdown&#39;, data: { selec
     
     <item>
       <title>Keyword Extraction from arXiv - Part 2</title>
-      <link>http://akumano.xyz/posts/arxiv-keyword-extraction-part2/</link>
+      <link>http://akumano.site/posts/arxiv-keyword-extraction-part2/</link>
       <pubDate>Thu, 12 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-part2/</guid>
+      <guid>http://akumano.site/posts/arxiv-keyword-extraction-part2/</guid>
       <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.
 We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:</description>
     </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Part 1</title>
-      <link>http://akumano.xyz/posts/arxiv-keyword-extraction-part1/</link>
+      <link>http://akumano.site/posts/arxiv-keyword-extraction-part1/</link>
       <pubDate>Wed, 11 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/arxiv-keyword-extraction-part1/</guid>
+      <guid>http://akumano.site/posts/arxiv-keyword-extraction-part1/</guid>
       <description>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background. We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input. We then set up an infrastructure to serve the resulting algorithm. This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary. The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.</description>
     </item>
     
     <item>
       <title>Simple Linear Regression with Heteroskedastic Noise</title>
-      <link>http://akumano.xyz/posts/heteroskedasticity/</link>
+      <link>http://akumano.site/posts/heteroskedasticity/</link>
       <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/heteroskedasticity/</guid>
+      <guid>http://akumano.site/posts/heteroskedasticity/</guid>
       <description>Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found. We begin with a discussion of the homoskedastic case with an emphasis on relations between statistical properties of the least squares estimators and assumptions on \( \epsilon_i \), which is conducive to understanding the heteroskedastic case.</description>
     </item>
     
     <item>
       <title>Benchmarking Linear Classifiers</title>
-      <link>http://akumano.xyz/posts/linear-classifiers/</link>
+      <link>http://akumano.site/posts/linear-classifiers/</link>
       <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.xyz/posts/linear-classifiers/</guid>
+      <guid>http://akumano.site/posts/linear-classifiers/</guid>
       <description>I ran linear classifiers on a credit card fraud data. Parallelization. Lasso and ridge. Grid search. Published on kaggle.</description>
     </item>
     
