@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
@@ -15,11 +15,15 @@
   <url>
     <loc>http://akumano.site/posts/</loc>
     <lastmod>2018-12-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/click-thru-rate-prediction/</loc>
+    <loc>http://akumano.site/archived-posts/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://akumano.site/archived-posts/click-thru-rate-prediction/</loc>
     <lastmod>2018-11-09T00:00:00+00:00</lastmod>
   </url>
   
@@ -29,7 +33,7 @@
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/taxi-demand-prediction/</loc>
+    <loc>http://akumano.site/archived-posts/taxi-demand-prediction/</loc>
     <lastmod>2018-09-11T00:00:00+00:00</lastmod>
   </url>
   
@@ -39,7 +43,7 @@
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/arxiv-keyword-extraction-summary/</loc>
+    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-summary/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
   
@@ -49,17 +53,17 @@
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/arxiv-keyword-extraction-part3/</loc>
+    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/arxiv-keyword-extraction-part2/</loc>
+    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/</loc>
     <lastmod>2017-10-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/arxiv-keyword-extraction-part1/</loc>
+    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/</loc>
     <lastmod>2017-10-11T00:00:00+00:00</lastmod>
   </url>
   
@@ -69,13 +73,12 @@
   </url>
   
   <url>
-    <loc>http://akumano.site/posts/linear-classifiers/</loc>
+    <loc>http://akumano.site/archived-posts/linear-classifiers/</loc>
     <lastmod>2017-08-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://akumano.site/categories/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -100,7 +103,6 @@
   
   <url>
     <loc>http://akumano.site/tags/</loc>
-    <priority>0</priority>
   </url>
   
   <url>

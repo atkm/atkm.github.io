@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   
   
-  <meta name="generator" content="Hugo 0.55.6" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <meta name="generator" content="Hugo 0.59.1" /><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
   <link rel="stylesheet" href="http://akumano.site/css/style.css" />
   <link rel='icon' type='image/x-icon' href="http://akumano.site/favicon.ico" />
   <script type="text/javascript" src="http://akumano.site/js/bundle.js"></script>
@@ -89,38 +89,13 @@
     </p>
   </header>
   <div class="c-article__summary">
-    Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems. Most recently updated on 2019-02-18.
+    Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-16.
 Systems Beyond CMU 15-213.
  CMU 15-440 (Fall version)
  The textbook (Van Steen &amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues.  Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.
   </div>
   
   <a href="http://akumano.site/posts/learning-resources-cs/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/click-thru-rate-prediction/">Avazu Click-Through Rate Prediction</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2018-11-09T00:00:00Z">
-        Nov 9, 2018
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    Draft.
-1. Narrative (TODO) Code published on GitHub.
-The data is from a Kaggle competition hosted by Avazu.
-2. Data The columns are:
- id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).  In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.
-  </div>
-  
-  <a href="http://akumano.site/posts/click-thru-rate-prediction/" class="c-article__btn p-list-article__btn">Read more</a>
   
 </article>
 
@@ -152,29 +127,6 @@ Geometry In \( \mathbb{R}^n \) where \( n \) is large,
 
 <article class="c-article p-list-article">
   <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/taxi-demand-prediction/">Prediction of NYC Taxi Demand</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2018-09-11T00:00:00Z">
-        Sep 11, 2018
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    1. Narrative (TODO) Code published on GitHub.
-2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.
-For each year, there are about 170 million records, which amount to about 25GB.
-  </div>
-  
-  <a href="http://akumano.site/posts/taxi-demand-prediction/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
     <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/taxi-project-reading-list/">Articles---mainly about Streaming Systems</a></h2>
     <p class="c-article__meta">
       Posted on
@@ -189,28 +141,6 @@ Model Serving  FLIP-23. The document also discusses implementing model training 
   </div>
   
   <a href="http://akumano.site/posts/taxi-project-reading-list/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/arxiv-keyword-extraction-summary/">Keyword Extraction from arXiv - Summary</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2018-07-11T00:00:00Z">
-        Jul 11, 2018
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.
-Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &mdash; whenever the speaker used a term that I wasn&rsquo;t familiar with, I would write it down and look it up later.
-  </div>
-  
-  <a href="http://akumano.site/posts/arxiv-keyword-extraction-summary/" class="c-article__btn p-list-article__btn">Read more</a>
   
 </article>
 
@@ -243,65 +173,19 @@ Statistics and Machine Learning ML Expositions on machine learning that are free
 
 <article class="c-article p-list-article">
   <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/arxiv-keyword-extraction-part3/">Keyword Extraction from arXiv - Part 3</a></h2>
+    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/heteroskedasticity/">Simple Linear Regression with Heteroskedastic Noise</a></h2>
     <p class="c-article__meta">
       Posted on
-      <time datetime="2017-10-13T00:00:00Z">
-        Oct 13, 2017
+      <time datetime="2017-08-04T00:00:00Z">
+        Aug 4, 2017
       </time>
     </p>
   </header>
   <div class="c-article__summary">
-    This is the final part of the tutorial. We furnish the app with an UI, and deploy it to Heroku.
-5. Build UI 5.1 index.html and main.js We first create a dropdown list. The selected category is stored in selected, and it is posted to /start when submit is called. Afterwards, the component polls /results.
-main.js - categoryDropdown
-var categoryDropdown = new Vue({ el: '#category-dropdown', data: { selected: '' }, methods: { submit: function() { keywordsResult.
+    Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found. We begin with a discussion of the homoskedastic case with an emphasis on relations between statistical properties of the least squares estimators and assumptions on \( \epsilon_i \), which is conducive to understanding the heteroskedastic case.
   </div>
   
-  <a href="http://akumano.site/posts/arxiv-keyword-extraction-part3/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/arxiv-keyword-extraction-part2/">Keyword Extraction from arXiv - Part 2</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2017-10-12T00:00:00Z">
-        Oct 12, 2017
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.
-We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:
-  </div>
-  
-  <a href="http://akumano.site/posts/arxiv-keyword-extraction-part2/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="http://akumano.site/posts/arxiv-keyword-extraction-part1/">Keyword Extraction from arXiv - Part 1</a></h2>
-    <p class="c-article__meta">
-      Posted on
-      <time datetime="2017-10-11T00:00:00Z">
-        Oct 11, 2017
-      </time>
-    </p>
-  </header>
-  <div class="c-article__summary">
-    This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background. We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input. We then set up an infrastructure to serve the resulting algorithm. This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary. The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.
-  </div>
-  
-  <a href="http://akumano.site/posts/arxiv-keyword-extraction-part1/" class="c-article__btn p-list-article__btn">Read more</a>
+  <a href="http://akumano.site/posts/heteroskedasticity/" class="c-article__btn p-list-article__btn">Read more</a>
   
 </article>
 
@@ -313,10 +197,8 @@ We use the end product of Flask by Example tutorial as a boilerplate. Complete P
     </div>
     <div class="c-pagination__older">
       
-      <a href="/posts/page/2/">Older</a>
-      
     </div>
   </div>
-  <span class="c-pagination__count p-pagination__count">Page 1 of 2</span>
+  <span class="c-pagination__count p-pagination__count">Page 1 of 1</span>
 </nav>
 

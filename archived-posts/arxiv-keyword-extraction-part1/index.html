@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Curse of Dimensionality</title>
-  <meta property="og:title" content="Notes: Curse of Dimensionality" />
-  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
+  <title>Keyword Extraction from arXiv - Part 1</title>
+  <meta property="og:title" content="Keyword Extraction from arXiv - Part 1" />
+  <meta name="twitter:title" content="Keyword Extraction from arXiv - Part 1" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.site/posts/curse-of-dimensionality-notes/" />
+  <meta property="og:url" content="http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,24 +33,6 @@
 
 </head>
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['\\(','\\)']],
-    // inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$']],
-    //displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
 
 <body>
   
@@ -97,12 +79,12 @@ MathJax.Hub.Config({
 
 <article class="p-article">
   <header>
-    <h1>Notes: Curse of Dimensionality</h1>
+    <h1>Keyword Extraction from arXiv - Part 1</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-10-20T00:00:00Z">
-          Oct 20, 2018
+        <time datetime="2017-10-11T00:00:00Z">
+          Oct 11, 2017
         </time>
       </div>
       
@@ -112,43 +94,267 @@ MathJax.Hub.Config({
   <section id="js-article" class="p-article__body">
     
 
-<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
+<p>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background.
+We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input.
+We then set up an infrastructure to serve the resulting algorithm.
+This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary.
+The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.
+Find my deployment <a href="https://arxiv-math-kws-stage.herokuapp.com/">here</a>.</p>
 
-<h2 id="geometry">Geometry</h2>
+<p>Outline:</p>
 
-<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
+<ol>
+<li>Scrape articles from arXiv (Part 1; we are here)</li>
+<li>Keyword extraction prototype in Pandas (Part 1)</li>
+<li>Modify keyword extraction to use Postgres (<a href="/posts/arxiv-keyword-extraction-part2">Part 2</a>)</li>
+<li>Configure Flask and Redis (Part 2)</li>
+<li>Build UI in Vue.js (<a href="/posts/arxiv-keyword-extraction-part3">Part 3</a>)</li>
+<li>Deploy to Heroku (Part 3)</li>
+</ol>
 
-<ul>
-<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
-<li>Most of the volume of a n-ball is concentrated around its boundary.</li>
-<li>Pick two vectors on the surface of the unit ball independently.
-The two are orthogonal with high probability.</li>
-<li>Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.
-The \( L_1 \) analogue doesn&rsquo;t hold.
-Look up fast JL transform.</li>
-<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
-</ul>
+<p>My Flask setup is based on the one described in this tutorial:
+<a href="https://realpython.com/blog/python/flask-by-example-part-1-project-setup/">Flask by Example</a>.</p>
 
-<h2 id="ml">ML</h2>
-
-<p>Suppose the data has \( p \) features,</p>
-
-<ul>
-<li>Suppose that the features are binary categorical.
-The cardinality of the feature space grows exponentially with \( p \).
-Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
-<li>Suppose that the features are continuous and in \( [0,1] \).
-Then, most points are located outside of the sphere inscribed in the cube.</li>
-</ul>
-
-<h2 id="reference">Reference</h2>
+<p>If Flask by Example is incomprehensible, I recommend going through the following tutorials first:</p>
 
 <ul>
-<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
-<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
-<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
-<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
+<li><a href="https://www.railstutorial.org/book">Rails Tutorial</a>: this is a good web development primer.</li>
+<li><a href="https://angular.io/tutorial">Angular&rsquo;s Official Tutorial</a>: doing this tutorial helps understanding other frameworks, as concepts are similar accross front-end frameworks.</li>
 </ul>
+
+<p>Tools used: Flask, PostgreSQL, SQLAlchemy, Alembic, Redis, Pandas, Scikit-learn, Vue.js, Heroku</p>
+
+<h2 id="1-scrape-articles-from-arxiv">1. Scrape articles from arXiv</h2>
+
+<p>arXiv provides three APIs&mdash;OAI-PMH, arXiv API, and RSS&mdash;to access article metadata.
+The data available via OAI-PMH is updated on a daily basis, while the arXiv API provides access to real-time data.
+We use <a href="https://arxiv.org/help/oa/index">OAI-PMH</a>, which is what they recommend for bulk access, and <a href="https://github.com/miku/metha">metha</a> (thanks!) to scrape data.
+Once installed, run:</p>
+
+<pre><code>./metha-sync -format arXiv -set math http://export.arxiv.org/oai2
+</code></pre>
+
+<p>This downloads all metadata of math articles to <code>~/.metha</code>.
+The choice of format is not crucial, though those who have used arXiv will find the arXiv format more familiar than the oai_dc format.
+The command takes several hours to complete.</p>
+
+<p>Now, we have gunzipped xml files in a directory inside <code>~/.metha</code>.
+The data is just over 100MB, so all metadata can be loaded into memory.
+We will eventually develop an algorithm that loads necessary data from a database to memory; developing a functioning code from scratch, however, takes many small iterations, so we start with a function that acts on in-memory data.</p>
+
+<p>The code below parses the xml files, creates a Pandas DataFrame, and saves it to a pickle file.
+Each record in a xml file has a structure like <a href="http://export.arxiv.org/oai2?verb=GetRecord&amp;identifier=oai:arXiv.org:0804.2273&amp;metadataPrefix=arXiv">this</a>, which Python&rsquo;s ElementTree handles.</p>
+
+<p><details open>
+<summary><code>metha_to_df.py</code></summary></p>
+
+<pre><code>import os, gzip, glob
+import pickle
+from datetime import datetime
+import xml.etree.ElementTree as ET
+import pandas as pd
+
+if __name__=='__main__':
+    files = glob.glob('/home/atkm/.metha/20170923/*.xml.gz')
+    arXiv_prefix = '{http://arxiv.org/OAI/arXiv/}'
+
+    def parse_author(a):
+        keyname = a.find(arXiv_prefix + &quot;keyname&quot;)
+        keyname = keyname.text if keyname is not None else ''
+        forenames = a.find(arXiv_prefix + &quot;forenames&quot;)
+        forenames = forenames.text if forenames is not None else ''
+        return ' '.join( (forenames, keyname) )
+
+
+    identifier, title, authors, abstract, categories, submitted = ([] for i in range(6))
+    for xmlgz in files:
+        print(os.path.basename(xmlgz), end=' ')
+        with gzip.open(xmlgz, 'rb') as f:
+            xml = ET.parse(f)
+            root = xml.getroot()
+            for record in root.find('ListRecords').findall(&quot;record&quot;):
+                metadata = record.find('metadata').find(arXiv_prefix + &quot;arXiv&quot;)
+                if metadata is None:
+                    continue
+
+                identifier.append( metadata.find(arXiv_prefix + &quot;id&quot;).text )
+                s = metadata.find(arXiv_prefix + &quot;created&quot;).text
+                submitted.append( datetime.strptime(s, &quot;%Y-%m-%d&quot;) )
+                title.append( metadata.find(arXiv_prefix + &quot;title&quot;).text )
+                abstract.append( metadata.find(arXiv_prefix + &quot;abstract&quot;).text.strip() )
+
+                authors_list = metadata.find(arXiv_prefix + 'authors')
+                authors.append( tuple( [parse_author(a) for a in authors_list] ) )
+
+                categories_list = metadata.find(arXiv_prefix + &quot;categories&quot;).text
+                categories.append( tuple( categories_list.split() ) )
+        print(' Done.')
+
+    df = pd.DataFrame({
+        'identifier': identifier,
+        'title': title,
+        'authors': authors,
+        'abstract': abstract,
+        'categories': categories,
+        'submitted': submitted
+        })
+
+    with open('metha-all-math.pkl', 'rb') as f:
+      pickle.dump(df, f)
+</code></pre>
+
+<p></details></p>
+
+<h2 id="2-keyword-extraction-prototype-in-pandas">2. Keyword extraction prototype in Pandas</h2>
+
+<p>The algorithm that we wish to develop falls into the category of text summarization.
+There are recent developments in the field (
+<a href="https://www.salesforce.com/blog/2017/05/ai-salesforce-research-text-summarization.html">Salesforce</a>,
+<a href="https://research.googleblog.com/2016/08/text-summarization-with-tensorflow.html">Google Brain</a>,
+<a href="https://research.fb.com/publications/abstractive-summarization-with-attentive-rnn-naacl-2016/">Facebook Research</a>
+).
+The techniques described in the linked articles seem successful, but too involved for our purpose.
+These are some other keyword extraction techniques that are readily available:</p>
+
+<ul>
+<li>tf-idf: a modification of bag-of-words to put greater weights on rare words.</li>
+<li>Latent Semantic Indexing (LSI or LSA): a low-rank approximation of bag-of-words (or tf-idf) by taking its the principal components. pLSI and Latent Dirichlet Allocation extends LSI.</li>
+<li>TextRank: application of Google&rsquo;s PageRank algorithm to graph of sentences, or, in our case, n-grams.</li>
+<li>Rapid Automatic Keyword Extraction</li>
+</ul>
+
+<p>I tried tf-idf and TextRank, and the former works reasonably well.
+This is the outline of our tf-idf-based keyword extraction algorithm:</p>
+
+<ol>
+<li>Load the pickled DataFrame and extract articles of a category.
+Extract title and abstract from each article.</li>
+<li>Vectorize the articles by tf-idf and run k-means clustering. Each cluster corresponds to a subdiscipline.</li>
+<li>Within each cluster, compute tf-idf of n-grams of articles to find significant terms.</li>
+</ol>
+
+<p>As I said in the introduction, the algorithm is kept simple&mdash;working just well enough to illustrate steps involved in deploying an algorithm.</p>
+
+<p>The main purpose of this section is to discuss out-of-core computation.
+Although the entire text data easily fits in memory (~100MB), and a slice of the data by category is even smaller (18k rows for math.DS), computation that uses it can have a large memory footprint.
+In our case, a bag of 2-grams for math.DS has 600k columns, and k-means clustering using sklearn&rsquo;s KMeans requires gigabytes of memory, which will render clustering infeasible on a small machine like mine (4GB of RAM).
+An attempt to run SVD on the term-document matrix to reduce the dimension faces the same challenge.
+A solution to such computational difficulty is to use incremental algorithms.
+<a href="http://scikit-learn.org/stable/modules/scaling_strategies.html">This page</a> provides a list of out-of-core-enabled algorithms.
+In our case, we use MiniBatchKMeans instead of KMeans.
+This not only solves our space complexity issue, but also expedites computation.
+There is, however, a tradeoff that the clustering obtained by the minibatch variant is an approximation.</p>
+
+<h3 id="2-1-load-data">2.1 Load data</h3>
+
+<p>Load the Pandas DataFrame from the pickle file created in the previous section,
+slice the title and abstract columns, and concatenate title and abstract.
+So each article is represented by a single string which is a concatenation of its title and abstract.</p>
+
+<p><details open>
+<summary><code>load_data</code></summary></p>
+
+<pre><code>from nltk.corpus import stopwords
+
+def load_data(category):
+    print('Loading data')
+    with open('metha-all-math.pkl','rb') as f:
+        df = pickle.load(f)
+
+    df['abstract'] = df['abstract'].apply(lambda t: t.replace('\n',' '))\
+            .apply(remove_stopwords)
+    df['title'] = df['title'].apply(lambda t: t.replace('\n',' '))\
+            .apply(remove_stopwords)
+
+    mask = df['categories'].apply(lambda cs: True if category in cs else False)
+    df_c = df[mask]
+    abs_c = df_c.apply(lambda row: 
+            '. '.join([row['title'], row['abstract']]), axis=1)
+    print('Data loaded')
+    return abs_c
+
+def remove_stopwords(text):
+    stopWords = set(stopwords.words('english'))
+    return ' '.join([w for w in text.split() if w not in stopWords])
+</code></pre>
+
+<p></details></p>
+
+<h3 id="2-2-vectorization-of-articles-and-clustering">2.2 Vectorization of articles and clustering</h3>
+
+<p>This is where we use MiniBatchKMeans as discussed above.
+MiniBatchKMeans approximates the usual KMeans better when the batch size is closer to the sample size.</p>
+
+<p><details open>
+<summary><code>cluster_docs</code></summary></p>
+
+<pre><code>def cluster_docs(abstracts, K):
+    tfidf_vect = TfidfVectorizer()
+    abs_tfidf = tfidf_vect.fit_transform(abstracts)
+    print('Running kmeans')
+    kmeans = MiniBatchKMeans(n_clusters=K, batch_size=1000, reassignment_ratio=0).fit(abs_tfidf)
+    print('Kmeans finished')
+    cluster = kmeans.predict(abs_tfidf)
+    return cluster
+</code></pre>
+
+<p></details></p>
+
+<h3 id="2-3-compute-keywords">2.3 Compute keywords</h3>
+
+<p>It computes the tf-idf score of each 2-, 3-, and 4-grams.</p>
+
+<p><details open>
+<summary><code>rank_phrases</code></summary></p>
+
+<pre><code>import heapq
+
+def rank_phrases(text, n):
+    tfidf_vect = TfidfVectorizer(ngram_range=(2,4))
+    text_vect = tfidf_vect.fit_transform(text)
+    text_vect = np.asarray(text_vect.sum(axis=0)).ravel()
+    tfidf_dict = dict()
+    idf = tfidf_vect.idf_
+    for k, v in tfidf_vect.vocabulary_.items():
+        tfidf_dict[k] = text_vect[v]
+    return heapq.nlargest(n, tfidf_dict, key=tfidf_dict.get)
+</code></pre>
+
+<p></details></p>
+
+<p>Putting together the snippets above, we get our keyword extraction prototype.
+It extracts top 2 keywords from each cluster.</p>
+
+<p><details open>
+<summary><code>extract_keywords</code></summary></p>
+
+<pre><code>def extract_keywords(category):
+    K = 100
+    abs_c = load_data(category)
+    cluster = cluster_docs(abs_c, K)
+    abs_clusters = pd.DataFrame({
+        'cluster': cluster,
+        'text': abs_c
+    })
+
+    keywords = []
+    for j in range(K):
+        c = abs_clusters[abs_clusters['cluster']==j]
+        for phrase in rank_phrases(c['text'], 2):
+            keywords.append(phrase)
+
+    print(keywords)
+    return keywords
+</code></pre>
+
+<p></details></p>
+
+<h2 id="conclusion-of-part-1">Conclusion of Part 1</h2>
+
+<p>Our prototype is ready.
+Run it with your favorite math category to check that the algorithm returns reasonable keywords.
+In the next article, we modify the function to use Postgres so it is deployment-ready.
+<a href="/posts/arxiv-keyword-extraction-part2">Go to Part 2</a>.</p>
 
   </section>
   <footer>
@@ -157,12 +363,12 @@ Then, most points are located outside of the sphere inscribed in the cube.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.site/archived-posts/taxi-demand-prediction/">Newer</a>
+          <a href="http://akumano.site/posts/heteroskedasticity/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.site/archived-posts/click-thru-rate-prediction/">Older</a>
+          <a href="http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/">Older</a>
           
         </div>
       </div>

@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Curse of Dimensionality</title>
-  <meta property="og:title" content="Notes: Curse of Dimensionality" />
-  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
+  <title>Avazu Click-Through Rate Prediction</title>
+  <meta property="og:title" content="Avazu Click-Through Rate Prediction" />
+  <meta name="twitter:title" content="Avazu Click-Through Rate Prediction" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.site/posts/curse-of-dimensionality-notes/" />
+  <meta property="og:url" content="http://akumano.site/archived-posts/click-thru-rate-prediction/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,24 +33,6 @@
 
 </head>
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['\\(','\\)']],
-    // inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$']],
-    //displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
 
 <body>
   
@@ -97,12 +79,12 @@ MathJax.Hub.Config({
 
 <article class="p-article">
   <header>
-    <h1>Notes: Curse of Dimensionality</h1>
+    <h1>Avazu Click-Through Rate Prediction</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-10-20T00:00:00Z">
-          Oct 20, 2018
+        <time datetime="2018-11-09T00:00:00Z">
+          Nov 9, 2018
         </time>
       </div>
       
@@ -112,42 +94,166 @@ MathJax.Hub.Config({
   <section id="js-article" class="p-article__body">
     
 
-<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
+<p>Draft.</p>
 
-<h2 id="geometry">Geometry</h2>
+<h2 id="1-narrative-todo">1. Narrative (TODO)</h2>
 
-<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
+<p>Code published on <a href="https://github.com/atkm/avazu-ctr">GitHub</a>.</p>
+
+<p>The data is from <a href="https://www.kaggle.com/c/avazu-ctr-prediction">a Kaggle competition</a> hosted by Avazu.</p>
+
+<h2 id="2-data">2. Data</h2>
+
+<p>The columns are:</p>
 
 <ul>
-<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
-<li>Most of the volume of a n-ball is concentrated around its boundary.</li>
-<li>Pick two vectors on the surface of the unit ball independently.
-The two are orthogonal with high probability.</li>
-<li>Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.
-The \( L_1 \) analogue doesn&rsquo;t hold.
-Look up fast JL transform.</li>
-<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
+<li>id</li>
+<li>click</li>
+<li>hour (YYMMDDHH)</li>
+<li>banner_pos</li>
+<li>site/app_id/domain/category.</li>
+<li>device variables: id, ip, model, type, conn_type</li>
+<li>C1, C14, C15, &hellip;, C21: anonymous features.
+Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).</li>
 </ul>
 
-<h2 id="ml">ML</h2>
+<p>In most columns, hashed values are given.
+(As the raw values were not salted prior to hashing, the original strings can be recovered.
+See <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10853">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10853</a> .)
+Null values are also hashed, which is a nuisance, but it is possible to deduce which hashed value corresponds to null for each feature.
+For example, we can use the fact that, since an ad is shown on either an app or a site, site_id is null if and only if app_id is not null.
+Also, null is usually the most frequent value of a column.
+Hashed values of null have been publicly discussed by the participants: see <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10852">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10852</a> and <a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10819">https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10819</a> .</p>
 
-<p>Suppose the data has \( p \) features,</p>
+<h2 id="3-logistic-regression">3. Logistic Regression</h2>
+
+<h3 id="3-1-cross-validation">3.1 Cross-validation</h3>
+
+<p>Negative log loss is the model evaluation metric required in the competition.</p>
+
+<p>We split the data into training, validation, and test sets.
+The data spans over 11 days.
+Since the data is a time series, a training set must be temporally before a prediction set&mdash;especially if a feature like click history is used.
+We reserve rows from the 11th day as the test set, and use the 1st-10th day for cross-validation.</p>
+
+<table>
+<thead>
+<tr>
+<th align="right">Training</th>
+<th align="right">Validation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="right">1-9</td>
+<td align="right">10</td>
+</tr>
+
+<tr>
+<td align="right">1-8</td>
+<td align="right">9, 10</td>
+</tr>
+
+<tr>
+<td align="right">&hellip;</td>
+<td align="right">&hellip;</td>
+</tr>
+
+<tr>
+<td align="right">1-5</td>
+<td align="right">6-10</td>
+</tr>
+</tbody>
+</table>
+
+<p>The cross-validation logis is implemented in <code>tools.cv_tools</code>.</p>
+
+<h3 id="3-2-feature-engineering">3.2 Feature engineering</h3>
+
+<p>Dealing with high-cardinality categorical features.</p>
+
+<p>Encoding by count.</p>
+
+<p>Encoding by average click-through rate.
+This feature is useless for linear models.</p>
+
+<p>Since version 0.20, sklearn&rsquo;s OneHotEncoder supports string features.
+The ColumnTransformer class, which is also new in version 0.20, is useful for feature engineering.
+A sklearn.compose.ColumnTransformer combines multiple transformers, while letting the user specify which columns are supplied to each transformer.
+The outputs of the transformers are merged, and passed on to the next pipeline stage.</p>
+
+<p>A custom pipeline stage is written as a subclass of sklearn.base.BaseEstimator with sklearn.base.TransformerMixin.
+I wrote ClickRateEncoder and CountEncoder classes which, given a list of columns, produces the average click-through rate and counts grouped by the given columns.</p>
+
+<h2 id="4-the-winning-model">4. The Winning Model</h2>
+
+<h3 id="4-1-guestwalk-s-solution">4.1 guestwalk&rsquo;s solution</h3>
+
+<p><a href="https://www.kaggle.com/c/avazu-ctr-prediction/leaderboard">The winner</a> of the competition achieved the los-loss score of 0.3791.
+I referred to the following sources to understand their solution.</p>
 
 <ul>
-<li>Suppose that the features are binary categorical.
-The cardinality of the feature space grows exponentially with \( p \).
-Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
-<li>Suppose that the features are continuous and in \( [0,1] \).
-Then, most points are located outside of the sphere inscribed in the cube.</li>
+<li><a href="https://www.csie.ntu.edu.tw/~r01922136/slides/kaggle-avazu.pdf">Slides</a></li>
+<li><a href="https://www.andrew.cmu.edu/user/yongzhua/conferences/ffm.pdf">Paper</a></li>
+<li><a href="https://github.com/guestwalk/kaggle-avazu">Source</a></li>
+<li><a href="https://www.kaggle.com/c/avazu-ctr-prediction/discussion/12608">Kaggle Discussion of their solution</a></li>
 </ul>
 
-<h2 id="reference">Reference</h2>
+<p>Although their FFM model results in the best score, the paper suggests that a logistic regression model comes close&mdash;it can achieve a log-loss score of 0.387 after the same feature engineering.</p>
+
+<p>TODO: narrate <a href="https://github.com/atkm/avazu-ctr/issues/12">this</a></p>
+
+<h3 id="4-1-ffm">4.1 FFM</h3>
+
+<p><a href="https://github.com/atkm/avazu-ctr/issues/11">Reading list</a></p>
+
+<p>I use <a href="https://github.com/aksnzhy/xlearn">xLearn</a> as an implementation of FFM.</p>
+
+<h3 id="4-2-the-ffm-format">4.2 The FFM format</h3>
+
+<p>FFM assumes that all columns are categorical.
+In the FFM terminology, a column is referred to as a &ldquo;field&rdquo;, and a category in a column as a &ldquo;feature&rdquo;.
+We define an FFM row to be a line in the format &ldquo;label,field_1:feature_1:1,field_2:feature_2:1 &hellip;&ldquo;, where field_i and feature_i are non-negative integers.
+To convert a pd.DataFrame to the FFM format, define field_i := column_index, and encode categories with the same logic as sklearn&rsquo;s LabelEncoder to define feature_i.</p>
+
+<p>An inefficient implementation of the conversion does not work for a large DataFrame.
+See <code>tools.ffm_tools.df_to_ffm</code>.
+There is a trade-off between space and time.
+Iterating through each row + converting and writing line-by-line uses little memory, but is very slow.
+pd.DataFrame.replace(dict) is fast, but uses a large amount of memory; pd.Series.map(dict) uses less memory, but it can still run into a memory issue.
+Converting each entry of a DataFrame to the desired string (i.e. &ldquo;field:feature:1&rdquo;) and writing it to a file with tocsv() maintains a good balance between space and time, although this method can also have space issue, because each column changes its dtype to &ldquo;object&rdquo;.</p>
+
+<h3 id="4-3-evaluation">4.3 Evaluation</h3>
+
+<p>The model performs far better on the &ldquo;app&rdquo; subset (validaton score ~= 0.34) than on the &ldquo;site&rdquo; subset (~= 0.44).</p>
+
+<h2 id="5-conclusion-and-future-work">5. Conclusion and Future Work</h2>
+
+<p>Features of guestwalk&rsquo;s &ldquo;base&rdquo; solution that are implemented in none of the models presented above:</p>
 
 <ul>
-<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
-<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
-<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
-<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
+<li>Hash features instead of encoding them.
+Count features are hashed, as well.</li>
+<li>Thresholding count features (1000 for device_id and device_ip, 30 for user/hourly )</li>
+<li>Click history</li>
+<li>Hourly impression, which is defined as &ldquo;concatenating all raw features together&rdquo; in their slides.
+Not quite sure what that means.</li>
+</ul>
+
+<p>Other feature ideas:</p>
+
+<ul>
+<li>Bucket infrequent features (say, the count is less than 10) into one &ldquo;infrequent feature&rdquo;.</li>
+<li>More sophisticated count features, such as user count grouped by app_id.</li>
+<li>The number of hours since the last click by the user.</li>
+</ul>
+
+<p>Others:</p>
+
+<ul>
+<li>A more efficient cross-validation for xLearn.
+Currently, the model and data are read from the disk for each evaluation of a parameter.</li>
 </ul>
 
   </section>
@@ -157,12 +263,12 @@ Then, most points are located outside of the sphere inscribed in the cube.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.site/archived-posts/taxi-demand-prediction/">Newer</a>
+          <a href="http://akumano.site/posts/curse-of-dimensionality-notes/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.site/archived-posts/click-thru-rate-prediction/">Older</a>
+          <a href="http://akumano.site/posts/learning-resources-cs/">Older</a>
           
         </div>
       </div>

@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Curse of Dimensionality</title>
-  <meta property="og:title" content="Notes: Curse of Dimensionality" />
-  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
+  <title>Benchmarking Linear Classifiers</title>
+  <meta property="og:title" content="Benchmarking Linear Classifiers" />
+  <meta name="twitter:title" content="Benchmarking Linear Classifiers" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.site/posts/curse-of-dimensionality-notes/" />
+  <meta property="og:url" content="http://akumano.site/archived-posts/linear-classifiers/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,24 +33,6 @@
 
 </head>
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['\\(','\\)']],
-    // inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$']],
-    //displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
 
 <body>
   
@@ -97,12 +79,12 @@ MathJax.Hub.Config({
 
 <article class="p-article">
   <header>
-    <h1>Notes: Curse of Dimensionality</h1>
+    <h1>Benchmarking Linear Classifiers</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-10-20T00:00:00Z">
-          Oct 20, 2018
+        <time datetime="2017-08-03T00:00:00Z">
+          Aug 3, 2017
         </time>
       </div>
       
@@ -110,45 +92,9 @@ MathJax.Hub.Config({
   </header>
   
   <section id="js-article" class="p-article__body">
-    
-
-<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
-
-<h2 id="geometry">Geometry</h2>
-
-<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
-
-<ul>
-<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
-<li>Most of the volume of a n-ball is concentrated around its boundary.</li>
-<li>Pick two vectors on the surface of the unit ball independently.
-The two are orthogonal with high probability.</li>
-<li>Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.
-The \( L_1 \) analogue doesn&rsquo;t hold.
-Look up fast JL transform.</li>
-<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
-</ul>
-
-<h2 id="ml">ML</h2>
-
-<p>Suppose the data has \( p \) features,</p>
-
-<ul>
-<li>Suppose that the features are binary categorical.
-The cardinality of the feature space grows exponentially with \( p \).
-Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
-<li>Suppose that the features are continuous and in \( [0,1] \).
-Then, most points are located outside of the sphere inscribed in the cube.</li>
-</ul>
-
-<h2 id="reference">Reference</h2>
-
-<ul>
-<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
-<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
-<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
-<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
-</ul>
+    <p>I ran linear classifiers on a credit card fraud data.
+Parallelization. Lasso and ridge. Grid search.
+Published on <a href="https://www.kaggle.com/akumano/cc-fraud-detection-with-linear-classifiers/">kaggle</a>.</p>
 
   </section>
   <footer>
@@ -157,12 +103,12 @@ Then, most points are located outside of the sphere inscribed in the cube.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.site/archived-posts/taxi-demand-prediction/">Newer</a>
+          <a href="http://akumano.site/teaching/141-sum16/lecnotes/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.site/archived-posts/click-thru-rate-prediction/">Older</a>
+          <a href="http://akumano.site/posts/heteroskedasticity/">Older</a>
           
         </div>
       </div>

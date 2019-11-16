@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Curse of Dimensionality</title>
-  <meta property="og:title" content="Notes: Curse of Dimensionality" />
-  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
+  <title>Keyword Extraction from arXiv - Part 3</title>
+  <meta property="og:title" content="Keyword Extraction from arXiv - Part 3" />
+  <meta name="twitter:title" content="Keyword Extraction from arXiv - Part 3" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.site/posts/curse-of-dimensionality-notes/" />
+  <meta property="og:url" content="http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,24 +33,6 @@
 
 </head>
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['\\(','\\)']],
-    // inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$']],
-    //displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
 
 <body>
   
@@ -97,12 +79,12 @@ MathJax.Hub.Config({
 
 <article class="p-article">
   <header>
-    <h1>Notes: Curse of Dimensionality</h1>
+    <h1>Keyword Extraction from arXiv - Part 3</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-10-20T00:00:00Z">
-          Oct 20, 2018
+        <time datetime="2017-10-13T00:00:00Z">
+          Oct 13, 2017
         </time>
       </div>
       
@@ -112,43 +94,307 @@ MathJax.Hub.Config({
   <section id="js-article" class="p-article__body">
     
 
-<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
+<p>This is the final part of the tutorial.
+We furnish the app with an UI, and deploy it to Heroku.</p>
 
-<h2 id="geometry">Geometry</h2>
+<h2 id="5-build-ui">5. Build UI</h2>
 
-<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
+<h3 id="5-1-index-html-and-main-js">5.1 <code>index.html</code> and <code>main.js</code></h3>
+
+<p>We first create a dropdown list.
+The selected category is stored in <code>selected</code>, and it is posted to /start when <code>submit</code> is called.
+Afterwards, the component polls /results.</p>
+
+<p><details open>
+<summary><code>main.js</code> - <code>categoryDropdown</code></summary></p>
+
+<pre><code>var categoryDropdown = new Vue({
+  el: '#category-dropdown',
+  data: {
+    selected: ''
+  },
+  methods: {
+    submit: function() {
+      keywordsResult.hide();
+      keywordsResult.beginLoading();
+      axios.post('/start', {'category': this.selected})
+      .then(
+        response =&gt; {
+          this.pollResult(response.data);
+        } 
+      )
+      .catch(error =&gt; { console.log(error); });
+    },
+
+    pollResult: function(jobID) {
+      axios.get('/results/' + jobID)
+      .then(
+        response =&gt; {
+          status = response.status;
+          data = response.data;
+          if (status === '202') {
+            console.log(data, status);
+            setTimeout(this.pollResult, 5000, jobID); // modify to give up after a while
+          } else if (status === '200') {
+            console.log(data, status);
+            keywordsResult.supply(data);
+            keywordsResult.doneLoading();
+            keywordsResult.appear();
+          }
+        }
+      ).catch( error =&gt; {
+        keywordsResult.doneLoading();
+        console.log(error);
+      })
+    }
+  }
+})
+</code></pre>
+
+<p></details></p>
+
+<p>The following is the corresponding div in <code>index.html</code>.
+<code>math_categories</code> is a list that will be defined in <code>app.py</code>
+The classes are from bootstrap.</p>
+
+<p><details open>
+<summary><code>index.html</code> - div <code>category-dropdown</code></summary></p>
+
+<pre><code>&lt;div class=&quot;col-sm-3 col-sm-offset-1&quot;&gt;
+  &lt;div id='category-dropdown'&gt;
+    &lt;div class='dropdown form-group'&gt;
+      &lt;select type='text' class='form-control' style='max-width: 150px;'
+        v-model='selected' autofocus required&gt;
+        &lt;option disabled selected value=''&gt;Select category&lt;/option&gt;
+        {% for c in math_categories %}
+        &lt;option&gt;{{ c }}&lt;/option&gt;
+        {% endfor %}
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;button type='submit' class='btn btn-default' v-on:click='submit'&gt;Submit&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p></details></p>
+
+<p>Once <code>categoryDropdown</code> receives keywords from /results, it passes those to <code>keywordsResult</code>, which in turn displays the keywords.
+This components is hidden until keywords are received and it shows a spinner gif while waiting for the result.</p>
+
+<p><details open>
+<summary><code>main.js</code> - <code>keywordsResult</code></summary></p>
+
+<pre><code>var keywordsResult = new Vue({
+  el: '#keywords-result',
+  data: {
+    keywords: [],
+    show: false,
+    loading: false
+  },
+  methods: {
+    supply: function(d) {
+      this.keywords = d;
+    },
+    appear: function() { this.show = true; },
+    hide: function() { this.show = false; },
+    beginLoading: function() { this.loading = true; },
+    doneLoading: function() { this.loading = false; }
+  }
+})
+</code></pre>
+
+<p></details></p>
+
+<p><details open>
+<summary><code>index.html</code> - div <code>keywords-result</code></summary></p>
+
+<pre><code>&lt;div class=&quot;col-sm-5 col-sm-offset-1&quot;&gt;
+  &lt;div id='keywords-result'&gt;
+    &lt;table class='table table-striped' v-if='show'&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Keywords&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        {% raw %}
+        &lt;tr v-for='k in keywords'&gt;
+          &lt;td&gt;{{ k }}&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;br&gt;
+    &lt;img class='col-sm-4'
+    src=&quot;{{ url_for('static', filename='spinner.gif') }}&quot;
+    v-if='loading'&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p></details></p>
+
+<p>Finally, include packages in the header and <code>main.js</code> in the body.</p>
+
+<p><details open>
+<summary><code>index.html</code> - header</summary></p>
+
+<pre><code>&lt;head&gt;
+  &lt;title&gt;{ keywords(x) | x \in {math research area} }&lt;/title&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;link href=&quot;//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot;&gt;
+  &lt;link rel='stylesheet' type='text/css' href=&quot;{{ url_for('static', filename='main.css') }}&quot;&gt;
+  &lt;link rel='shortcut icon' href=&quot;{{ url_for('static', filename='favicon.ico') }}&quot; type='image/x-icon'&gt;
+  &lt;style&gt;
+    .container {
+      max-width: 1000px;
+    }
+  &lt;/style&gt;
+  &lt;script src=&quot;//code.jquery.com/jquery-2.2.1.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://unpkg.com/vue&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://unpkg.com/axios/dist/axios.min.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+</code></pre>
+
+<p></details></p>
+
+<p><details open>
+<summary><code>index.html</code> - somewhere in body</summary></p>
+
+<pre><code>&lt;script src=&quot;{{ url_for('static', filename='main.js') }}&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p></details></p>
+
+<h3 id="5-2-configure-the-root-endpoint">5.2 Configure the root endpoint</h3>
+
+<p><details open>
+<summary><code>app.py</code> - root endpoint</summary></p>
+
+<pre><code>@app.route('/', methods=['GET', 'POST'])
+def index():
+    with open(os.path.join(app.config['STATIC_PATH'], 'math_categories.txt')) as f:
+        math_categories = f.read().splitlines()
+    return render_template('index.html', math_categories=math_categories)
+</code></pre>
+
+<p></details></p>
+
+<p>To make this work, create <code>static/</code> in the project root, and place <code>math_categories.txt</code> containing all categories.
+Also, add <code>STATIC_PATH = os.path.join(basedir, 'static/')</code> in the base Config class in <code>config.py</code> to have Flask recognize the directory.</p>
+
+<p><details open>
+<summary><code>/static/math_categories.txt</code></summary></p>
+
+<pre><code>math.OC
+math.IT
+math.AP
+math.OA
+math.RA
+math.NA
+math.SG
+math.AT
+math.NT
+math.AG
+math.CO
+math.GT
+math.DG
+math-ph
+math.MP
+math.DS
+math.QA
+math.SP
+math.CA
+math.PR
+math.LO
+math.FA
+math.MG
+math.GN
+math.CV
+math.CT
+math.KT
+math.GR
+math.RT
+math.ST
+math.HO
+math.AC
+math.GM
+</code></pre>
+
+<p></details></p>
+
+<h3 id="5-3-run-it-locally">5.3. Run it locally</h3>
+
+<p>Our app is ready to run locally!
+Start an instance of Redis server (usually <code>redis-server</code>), followed by <code>python worker.py</code> which starts a Redis worker that takes jobs from a Redis queue.
+Finally, run <code>python manage.py runserver</code>.</p>
+
+<h2 id="6-deploy-to-heroku">6. Deploy to Heroku.</h2>
 
 <ul>
-<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
-<li>Most of the volume of a n-ball is concentrated around its boundary.</li>
-<li>Pick two vectors on the surface of the unit ball independently.
-The two are orthogonal with high probability.</li>
-<li>Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.
-The \( L_1 \) analogue doesn&rsquo;t hold.
-Look up fast JL transform.</li>
-<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
+<li>Login to your account via Heroku CLI.</li>
+<li>Place <code>nltk.txt</code> in the project root containing a single line <code>stopwords</code>. This file tells the Heroku app to download the &lsquo;stopwords&rsquo; corpora.</li>
+<li>Place <code>Procfile</code> in the project root containing a single line <code>sh heroku.sh</code>.
+Also create the following in the project root.
+Heroku executes <code>Procfile</code>, which in turn executes <code>heroku.sh</code>.
+This starts a gunicorn HTTP server and a worker.</li>
 </ul>
 
-<h2 id="ml">ML</h2>
+<p><detail open>
+<summary><code>heroku.sh</code></summary></p>
 
-<p>Suppose the data has \( p \) features,</p>
+<pre><code>:::
+#!/bin/bash
+gunicorn app:app --daemon
+python worker.py
+</code></pre>
+
+<p></detail></p>
 
 <ul>
-<li>Suppose that the features are binary categorical.
-The cardinality of the feature space grows exponentially with \( p \).
-Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
-<li>Suppose that the features are continuous and in \( [0,1] \).
-Then, most points are located outside of the sphere inscribed in the cube.</li>
+<li>Run <code>git init</code> in the project root to make it a git repo. Edit <code>.gitignore</code>, run <code>git add -A</code>, then commit.</li>
+<li><code>heroku create yourappname</code> creates an app named <code>yourappname</code> under your Heroku account.</li>
+<li><code>git remote add heroku git@heroku.com:yourappname.git</code>. This prepares your git repo to be pushed to the address associated with your Heroku app.</li>
+<li><code>git push heroku master</code>. Now your code is on Heroku.</li>
+<li>This command tells Heroku to use the right config class in <code>config.py</code>: <code>heroku config:set APP_SETTINGS=config.StagingConfig --remote heroku</code></li>
+<li><code>heroku addons:create heroku-postgresql:hobby-dev --app yourappname</code> attaches a Postgres database to your Heroku app.
+<code>DATABASE_URL</code> of the database is in <code>heroku config --app yourappname</code>.</li>
+<li>Attach Redis: <code>heroku addons:create redistogo:nano --app yourappname</code></li>
+<li>You can review the configuration of your app with <code>heroku config --app yourappname</code>.</li>
 </ul>
 
-<h2 id="reference">Reference</h2>
+<p>The commands thus far set up our Flask app in Heroku with Postgres and Redis.
+The app is good to go once the database on Heroku is configured.
+We need the database to have the tables filled with rows.</p>
 
 <ul>
-<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
-<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
-<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
-<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
+<li>Run <code>pg_dump -U postgres -Fc --no-acl --no-owner arxiv_project &gt; arxiv_project.dump</code> to export the local database in the binary format.</li>
+<li>Place <code>arxiv_project.dump</code> in AWS, Dropbox, or somewhere accessible via HTTP.</li>
+<li>Import the dumped database: <code>heroku pg:backups:restore 'https://url.to.arxiv_project.dump' DATABASE_URL --app yourappname</code>. Try http if https fails.</li>
 </ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That&rsquo;s it!
+Our app is ready for the whole world to see.
+I hope this gave you an idea as to how you might go about deploying your algorithm.</p>
+
+<p>Our goal, that is to deploy a machine learning code, is achieved.
+Our keyword extraction algorithm, however, leaves a lot to be desired.
+What immediately comes to my mind are the following.</p>
+
+<ul>
+<li>Update the metadata database on a daily basis.</li>
+<li>Decide how long to cache computed keywords. Currently, they are stored in the database indefinitely.</li>
+<li>Visualization of keywords. Use D3, for example.</li>
+<li>Implement the per-cluster keyword extraction routine in a distributed computing framework such as Spark.</li>
+<li>The keyword extraction algorithm needs work. There are many possibilities&mdash;use different extraction algorithms, feature engineering, tweak the existing tf-idf algorithm, use different clustering algorithms, or use more data, namely, <a href="https://arxiv.org/help/bulk_data_s3">full-text data</a>.</li>
+</ul>
+
+<p>Improving the algorithm is a difficult task in its own right, but that is not the only hurdle to overcome.
+The app developer needs to ensure that the improved app is computationally feasible (e.g. memory usage), introduce an infrastructure that supports a new version of the algorithm (e.g. Redis data structures, new tables or constraints in the database), and check that each component fits together after modifications.
+Thus, app development is both a scientific and engineering problem.
+Note that none of the possible improvements listed above is a purely scientific problem; in the meantime, every one of them requires engineering work.</p>
 
   </section>
   <footer>
@@ -157,12 +403,12 @@ Then, most points are located outside of the sphere inscribed in the cube.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.site/archived-posts/taxi-demand-prediction/">Newer</a>
+          <a href="http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.site/archived-posts/click-thru-rate-prediction/">Older</a>
+          <a href="http://akumano.site/posts/learning-resources/">Older</a>
           
         </div>
       </div>

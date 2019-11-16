@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Curse of Dimensionality</title>
-  <meta property="og:title" content="Notes: Curse of Dimensionality" />
-  <meta name="twitter:title" content="Notes: Curse of Dimensionality" />
+  <title>Keyword Extraction from arXiv - Part 2</title>
+  <meta property="og:title" content="Keyword Extraction from arXiv - Part 2" />
+  <meta name="twitter:title" content="Keyword Extraction from arXiv - Part 2" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="http://akumano.site/posts/curse-of-dimensionality-notes/" />
+  <meta property="og:url" content="http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -33,24 +33,6 @@
 
 </head>
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['\\(','\\)']],
-    // inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$']],
-    //displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
 
 <body>
   
@@ -97,12 +79,12 @@ MathJax.Hub.Config({
 
 <article class="p-article">
   <header>
-    <h1>Notes: Curse of Dimensionality</h1>
+    <h1>Keyword Extraction from arXiv - Part 2</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2018-10-20T00:00:00Z">
-          Oct 20, 2018
+        <time datetime="2017-10-12T00:00:00Z">
+          Oct 12, 2017
         </time>
       </div>
       
@@ -112,43 +94,311 @@ MathJax.Hub.Config({
   <section id="js-article" class="p-article__body">
     
 
-<p>&ldquo;Curse of Dimensionality&rdquo;, in the sense of Bellman as well as in machine learning.</p>
+<p>In <a href="/posts/arxiv-keyword-extraction-part1">Part 1</a>, we developed a keyword extraction algorithm.
+The next step is to modify the algorithm to use database.
+Configuring Postgres is more involved than in Flask by Example, since we need models to store article data.
+The following diagram shows the architecture of our system.</p>
 
-<h2 id="geometry">Geometry</h2>
+<p><img src="/images/keyword-extraction-diagram.svg" alt="App diagram" /></p>
 
-<p>In \( \mathbb{R}^n \) where \( n \) is large,</p>
-
-<ul>
-<li>The volume of the unit ball goes to 0 as the dimension goes to infinity.</li>
-<li>Most of the volume of a n-ball is concentrated around its boundary.</li>
-<li>Pick two vectors on the surface of the unit ball independently.
-The two are orthogonal with high probability.</li>
-<li>Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.
-The \( L_1 \) analogue doesn&rsquo;t hold.
-Look up fast JL transform.</li>
-<li>Distances between points are concentrated: \( \frac{ \max_{x, y} d(x,y) - \min_{x, y} d(x,y) } { \min_{x, y} d(x,y) } \to 0 \) where \( d \) is the \( L_p \) norm where \( p \geq 1 \).</li>
-</ul>
-
-<h2 id="ml">ML</h2>
-
-<p>Suppose the data has \( p \) features,</p>
+<p>We use the end product of <a href="https://realpython.com/blog/python/flask-by-example-part-1-project-setup/">Flask by Example</a> tutorial as a boilerplate.
+Complete Part 1-4 of Flask by Example, or clone <a href="https://github.com/realpython/flask-by-example">the repo</a> of and configure Postgres by following these steps:</p>
 
 <ul>
-<li>Suppose that the features are binary categorical.
-The cardinality of the feature space grows exponentially with \( p \).
-Suppose the size of the training set is fixed; then, the model is highly likely to overfit when \( p \) is large.</li>
-<li>Suppose that the features are continuous and in \( [0,1] \).
-Then, most points are located outside of the sphere inscribed in the cube.</li>
+<li>Install and initialize PostgreSQL.</li>
+<li>Create database <code>arxiv_project</code>. This can be accomplished in many ways, including psql and SQLAlchemy.</li>
+<li>Add <code>DATABASE\_URL=&quot;postgresql://localhost/arxiv_project&quot;</code> in <code>.envrc</code>.</li>
+<li>Run <code>python manage.py db {init,migrate,upgrade}</code>.
+<code>init</code> creates <code>migrations/</code> with a few files that are managed by Flask-Migrate.
+<code>migrate</code> creates an Alembic migration script in <code>migrations/versions/</code> based on definitions in <code>model.py</code>.
+<code>upgrade</code> runs the migration script to make changes to the database.</li>
 </ul>
 
-<h2 id="reference">Reference</h2>
+<p>We will modify <code>app.py</code> and <code>models.py</code> in this article.</p>
 
-<ul>
-<li><a href="https://www.cs.princeton.edu/courses/archive/fall13/cos521/lecnotes/lec11.pdf">Princeton COS 521</a></li>
-<li><a href="https://stats.stackexchange.com/questions/99171">Why is Euclidean distance not a good metric in high dimensions?</a></li>
-<li><a href="http://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/">The Curse of Dimensionality in classification</a></li>
-<li>Domingos, &ldquo;A Few Useful Things to Know about Machine Learning&rdquo; (<a href="https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">link</a>)</li>
-</ul>
+<h2 id="3-modify-keyword-extraction-to-use-postgres">3. Modify keyword extraction to use Postgres</h2>
+
+<p>The following code shows how our keyword extraction function will be called.</p>
+
+<p><details open>
+<summary><code>app.py</code> - <code>get_keywords</code></summary></p>
+
+<pre><code>@app.route('/start', methods=['POST'])
+def get_keywords():
+    data = json.loads(request.data.decode())
+    category = data['category']
+    job = q.enqueue_call(
+        func = get_keywords_func, args=(category,), result_ttl=3000
+        )
+    return job.get_id()
+
+def get_keywords_func(category):
+    keywords = extract_keywords(category)
+    result = Result(
+            category = category,
+            keywords = keywords
+            )
+    db.session.add(result)
+    db.session.commit()
+    return result.id
+</code></pre>
+
+<p></details>
+As in Flask by Example, the user makes a POST request to Flask&rsquo;s <code>/start</code> endpoint with an argument to initiate a function call that gets queued to Redis.</p>
+
+<p>This is what our main function looks like currently.</p>
+
+<p><details open>
+<summary><code>extract_keywords</code></summary></p>
+
+<pre><code>def extract_keywords(category):
+    K = 100
+    abs_c = load_data(category)
+    cluster = cluster_docs(abs_c, K)
+    abs_clusters = pd.DataFrame({
+        'cluster': cluster,
+        'text': abs_c
+    })
+
+    keywords = []
+    for j in range(K):
+        c = abs_clusters[abs_clusters['cluster']==j]
+        for phrase in rank_phrases(c['text'], 2):
+            keywords.append(phrase)
+
+    print(keywords)
+    return keywords
+</code></pre>
+
+<p></details></p>
+
+<p>The only part that needs an update is the <code>load_data</code> function.
+To define our new <code>load_data</code>, however, we first need to define the structure of the database.</p>
+
+<h3 id="3-1-create-data-models">3.1 Create data models</h3>
+
+<p>Each article can have several authors, and (almost) every author publishes multiple articles.
+An article and category have the same relationship.
+So we will model an article as many-to-many relationships between <code>Article</code> and <code>Author</code>, and <code>Article</code> and <code>Category</code>.
+Flask-SQLAlchemy&rsquo;s <a href="http://flask-sqlalchemy.pocoo.org/2.3/models/#many-to-many-relationships">documentation</a> has a concise explanation of how to construct a many-to-many relationship.</p>
+
+<p><details open>
+<summary><code>models.py</code> - <code>Article</code></summary></p>
+
+<pre><code>class Article(db.Model):
+    __tablename__='articles'
+    id = db.Column(db.Integer, primary_key=True)
+    identifier = db.Column(db.String, unique=True, nullable=False)
+    title = db.Column(db.String, nullable=False)
+    authors = db.relationship('Author', secondary=article_author,\
+            backref='articles', lazy='dynamic') # backref furnishes Author with .articles
+    abstract = db.Column(db.Text, nullable=False)
+    categories = db.relationship('Category', secondary=article_category,\
+            backref='articles', lazy='dynamic')
+    submitted = db.Column(db.Date, nullable=False)
+
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
+
+    def __repr__(self):
+        return '&lt;article {}&gt;'.format(self.identifier)
+</code></pre>
+
+<p></details></p>
+
+<p><details open>
+<summary><code>models.py</code> - <code>Author</code></summary></p>
+
+<pre><code>class Author(db.Model):
+    __tablename__ = 'authors'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '&lt;author {}&gt;'.format(self.name)
+</code></pre>
+
+<p></details></p>
+
+<p><details open>
+<summary><code>models.py</code> - <code>Category</code></summary></p>
+
+<pre><code>class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    def __init__(self, category):
+        self.name = category
+
+    def __repr__(self):
+        return '&lt;category {}&gt;'.format(self.name)
+</code></pre>
+
+<p></details></p>
+
+<p>Then, relate the models by the following relation tables.</p>
+
+<p><details open>
+<summary><code>models.py</code> - relation tables</summary></p>
+
+<pre><code>article_category = db.Table('article_category',
+        db.Column('category_id', db.Integer, db.ForeignKey('categories.id')),
+        db.Column('article_id', db.Integer, db.ForeignKey('articles.id'))
+        )
+
+article_author = db.Table('article_author',
+        db.Column('author_id', db.Integer, db.ForeignKey('authors.id')),
+        db.Column('article_id', db.Integer, db.ForeignKey('articles.id'))
+        )
+</code></pre>
+
+<p></details></p>
+
+<p>The <code>Result</code> table, where Redis writes results of <code>extract_keywords</code>, is the same as in Flask by Example.</p>
+
+<h3 id="3-2-populate-postgres-with-articles">3.2 Populate Postgres with articles</h3>
+
+<p>The code to insert an article to the database is similar to <code>metha_to_df.py</code> from Part 1.
+The following is the gist of creating an Article object from a parsed xml.</p>
+
+<pre><code>article = Article()
+author = Author(author_name)
+article.authors.append(author)
+</code></pre>
+
+<p>An instance of <code>Author</code> is created with <code>author_name</code>, which is the string parsed from a record in a xml.
+The last line adds the author to <code>article.authors</code> which is like a list.
+<em>Note that we do not write commands to modify <code>Author</code> and <code>article_author</code></em>, which is a detail that SQLAlchemy handles for us.
+When commited, SQLAlchemy will tell the database to populate the <code>Author</code> table with the <code>author</code> above, and create a row in <code>article_author</code> to link the <code>article</code> and <code>author</code>.</p>
+
+<p>Add categories to <code>article</code> in the same fasion, supply other entries such as title and identifier, and run <code>db.session.add(article)</code> to insert the article into Postgres.
+See this <a href="https://gist.github.com/atkm/301a50776b2831a52c58a4b0e397508c">Gist</a> for the full code to populate the database with articles in <code>~/.metha</code>.</p>
+
+<h3 id="3-3-updated-load-data">3.3 Updated <code>load_data</code></h3>
+
+<p>Now that the database is set up for use, we redefine <code>load_data</code>.
+Define <code>pull_abstracts</code> that reads the database and creates a DataFrame.
+The new <code>load_data</code> calls <code>pull_abstracts</code> to obtain the DataFrame instead of reading from a pickle file.</p>
+
+<p><details open>
+<summary><code>pull_abstracts</code></summary></p>
+
+<pre><code>:::python
+from app import db
+from models import *
+
+def pull_abstracts(category):
+    articles = db.session.query(Article)\
+            .filter(Article.id == article_category.c.article_id)\
+            .filter(Category.id == article_category.c.category_id)\
+            .filter(Category.name == category)
+
+    identifier, title, authors, abstract, categories, submitted = ([] for i in range(6))
+    for row in articles:
+        title.append(row.title)
+        abstract.append(row.abstract)
+
+    df = pd.DataFrame({
+        'title': title,
+        'abstract': abstract,
+        })
+    return df
+</code></pre>
+
+<p></details>
+The first two <code>filter</code> operations accomplishe the join of <code>Article</code> and <code>Category</code> tables.</p>
+
+<p><details open>
+<summary><code>load_data</code></summary></p>
+
+<pre><code>def load_data(category):
+    print('Pulling data from Postgres.')
+    df = pull_abstracts(category)
+    df['abstract'] = df['abstract'].apply(lambda t: t.replace('\n',' '))\
+            .apply(remove_stopwords)
+    df['title'] = df['title'].apply(lambda t: t.replace('\n',' '))\
+            .apply(remove_stopwords)
+    abs_c = df.apply(lambda row:
+            '. '.join([row['title'], row['abstract']]), axis=1)
+    print('Data loaded.')
+    return abs_c
+</code></pre>
+
+<p></details></p>
+
+<h2 id="4-configure-api-endpoints-of-flask">4. Configure API endpoints of Flask</h2>
+
+<p>In this section, we modify <code>app.py</code> to replace the wordcount function developed in Flask by Example with our keyword extraction function.
+Other files (<code>manage.py</code>, <code>worker.py</code>, etc.) are not modified.</p>
+
+<p>The actual implementation of the /start endpoint differs from the snippet shown in the previous section.
+When the user submits a category, Flask first looks up the Results table to see if the keywords of the category has been computed.
+If that is the case, it returns the id of the keywords in the table; otherwise, the job to compute keywords is pushed to the queue.</p>
+
+<p><details open>
+<summary>/start endpoint</summary></p>
+
+<pre><code>@app.route('/start', methods=['POST'])
+def get_keywords():
+    data = json.loads(request.data.decode())
+    category = data['category']
+    search = Result.query.filter_by(category=category)
+    if db.session.query(search.exists()).scalar():
+        id = search.first().id
+        return '_'.join(['nocompute', str(id)])
+    else:
+        job = q.enqueue_call(
+                func = get_keywords_func, args=(category,), result_ttl=3000
+                )
+        return job.get_id()
+
+def get_keywords_func(category):
+    keywords = extract_keywords(category)
+    result = Result(
+            category = category,
+            keywords = keywords
+            )
+    db.session.add(result)
+    db.session.commit()
+    return result.id
+</code></pre>
+
+<p></details></p>
+
+<p>The /results endpoint is configured to handle the two cases.
+<details open>
+<summary>/results endpoint</summary></p>
+
+<pre><code>@app.route('/results/&lt;job_key&gt;', methods=['GET'])
+def get_results(job_key):
+    nocompute = re.search('nocompute_(\d+)', job_key)
+    if nocompute:
+        id = nocompute.group(1)
+        return return_keywords(id)
+    else:
+        job = Job.fetch(job_key, connection=conn)
+        if job.is_finished:
+            return return_keywords(job.result)
+        else:
+            return 'Nope!', 202
+
+def return_keywords(id):
+    result = Result.query.filter_by(id=id).first()
+    return jsonify(result.keywords)
+</code></pre>
+
+<p></details></p>
+
+<h2 id="conclusion-of-part-2">Conclusion of Part 2</h2>
+
+<p>We are done rewriting our extraction algorithm to use Postgres.
+This is the function that we will push to Heroku.
+All that remains is to create the UI that communicates with Flask.
+<a href="/posts/arxiv-keyword-extraction-part3">Go to Part 3</a>.</p>
 
   </section>
   <footer>
@@ -157,12 +407,12 @@ Then, most points are located outside of the sphere inscribed in the cube.</li>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="http://akumano.site/archived-posts/taxi-demand-prediction/">Newer</a>
+          <a href="http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="http://akumano.site/archived-posts/click-thru-rate-prediction/">Older</a>
+          <a href="http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/">Older</a>
           
         </div>
       </div>
