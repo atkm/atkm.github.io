@@ -95,7 +95,7 @@
     
 
 <p>Freely available online resources that I&rsquo;ve found useful for learning computer science, especially systems.
-Last updated on 2019-11-16.</p>
+Last updated on 2019-11-23.</p>
 
 <h2 id="systems">Systems</h2>
 
@@ -144,19 +144,6 @@ hardware technologies that software programmers benefit from being aware of</li>
 <li>Progress: watched lectures.</li>
 </ul></li>
 
-<li><p><a href="https://safari.ethz.ch/digitaltechnik/spring2019">ETH Design of Digital Circuits</a></p>
-
-<ul>
-<li>The first third of the course covers some basics of circuits.
-The rest covers computer architecture topics: pipelining, out-of-order execution, branch prediction,
-    VLIW, systolic arrays,</li>
-<li>Assignments are done with Verilog on an FPGA.
-They are rudimentary compared with what is discussed in lectures&mdash;writing a single-cycle MIPS is the final assignment&mdash;and are pretty straightforward.
-A follow-up <a href="http://www.archive.ece.cmu.edu/~ece447/s15/doku.php?id=labs">course</a> has assignments on topics from the second half of the course (pipelining, branch prediction, cache coherence).</li>
-<li>Computer architecture <a href="https://people.inf.ethz.ch/omutlu/teaching.html">courses</a> from the same instructor.
-His lectures on memory systems are interesting.</li>
-</ul></li>
-
 <li><p>Other systems courses</p>
 
 <ul>
@@ -166,6 +153,47 @@ CMU 15-410 doesn&rsquo;t make all projects available for non-CMU people.
 Text &ndash; Anderson &amp; Dahlin, Operating Systems: Principles and Practice</li>
 <li>Networks: CMU 15-441, Stanford CS144.</li>
 <li>Compilers: CMU 15-411 (next: Fall 2019?), Stanford CS143, MIT 6.035, Harvard CS153.</li>
+</ul></li>
+</ul>
+
+<h2 id="computer-architecture">Computer Architecture</h2>
+
+<ul>
+<li><p><a href="https://safari.ethz.ch/digitaltechnik/spring2019">ETH Design of Digital Circuits</a></p>
+
+<ul>
+<li>The first third of the course covers some basics of circuits.
+The rest covers computer architecture topics: pipelining, out-of-order execution, branch prediction,
+    VLIW, systolic arrays, SIMD.
+Lecture notes for MIT&rsquo;s 6.004 are good supplementary reading, as they go deeper into more basic topics.</li>
+<li>Assignments are done with Verilog on an FPGA.
+They are rudimentary compared with what is discussed in lectures&mdash;writing a single-cycle MIPS is the final assignment.
+A follow-up <a href="http://www.archive.ece.cmu.edu/~ece447/s15/doku.php?id=labs">course</a> has assignments on topics from the second half of the course (pipelining, branch prediction, cache coherence).</li>
+<li>The assignments felt a bit too easy.
+Most time was spent on learning the tools (verilog and IDE&mdash;I used Quartus).</li>
+<li>Progress: completed all labs, watched lectures.</li>
+<li>Computer architecture <a href="https://people.inf.ethz.ch/omutlu/teaching.html">courses</a> from the same instructor.
+His lectures on memory systems are interesting.</li>
+</ul></li>
+
+<li><p><a href="https://computationstructures.org/lectures/info/info.html">MIT 6.004 Lecture Notes</a></p>
+
+<ul>
+<li>The lectures start with representations of information at the analog level, and end with software topics like virtual memory, operating systems, and parallel computing.</li>
+<li>The course ties together areas in EECS.
+The main topics of the course are digital circuits and computer organization, but it also touches on neighboring topics like:
+    - information entropy, error detection/correction
+    - a tiny bit of analog circuits through looking at the RAM
+    - circuit timing (throughout the circuits section of the lectures)
+    - circuit design tradeoffs (area, power consumption, throughput, latency)
+    - computability (FSM, turing machine)
+    - compilers, IR optimization
+    - OS scheduler
+    - cache coherence
+    - &hellip; and more.</li>
+<li>It gives you a sense of how information theory, electronics, computer organization concepts, CS theory, and software concepts are part of one big thing.
+Highly recommended!
+<br /></li>
 </ul></li>
 </ul>
 
