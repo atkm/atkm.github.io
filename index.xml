@@ -6,7 +6,18 @@
     <description>Recent content in .. on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 21 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ML theory papers</title>
+      <link>https://atkm.github.io/posts/ml-theory-papers/</link>
+      <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://atkm.github.io/posts/ml-theory-papers/</guid>
+      <description>Mert Pilanci
+Neural Networks are Convex Regularizers
+Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent convex problem. Talk at Stanford. An audience member said that you want SDG to converge to a local minumum (for generalization?). That doesn&amp;rsquo;t sound right? A previous result showed that an infinite-width network is convex. This paper on the other hand gives a convex problem that can be implemented and solved. All Local Minima are Global for Two-Layer ReLU Neural Networks</description>
+    </item>
+    
     <item>
       <title>Learning Resources - Computer Science (Systems)</title>
       <link>https://atkm.github.io/posts/learning-cs-systems/</link>
