@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Atsuya Kumano</title>
-    <link>http://atkm.github.io/posts/</link>
+    <link>https://atkm.github.io/posts/</link>
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://atkm.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 Dec 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Learning Resources - Computer Science (Systems)</title>
-      <link>http://atkm.github.io/posts/learning-cs-systems/</link>
+      <link>https://atkm.github.io/posts/learning-cs-systems/</link>
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/posts/learning-cs-systems/</guid>
+      <guid>https://atkm.github.io/posts/learning-cs-systems/</guid>
       <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.
 Systems Beyond CMU 15-213.
 CMU 15-440 (Fall version)
@@ -21,29 +21,29 @@ The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informa
     
     <item>
       <title>Notes: Curse of Dimensionality</title>
-      <link>http://atkm.github.io/posts/curse-of-dimensionality-notes/</link>
+      <link>https://atkm.github.io/posts/curse-of-dimensionality-notes/</link>
       <pubDate>Sat, 20 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/posts/curse-of-dimensionality-notes/</guid>
+      <guid>https://atkm.github.io/posts/curse-of-dimensionality-notes/</guid>
       <description>Geometry In \( \mathbb{R}^n \) where \( n \) is large,
 The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability. Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.</description>
     </item>
     
     <item>
       <title>Some data engineering reading</title>
-      <link>http://atkm.github.io/posts/data-eng-reading-2018/</link>
+      <link>https://atkm.github.io/posts/data-eng-reading-2018/</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/posts/data-eng-reading-2018/</guid>
+      <guid>https://atkm.github.io/posts/data-eng-reading-2018/</guid>
       <description>Model Serving FLIP-23. The document also discusses implementing model training as well as model serving. Two linked documents&amp;mdash;&amp;ldquo;Flink ML Roadmap&amp;rdquo; and &amp;ldquo;Flink-MS&amp;rdquo;&amp;mdash;are also worth reading. Boris Lublinsky&amp;rsquo;s book &amp;ldquo;Serving Machine Learning Models&amp;rdquo;, and talk. Distributed Systems Please Stop Calling Database Systems AP or CP. Kate Matsudaira on distributed systems Distributed Systems for Fun and Profit Martin Kleppmann&amp;rsquo;s book and interview. Use of Formal Methods at Amazon Web Services A tale of two clusters: Mesos and YARN A visual explanation of Raft: link Streaming Systems The Dataflow Model, Apache Beam, and Cloud Dataflow Tyler Akidau&amp;rsquo;s article on the Dataflow model.</description>
     </item>
     
     <item>
       <title>Things I studied in 2018</title>
-      <link>http://atkm.github.io/posts/learning-2018/</link>
+      <link>https://atkm.github.io/posts/learning-2018/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/posts/learning-2018/</guid>
+      <guid>https://atkm.github.io/posts/learning-2018/</guid>
       <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
 Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.
 Stanford CS229 Machine Learning
@@ -52,10 +52,10 @@ One-line summary: the course teaches you how to set up a cost function based on 
     
     <item>
       <title>Simple Linear Regression with Heteroskedastic Noise</title>
-      <link>http://atkm.github.io/posts/heteroskedasticity/</link>
+      <link>https://atkm.github.io/posts/heteroskedasticity/</link>
       <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/posts/heteroskedasticity/</guid>
+      <guid>https://atkm.github.io/posts/heteroskedasticity/</guid>
       <description>Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found. We begin with a discussion of the homoskedastic case with an emphasis on relations between statistical properties of the least squares estimators and assumptions on \( \epsilon_i \), which is conducive to understanding the heteroskedastic case.</description>
     </item>
     

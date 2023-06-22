@@ -2,34 +2,34 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Math 141 - Calculus 2 (Summer 2016) on Atsuya Kumano</title>
-    <link>http://atkm.github.io/math/141-sum16/</link>
+    <link>https://atkm.github.io/math/141-sum16/</link>
     <description>Recent content in Math 141 - Calculus 2 (Summer 2016) on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://atkm.github.io/math/141-sum16/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://atkm.github.io/math/141-sum16/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Math 141 Lecture Notes (Summer 2016)</title>
-      <link>http://atkm.github.io/math/141-sum16/lecnotes/</link>
+      <link>https://atkm.github.io/math/141-sum16/lecnotes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/math/141-sum16/lecnotes/</guid>
+      <guid>https://atkm.github.io/math/141-sum16/lecnotes/</guid>
       <description>Part 3 Chapter 10 10.1 10.2 10.3 10.4 Chapter 11 11.8 11.9 11.10 11.11 Part 2 Indeterminate Forms and Improper Integrals 6.8 7.8 Chapter 11 11.1 11.2 11.3 11.4 11.5 11.6 Part 3 Chapter 6 6.1 6.2 6.3 6.4 6.6 Chapter 7 7.1 7.2 7.3 7.4 </description>
     </item>
     
     <item>
       <title>Math 141 Miniexams (Summer 2016)</title>
-      <link>http://atkm.github.io/math/141-sum16/miniexams/</link>
+      <link>https://atkm.github.io/math/141-sum16/miniexams/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/math/141-sum16/miniexams/</guid>
+      <guid>https://atkm.github.io/math/141-sum16/miniexams/</guid>
       <description> 1 2 3 4 5 6 </description>
     </item>
     
     <item>
       <title>Math 141 Miniexams from the previous year</title>
-      <link>http://atkm.github.io/math/141-sum16/past-miniexams/</link>
+      <link>https://atkm.github.io/math/141-sum16/past-miniexams/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://atkm.github.io/math/141-sum16/past-miniexams/</guid>
+      <guid>https://atkm.github.io/math/141-sum16/past-miniexams/</guid>
       <description> 1 2 3 4 5 6 </description>
     </item>
     

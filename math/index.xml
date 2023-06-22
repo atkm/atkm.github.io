@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Math on Atsuya Kumano</title>
-    <link>http://atkm.github.io/math/</link>
+    <link>https://atkm.github.io/math/</link>
     <description>Recent content in Math on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://atkm.github.io/math/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://atkm.github.io/math/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
