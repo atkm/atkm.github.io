@@ -2,34 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Archived-posts on Atsuya Kumano</title>
-    <link>http://akumano.site/archived-posts/</link>
+    <link>http://akumano.github.io/archived-posts/</link>
     <description>Recent content in Archived-posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="http://akumano.site/archived-posts/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://akumano.github.io/archived-posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Avazu Click-Through Rate Prediction</title>
-      <link>http://akumano.site/archived-posts/click-thru-rate-prediction/</link>
+      <link>http://akumano.github.io/archived-posts/click-thru-rate-prediction/</link>
       <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/click-thru-rate-prediction/</guid>
+      <guid>http://akumano.github.io/archived-posts/click-thru-rate-prediction/</guid>
       <description>Draft.
 1. Narrative (TODO) Code published on GitHub.
 The data is from a Kaggle competition hosted by Avazu.
 2. Data The columns are:
- id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &amp;hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer).  In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.</description>
+id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &amp;hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer). In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.</description>
     </item>
     
     <item>
       <title>Prediction of NYC Taxi Demand</title>
-      <link>http://akumano.site/archived-posts/taxi-demand-prediction/</link>
+      <link>http://akumano.github.io/archived-posts/taxi-demand-prediction/</link>
       <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/taxi-demand-prediction/</guid>
+      <guid>http://akumano.github.io/archived-posts/taxi-demand-prediction/</guid>
       <description>1. Narrative (TODO) Code published on GitHub.
 2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.
 For each year, there are about 170 million records, which amount to about 25GB.</description>
@@ -37,51 +33,50 @@ For each year, there are about 170 million records, which amount to about 25GB.<
     
     <item>
       <title>Keyword Extraction from arXiv - Summary</title>
-      <link>http://akumano.site/archived-posts/arxiv-keyword-extraction-summary/</link>
+      <link>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-summary/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/arxiv-keyword-extraction-summary/</guid>
+      <guid>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-summary/</guid>
       <description>In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.
 Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &amp;mdash; whenever the speaker used a term that I wasn&amp;rsquo;t familiar with, I would write it down and look it up later.</description>
     </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Part 3</title>
-      <link>http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/</link>
+      <link>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part3/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/</guid>
+      <guid>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part3/</guid>
       <description>This is the final part of the tutorial. We furnish the app with an UI, and deploy it to Heroku.
 5. Build UI 5.1 index.html and main.js We first create a dropdown list. The selected category is stored in selected, and it is posted to /start when submit is called. Afterwards, the component polls /results.
-main.js - categoryDropdown
 var categoryDropdown = new Vue({ el: &#39;#category-dropdown&#39;, data: { selected: &#39;&#39; }, methods: { submit: function() { keywordsResult.</description>
     </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Part 2</title>
-      <link>http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/</link>
+      <link>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part2/</link>
       <pubDate>Thu, 12 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/</guid>
+      <guid>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part2/</guid>
       <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.
 We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:</description>
     </item>
     
     <item>
       <title>Keyword Extraction from arXiv - Part 1</title>
-      <link>http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/</link>
+      <link>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part1/</link>
       <pubDate>Wed, 11 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/</guid>
+      <guid>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part1/</guid>
       <description>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background. We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input. We then set up an infrastructure to serve the resulting algorithm. This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary. The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.</description>
     </item>
     
     <item>
       <title>Benchmarking Linear Classifiers</title>
-      <link>http://akumano.site/archived-posts/linear-classifiers/</link>
+      <link>http://akumano.github.io/archived-posts/linear-classifiers/</link>
       <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://akumano.site/archived-posts/linear-classifiers/</guid>
+      <guid>http://akumano.github.io/archived-posts/linear-classifiers/</guid>
       <description>I ran linear classifiers on a credit card fraud data. Parallelization. Lasso and ridge. Grid search. Published on kaggle.</description>
     </item>
     

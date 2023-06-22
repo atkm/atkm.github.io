@@ -1,112 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>http://akumano.site/</loc>
+    <loc>http://akumano.github.io/</loc>
     <lastmod>2018-12-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/learning-resources-cs/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/learning-cs-systems/</loc>
     <lastmod>2018-12-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/</loc>
     <lastmod>2018-12-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/</loc>
     <lastmod>2018-11-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/click-thru-rate-prediction/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/click-thru-rate-prediction/</loc>
     <lastmod>2018-11-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/curse-of-dimensionality-notes/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/curse-of-dimensionality-notes/</loc>
     <lastmod>2018-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/taxi-demand-prediction/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/taxi-demand-prediction/</loc>
     <lastmod>2018-09-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/taxi-project-reading-list/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/data-eng-reading-2018/</loc>
     <lastmod>2018-08-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-summary/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-summary/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/learning-resources/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/learning-2018/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part3/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part3/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part2/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part2/</loc>
     <lastmod>2017-10-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/arxiv-keyword-extraction-part1/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/arxiv-keyword-extraction-part1/</loc>
     <lastmod>2017-10-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/posts/heteroskedasticity/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/posts/heteroskedasticity/</loc>
     <lastmod>2017-08-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/archived-posts/linear-classifiers/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/archived-posts/linear-classifiers/</loc>
     <lastmod>2017-08-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://akumano.github.io/categories/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/math/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/math/141-sum16/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/math/141-sum16/lecnotes/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/math/141-sum16/miniexams/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/math/141-sum16/past-miniexams/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/projects/</loc>
+  </url><url>
+    <loc>http://akumano.github.io/tags/</loc>
   </url>
-  
-  <url>
-    <loc>http://akumano.site/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/teaching/141-sum16/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/teaching/141-sum16/lecnotes/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/teaching/141-sum16/miniexams/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/teaching/141-sum16/past-miniexams/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/projects/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>http://akumano.site/teaching/</loc>
-  </url>
-  
 </urlset>
