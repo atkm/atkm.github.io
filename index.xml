@@ -6,7 +6,18 @@
     <description>Recent content in .. on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Learning EE, OR, Stats and ML</title>
+      <link>https://atkm.github.io/posts/learning-ee-or/</link>
+      <pubDate>Fri, 23 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://atkm.github.io/posts/learning-ee-or/</guid>
+      <description>EE / OR (Optimization) I&amp;rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?). Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.
+Stanford EE263 Linear Dynamical Systems
+An applied linear algebra course. Interesting content, good problems. &amp;ldquo;Linear methods can solve lots of things&amp;rdquo; is a statement that I often hear but without examples. This course makes that statement concrete.</description>
+    </item>
+    
     <item>
       <title>ML theory papers</title>
       <link>https://atkm.github.io/posts/ml-theory-papers/</link>
