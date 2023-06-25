@@ -30,12 +30,12 @@ Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent co
     </item>
     
     <item>
-      <title>Learning Resources - Computer Science (Systems)</title>
+      <title>Learning CS Systems</title>
       <link>https://atkm.github.io/posts/learning-cs-systems/</link>
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://atkm.github.io/posts/learning-cs-systems/</guid>
-      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.
+      <description>Online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.
 Systems Beyond CMU 15-213.
 CMU 15-440 (Fall version)
 The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues. 0. Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
@@ -142,7 +142,8 @@ We use the end product of Flask by Example tutorial as a boilerplate. Complete P
       <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>https://atkm.github.io/posts/heteroskedasticity/</guid>
-      <description>Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found. We begin with a discussion of the homoskedastic case with an emphasis on relations between statistical properties of the least squares estimators and assumptions on \( \epsilon_i \), which is conducive to understanding the heteroskedastic case.</description>
+      <description>I should come up with a solution that uses optimization instead of doing regression twice.
+Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found.</description>
     </item>
     
     <item>
