@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Learning Optimization, Stats, and ML</title>
-  <meta property="og:title" content="Learning Optimization, Stats, and ML" />
-  <meta name="twitter:title" content="Learning Optimization, Stats, and ML" />
+  <title>Notes: Compressed Sensing</title>
+  <meta property="og:title" content="Notes: Compressed Sensing" />
+  <meta name="twitter:title" content="Notes: Compressed Sensing" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="https://atkm.github.io/posts/learning-optimization-stats/" />
+  <meta property="og:url" content="https://atkm.github.io/posts/compressed-sensing/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -81,25 +81,25 @@
 
 <article class="p-article">
   <header>
-    <h1>Learning Optimization, Stats, and ML</h1>
+    <h1>Notes: Compressed Sensing</h1>
     
     <div>
         <div class="c-meta">
         
            Posted on
-<time datetime="2023-06-23T00:00:00Z">
-  Jun 23, 2023
+<time datetime="2023-06-29T00:00:00Z">
+  Jun 29, 2023
 </time>
 
         
         
          | 
-           793 words
+           54 words
 
         
         
          | 
-           ~4mins
+           ~1mins
 
         
         </div>
@@ -110,104 +110,11 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <h2 id="optimization">Optimization</h2>
-<p>I&rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?).
-Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.</p>
-<p><a href="https://see.stanford.edu/Course/EE263">Stanford EE263 Linear Dynamical Systems</a></p>
-<ul>
-<li>An applied linear algebra course. Interesting content, good problems.</li>
-<li>&ldquo;Linear methods can solve lots of things&rdquo; is a statement that I often hear but without examples.
-This course makes that statement concrete.
-You learn lots of ways to reduce problems to solving Ax=b.</li>
-<li>Problems that apply linear algebraic techniques to control were fun to work out.
-Programming problems were good, too.</li>
-<li>I learned parts of linear algebra that I didn&rsquo;t pick up during my pure math studies.</li>
-<li>Discussions of numerical aspects of linear algebra during lectures were useful.</li>
-<li>Video lectures by Stephen Boyd are on youtube. The lectures are good.</li>
-<li>This course would be good for reviewing linear algebra in the future.</li>
-<li>Progress: done.</li>
-</ul>
-<p><a href="https://see.stanford.edu/Course/EE364A">Stanford EE364A Convex Optimization</a></p>
-<ul>
-<li>As with EE263, interesting content, good problems, good lecturer.</li>
-<li>The appeal of the subject is that a mathematically interesting (enough) object is useful for engineering problems.</li>
-<li>Duality theory for convex optimization is slick.
-Would love to find an application of it one day.</li>
-<li>Having the applied linear algebra background knowledge from EE263 was essential.
-Knowing some stats theory would have been useful, too, as some problems came from stats.</li>
-<li>Progress: mostly done. Skipped some problems. Would be good to go through it again.</li>
-</ul>
-<p><a href="https://timroughgarden.org/w16/w16.html">Stanford CS261 A Second Course in Algorithms</a></p>
-<ul>
-<li>Came across this course when I was looking for references on LP duality.
-The way this course presents duality is:
-<ol>
-<li>Go through some problems that can be solved with LP (e.g. max-flow), but develop problem-specific algorithms instead.</li>
-<li>Develop the duals of the problems, without appealing to LP duality.</li>
-<li>Show that the problem-specific primal and dual formulations maps to LP duality.</li>
-</ol>
-</li>
-<li>Even when the lectures do use LP duality to derive the dual, they spent a good amount of time interpreting the dual formulations in terms of the problem context.</li>
-<li>The lecture notes are well-written.
-Video lectures are available, but I opted for reading the notes, so I can check arguments as I read.</li>
-<li>Would like to get through the exercises one day.</li>
-<li>Progress: finished lectures.</li>
-</ul>
-<p><a href="https://www.coursera.org/learn/discrete-optimization">Discrete Optimization (Coursera)</a></p>
-<ul>
-<li>The course covers: LP/MIP, Constraint Programming, and other heuristics.</li>
-<li>The programming assignments are non-trivial unlike most coursera courses.</li>
-<li>I hadn&rsquo;t heard of constraint programming. If the lecturer didn&rsquo;t talk about his experience using it, I would have been dubious of its usefulness.</li>
-<li>Progress: one assignment left (out of six).</li>
-</ul>
-<p><a href="https://ocw.mit.edu/courses/15-053-optimization-methods-in-management-science-spring-2013/">MIT 15.053 Optimization Methods In Management Science</a></p>
-<ul>
-<li>The math used is elementary.
-Stanford&rsquo;s CS261A covers similar materials in a more interesting (harder) way.</li>
-<li>Useful bits are:
-<ul>
-<li>Detailed examples of simplex methods using tableau.</li>
-<li>MIP modelling techniques.</li>
-</ul>
-</li>
-<li>I can&rsquo;t find a good course for ILP/MIP. The &ldquo;Optimization over integers&rdquo; text may be the best bet.</li>
-</ul>
-<p><a href="https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/">MIT 6.003 Signals and Systems</a></p>
-<ul>
-<li>The first course in signal processing.
-It seems like techniques developed in EE have had wide applicability, so I thought it&rsquo;d be good to be familiar with its terminology and tools used.</li>
-<li>Interestingly, this course had a lot of overlap with the complex analysis courses I took.
-I developed a caricaturistic description of complex analysis that it is about proving convergence of objects used in signal processing.</li>
-<li>Progress: watched most lectures. I don&rsquo;t feel particularly motivated to go through the problems.</li>
-</ul>
-<p>I can&rsquo;t find a course that talks about stochastic methods, like hidden markov models and MDP.
-<a href="https://web.stanford.edu/class/ee365/index.html">Stanford&rsquo;s EE365</a> has the topics, but the lecture notes are thin, and they don&rsquo;t follow textbooks.</p>
-<h2 id="stats--ml">Stats / ML</h2>
-<p>I should learn <a href="https://web.stanford.edu/class/stats200/">inference</a> and <a href="https://web.stanford.edu/class/stats203/">regression</a>.
-<a href="https://web.stanford.edu/class/stats202/intro.html">Stanford&rsquo;s STATS202</a> looks good for intro to ML.</p>
-<p><a href="https://web.stanford.edu/class/stats191/">Stanford STAT191 Introduction to Applied Statistics</a></p>
-<ul>
-<li>Progress: 1/2 done.</li>
-</ul>
-<p><a href="https://ocw.mit.edu/courses/6-041-probabilistic-systems-analysis-and-applied-probability-fall-2010/">MIT 6.041 Probabilistic Systems Analysis and Applied Probability</a></p>
-<ul>
-<li>One thing that I&rsquo;ve come to understand after taking several EE courses is that I should learn math from EE if I want to learn applicable math.
-So I picked this course as a probability refresher instead of one from a math or stats department.
-This course&rsquo;s emphasis is on actually computing probability (like, getting a concrete real number at the end), which is different from probability courses I took from math departments.
-I feel a lot more comfortable modelling probabilistic systems after going through this course and seeing the pitfalls.
-Techniques to compute probabilities that aren&rsquo;t trivial otherwise were another good course content.</li>
-<li>Progress: 3/4 done.</li>
-<li><a href="https://ee178.stanford.edu/">Stanford&rsquo;s EE178</a> is a similar course. This one comes with coding problems.</li>
-</ul>
-<h2 id="algorithms">Algorithms</h2>
-<p>Stanford&rsquo;s CS261A technically fits here.</p>
-<p><a href="https://www.youtube.com/watch?v=9DnWi8IWr24&amp;list=PLkvhuSoxwjI_JL7GYcJHK7-EK55t0KYGO&amp;ab_channel=MaryWootters">Stanford CS265 Randomized Algorithms</a></p>
-<ul>
-<li>The topics are really interesting, but I don&rsquo;t know how useful they may be.</li>
-<li>Tim Roughgarden&rsquo;s offering <a href="https://timroughgarden.org/f19/f19.html">here</a>.</li>
-</ul>
-<p>Stanford&rsquo;s <a href="https://web.stanford.edu/class/cs168/">CS168 The Modern Algorithmic Toolbox</a> looks useful.
-<a href="https://timroughgarden.org/f13/f13.html">CS364A Algorithmic Game Theory</a> looks interesting.</p>
+    <p><a href="https://youtu.be/rt5mMEmZHfs">Lecture video</a>, and what <a href="https://terrytao.wordpress.com/2007/04/13/compressed-sensing-and-single-pixel-cameras/">Terrence Tao has to say</a> about the topic.</p>
+<p>The video is associated with this <a href="https://faculty.washington.edu/kutz/KutzBook/KutzBook.html">textbook</a>.
+I came across the Coursera version of this course around 2013.
+The data analysis section of this course seems to be motivated by signal processing.
+The course has some overlap with Stanford&rsquo;s EE263 (linear methods).</p>
 
   </section>
   <footer>
@@ -219,12 +126,12 @@ Techniques to compute probabilities that aren&rsquo;t trivial otherwise were ano
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="https://atkm.github.io/posts/compressed-sensing/">Newer</a>
+          <a href="https://atkm.github.io/posts/data-diffs/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://atkm.github.io/posts/ml-theory-papers/">Older</a>
+          <a href="https://atkm.github.io/posts/learning-optimization-stats/">Older</a>
           
         </div>
       </div>

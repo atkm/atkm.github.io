@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>.. on Atsuya Kumano</title>
+    <title>Atsuya Kumano</title>
     <link>https://atkm.github.io/</link>
-    <description>Recent content in .. on Atsuya Kumano</description>
+    <description>Recent content on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes: Data Diffs</title>
+      <link>https://atkm.github.io/posts/data-diffs/</link>
+      <pubDate>Sat, 05 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://atkm.github.io/posts/data-diffs/</guid>
+      <description>I came across Data diffs: Algorithms for explaining what changed in a dataset.
+The two papers discussed are: Scorpion by Eugene Wu and Sam Madden. Finds common properties of outlier points. DIFF. SQL implementation of Scorpion and similar. The computated can be distributed. An author of the DIFF paper, Peter Bailis, founded sisudata.com. The comments on HN list some related work:
+Dolt is a company whose product is a version-controlled SQL database.</description>
+    </item>
+    
+    <item>
+      <title>Notes: Compressed Sensing</title>
+      <link>https://atkm.github.io/posts/compressed-sensing/</link>
+      <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://atkm.github.io/posts/compressed-sensing/</guid>
+      <description>Lecture video, and what Terrence Tao has to say about the topic.
+The video is associated with this textbook. I came across the Coursera version of this course around 2013. The data analysis section of this course seems to be motivated by signal processing. The course has some overlap with Stanford&amp;rsquo;s EE263 (linear methods).</description>
+    </item>
+    
     <item>
       <title>Learning Optimization, Stats, and ML</title>
       <link>https://atkm.github.io/posts/learning-optimization-stats/</link>
