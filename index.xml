@@ -6,7 +6,19 @@
     <description>Recent content on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Simple properties of IIS</title>
+      <link>https://atkm.github.io/posts/simple-properties-of-iis/</link>
+      <pubDate>Mon, 21 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://atkm.github.io/posts/simple-properties-of-iis/</guid>
+      <description>IIS stands for &amp;ldquo;Irreducible Infeasible Subsystem&amp;rdquo;. There is no Wikipedia entry for it. I&amp;rsquo;ve been using the definition from a Gurobi article.
+Let \( I_0 \) be a subset of constraints. \( I_0 \) is an IIS iff:
+\( I_0 \) is infeasible. Removing any single constraint (&amp;ldquo;or bound&amp;rdquo;) from \( I_0 \) makes it feasible. (I&amp;rsquo;ve never thought about what the &amp;ldquo;or bound&amp;rdquo; part is doing.)
+Property 1: an IIS does not consist of disjoint infeasible systems Example: the following constraints do not comprise an IIS.</description>
+    </item>
+    
     <item>
       <title>Notes: Data Diffs</title>
       <link>https://atkm.github.io/posts/data-diffs/</link>

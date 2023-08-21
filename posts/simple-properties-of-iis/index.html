@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Things I studied in 2018</title>
-  <meta property="og:title" content="Things I studied in 2018" />
-  <meta name="twitter:title" content="Things I studied in 2018" />
+  <title>Simple properties of IIS</title>
+  <meta property="og:title" content="Simple properties of IIS" />
+  <meta name="twitter:title" content="Simple properties of IIS" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="https://atkm.github.io/posts/learning-2018/" />
+  <meta property="og:url" content="https://atkm.github.io/posts/simple-properties-of-iis/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -35,12 +35,48 @@
   
   
   <link rel='icon' type='image/x-icon' href="https://atkm.github.io/favicon.ico" />
-  
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    // inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    //displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
   
   
 
 </head>
 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    // inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    //displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
 
 <body>
   
@@ -81,25 +117,25 @@
 
 <article class="p-article">
   <header>
-    <h1>Things I studied in 2018</h1>
+    <h1>Simple properties of IIS</h1>
     
     <div>
         <div class="c-meta">
         
            Posted on
-<time datetime="2018-04-04T00:00:00Z">
-  Apr 4, 2018
+<time datetime="2023-08-21T00:00:00Z">
+  Aug 21, 2023
 </time>
 
         
         
          | 
-           963 words
+           415 words
 
         
         
          | 
-           ~5mins
+           ~2mins
 
         
         </div>
@@ -110,162 +146,59 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>Freely available online resources that I&rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.</p>
-<h2 id="statistics-and-machine-learning">Statistics and Machine Learning</h2>
-<h3 id="ml">ML</h3>
-<p>Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&rsquo;t skimp on the hard stuff.</p>
-<ul>
-<li>
-<p>Stanford CS229 Machine Learning</p>
-<ul>
-<li>One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</li>
-<li>Topics: matrix calculus review, logistic regression, gradient descent and its variants, discriminative and generative algorithms, linear programming and SVM, theory of learning (e.g. VC dimension, uniform convergence), K-means clustering and the EM algorithm, PCA, reinforcement learning, &hellip; among many others.</li>
-<li><a href="https://see.stanford.edu/course/cs229">Stanford Engineering Everywhere</a> publishes course materials (including video lectures) from 2008.
-<a href="http://cs229.stanford.edu/">Resources</a> from the most recent iteration of the course (except video lectures) is also accesible.
-Newer iterations of the course spend more time on deep learning towards the end of the course.</li>
-<li>Fun homework problems.</li>
-</ul>
-</li>
-<li>
-<p><code>mathematicalmonk</code>&rsquo;s machine learning <a href="https://www.youtube.com/playlist?list=PLD0F06AA0D2E8FFBA">playlist</a></p>
-<ul>
-<li>Authored by Jeff Miller</li>
-<li>The lectures provide good balance of intuition and mathematical detail.</li>
-<li>A very good exposition on MCMC.</li>
-</ul>
-</li>
-<li>
-<p>There is an online textbook with a gitbook (blue) interface that seems to be written by someone with a pure math background. I can&rsquo;t find it nor remember its title.
-(Update: maybe <a href="https://jeremykun.com/main-content/">this</a>?)</p>
-</li>
-</ul>
-<h3 id="stat">Stat</h3>
-<ul>
-<li>
-<p><a href="http://www.stat.cmu.edu/~cshalizi/">Cosma Shalizi</a> (CMU)</p>
-<ul>
-<li>Good lecture notes.
-They provide an in-depth discussion of assumptions behind statistical models, as well as statistical fallacies and pitfalls.</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/mreg/15/">36-401 Modern Regression</a>
-<ul>
-<li>A deep dive into the linear model. &mdash; What is a statistical model? How to check assumptions? What confidence sets are and what they aren&rsquo;t. Is R-squared distraction or nuisance? &ldquo;Does anyone know when the correlation coefficient is useful, as opposed to, used?&rdquo; Multicollinearity is hard. &mdash; I really enjoyed reading the notes.</li>
-</ul>
-</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/uADA/17/">36-402 Undergraduate Advanced Data Analysis</a>
-<ul>
-<li>Builds on 36-401 to cover more modern techniques.</li>
-</ul>
-</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/statcomp/14/">36-350 Statistical Computing</a>
-<ul>
-<li>Introduction to R, functional-style programming, and numerics.</li>
-<li>Topics: R data types, split-apply-combine, testing, random number generation, distributions, optimization, bootstrap, MCMC, regexp.</li>
-<li>Sections on optimization, simulation, and MCMC are good reading for numerical computing in general, not specific to R.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>Wasserman, &ldquo;All of Statistics&rdquo;</p>
-<ul>
-<li>Theoretical statistics at the advanced-undergraduate level.
-Shorter than Casella &amp; Berger, &ldquo;Statistical Inference&rdquo;.</li>
-<li>Every chapter, including end-of-chapter exercises, can be done in a day.</li>
-<li>Later chapters feel like copy-pastes from a lecture note.</li>
-</ul>
-</li>
-</ul>
-<h2 id="cs-and-swe">CS and SWE</h2>
-<ul>
-<li>
-<p><a href="http://15445.courses.cs.cmu.edu/">CMU 15-445 Intro to Database Systems</a></p>
-<ul>
-<li>Great lecturer</li>
-<li>Discusses details of database systems unlike Stanford&rsquo;s CS145.</li>
-<li>This course is a pre-req to <a href="http://15721.courses.cs.cmu.edu/">CMU 15-721 Advanced Database Systems</a>, which covers in-memory systems. The first lecture of the advanced course (History of Database Systems) is a fun watch.</li>
-</ul>
-</li>
-<li>
-<p><a href="http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/">CMU 15-213 Introduction to Computer Systems</a> (Fall 2015)</p>
-<ul>
-<li>Comparable to MIT 6.004 Computation Structures, which is available on OCW. This CMU course takes a &ldquo;programmer&rsquo;s perspective&rdquo;, and skips circuits.</li>
-<li><a href="https://scs.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx#folderID=%22b96d90ae-9871-4fae-91e2-b1627b43e25e%22">Video lectures</a></li>
-</ul>
-</li>
-<li>
-<p><a href="https://courses.cs.washington.edu/courses/csep552/18wi/">U of W CSEP552 Distributed Systems</a></p>
-<ul>
-<li>Lecture videos.</li>
-<li>also see: CMU 15-440 and MIT 6.824. Topics and assignments are similar.</li>
-</ul>
-</li>
-<li>
-<p><a href="http://training.data-artisans.com/">data Artisans Flink Training</a></p>
-<ul>
-<li>Provides exercises that cover most APIs (Streaming, Dataset, Connectors, Fault Tolerance, Table, SQL, CEP). Java or Scala. Exercises come with solutions.</li>
-<li>Should read this article as a pre-requisite: <a href="https://www.oreilly.com/people/09f01-tyler-akidau">The world beyond batch: Streaming 101/102</a>.</li>
-</ul>
-</li>
-<li>
-<p><a href="https://www.coursera.org/learn/scala-spark-big-data">Big Data Analysis with Scala and Spark</a> (Coursera)</p>
-<ul>
-<li>Part of the Functional Programming in Scala specialization</li>
-</ul>
-</li>
-<li>
-<p><a href="http://www.itu.dk/people/sestoft/itu/PCPP/E2016/">Practical Concurrent and Parallel Programming</a></p>
-<ul>
-<li>Covers most of &ldquo;Java Concurrency in Practice&rdquo; by Goetz with a Java 8 twist, and a bit of &ldquo;The Art of Multiprocessor Programming&rdquo;.</li>
-<li>Each week comes with a simple coding assignment, which takes about an hour.</li>
-</ul>
-</li>
-<li>
-<p>Functional Programming in Scala Specialization (Coursera)</p>
-<ul>
-<li>Assignments are fun (i.e. moderately challenging) unlike most Coursera courses.</li>
-<li>Course 1 &amp; 2 comprise an introduction to functional programming and the Scala type system.
-Most of lecture time is spent on discussing various functional programming constructs, but the instructor (Odersky) dips toes into theoretical details sometimes, which I liked.</li>
-<li>Course 3 covers data parallelism, parallel scan (aka prefix sum), and combiners.
-The discussion on combiners using conc-tree as an example is interesting. Programming assignments on Week 2 (reductions and prefix sums) and Week 4 (Barnes-Hut simulation) are great!</li>
-</ul>
-</li>
-<li>
-<p><a href="https://homes.cs.washington.edu/~djg/teachingMaterials/spac/">Sophomoric Parallelism and Concurrency</a> (Dan Grossman, U of W)</p>
-<ul>
-<li>A short introductory course on parallel data structures and concurrency using Java&rsquo;s fork-join framework.</li>
-<li>Homework problems are food for thought.</li>
-</ul>
-</li>
-<li>
-<p>Algorithms Part 1 &amp; 2 by Princeton (Coursera)</p>
-<ul>
-<li>A standard 2nd-year course on algorithms. The instructor sprinkles historical overview, &ldquo;war stories&rdquo;, and applications of algorithms in each of his lectures, which are entertaining.</li>
-<li>Good set of assignments to work through. They don&rsquo;t merely ask you to write a data structure introduced in lecture; each assignment requires some problem solving, such as figuring out what data structures should be used to achieve given performance requirements.</li>
-</ul>
-</li>
-<li>
-<p>Parallel, Concurrent, and Distributed Programming in Java Specialization by Rice (Coursera)</p>
-<ul>
-<li>A massively watered-down version of <a href="https://wiki.rice.edu/confluence/display/PARPROG/COMP322">COMP322</a>.</li>
-<li>The course focuses on concurrent programming, and it does a good job of giving an overview of various concurrency models and constructs.
-Topics covered are: fork-join, race conditions, barriers and phasers, chucking in parallel computing, structured and unstructured locks, liveness, critical section, object-based isolation, monitor pattern, actor model, linearizability, pipeline parallelism,  pub-sub, message passing model, client-server.</li>
-<li>Programming assignments are &ldquo;fill-in-the-blank&rdquo; style, and not edifying &mdash; except the assignments on parallel Boruvka MST and Sieve of Eratosthenes, which are fun.</li>
-</ul>
-</li>
-<li>
-<p>Computer Networks (David Wetherall, U of W)</p>
-<ul>
-<li>An overview of networking from the physical layer all the way up to the application layer.</li>
-<li><a href="http://media.pearsoncmg.com/ph/streaming/esm/tanenbaum5e_videonotes/tanenbaum_videoNotes.html">Video lectures</a>. There used to be a course on Coursera based on the same videos.</li>
-</ul>
-</li>
-<li>
-<p>MIT 6.005 Software Construction (OCW)</p>
-<ul>
-<li>Software engineering best practices. What constitutes a good specification and test? Immutability. Interfaces. Equality. Specification and tests for abstract data types and concurrent programs.</li>
-</ul>
-</li>
-</ul>
+    <p>IIS stands for &ldquo;Irreducible Infeasible Subsystem&rdquo;.
+There is no Wikipedia entry for it.
+I&rsquo;ve been using the definition from a <a href="https://support.gurobi.com/hc/en-us/articles/15656630439441-How-do-I-use-compute-IIS-to-find-a-subset-of-constraints-that-are-causing-model-infeasibility-">Gurobi article</a>.</p>
+<p>Let \( I_0 \) be a subset of constraints.
+\( I_0 \) is an <em>IIS</em> iff:</p>
+<ol>
+<li>\( I_0 \) is infeasible.</li>
+<li>Removing any single constraint (&ldquo;or bound&rdquo;) from \( I_0 \) makes it feasible.</li>
+</ol>
+<p>(I&rsquo;ve never thought about what the &ldquo;or bound&rdquo; part is doing.)</p>
+<h4 id="property-1-an-iis-does-not-consist-of-disjoint-infeasible-systems">Property 1: an IIS does not consist of disjoint infeasible systems</h4>
+<p>Example: the following constraints do not comprise an IIS.</p>
+<ol>
+<li>\( a \leq 0 \)</li>
+<li>\( a \geq 1 \)</li>
+<li>\( b \leq 0 \)</li>
+<li>\( b \geq 1 \)</li>
+</ol>
+<p>because removing one constraint, say \( a \leq 0 \), leaves the infeasibility on \( b \).</p>
+<p>Another non-IIS:</p>
+<ol>
+<li>\( a \geq 1 \)</li>
+<li>\( b \geq 1 \)</li>
+<li>\( a + b \leq 0 \).</li>
+</ol>
+<p>Removing \( a \geq 1 \) leaves the infeasibility on \( b \).</p>
+<h4 id="property-2-removing-a-constraint-in-an-iis-does-not-make-the-original-system-feasible">Property 2: removing a constraint in an IIS does not make the original system feasible.</h4>
+<p>\( I_0 \) is a collection of rows from \( A x \leq B \).</p>
+<p>Example:</p>
+<ol>
+<li>\( a \geq 3 \)</li>
+<li>\( b \geq 3 \)</li>
+<li>\( a + b \leq 2 \).</li>
+</ol>
+<p>\( \{ a \geq 3,\ a + b \leq 2 \} \) is an IIS.
+But removing \( a \geq 3 \) from the original system doesn&rsquo;t make it feasible.</p>
+<h4 id="property-3-an-iis-may-not-be-minimal">Property 3: an IIS may not be &ldquo;minimal&rdquo;.</h4>
+<p>By &ldquo;minimal&rdquo; here, I mean that a set of constraints has the smallest cardinality.
+The <a href="https://support.gurobi.com/hc/en-us/articles/15656630439441-How-do-I-use-compute-IIS-to-find-a-subset-of-constraints-that-are-causing-model-infeasibility-">Gurobi article</a> talks about this property a bit.
+Some articles that I&rsquo;ve come across use &ldquo;minimal&rdquo; to mean irreducible.</p>
+<p>Example:</p>
+<ol>
+<li>\( a \geq 1 \)</li>
+<li>\( b \geq 1 \)</li>
+<li>\( a + b \geq 2 \).</li>
+<li>\( a + b \leq 1.5 \)</li>
+</ol>
+<p>The two subsystems \( \{ a + b \geq 2,\ a + b \leq 1.5 \} \) and \( \{ a + b \geq 2,\ a \geq 1,\ b \geq 1 \} \) are, in some sense, infeasible in the same way.
+In this example, the former is the minimal IIS.
+In practice, you often don&rsquo;t know which constraints in your model are linear combinations of other constraints, so I suppose minimality is a nice-to-have.
+For my own work, the IIS that Gurobi returns has been useful.</p>
+<p>This <a href="https://or.stackexchange.com/questions/559/computational-complexity-to-compute-an-iis">stackexchange thread</a> cites a <a href="https://link.springer.com/article/10.1007/s10107-002-0363-5">paper</a> that says finding the min-cardinality IIS is NP-hard, and is hard to approximate.</p>
+<p>How solvers compute an IIS for another article.</p>
 
   </section>
   <footer>
@@ -277,12 +210,10 @@ Topics covered are: fork-join, race conditions, barriers and phasers, chucking i
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="https://atkm.github.io/posts/data-eng-reading-2018/">Newer</a>
-          
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://atkm.github.io/posts/heteroskedasticity/">Older</a>
+          <a href="https://atkm.github.io/posts/data-diffs/">Older</a>
           
         </div>
       </div>
