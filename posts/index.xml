@@ -13,7 +13,7 @@
       <link>https://atkm.github.io/posts/how-to-compute-iis/</link>
       <pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate>
       <guid>https://atkm.github.io/posts/how-to-compute-iis/</guid>
-      <description>Gurobi says their algorithm is based on the paper &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo;**&amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; from 1990.&#xA;This thread from Gurobi has some discussion on how Gurobi does it.&#xA;An article by Chinneck. These slides from Chinneck. &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; By John Gleeson, Jennifer Ryan. 1990.&#xA;Link&#xA;Notes:&#xA;\( y_i := 1 \text{ iff the i^th constraint is deleted.} \) \( S_i := \text{ the set of constraint indices in the j^th IIS.</description>
+      <description>Gurobi says their algorithm is based on the paper &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; from 1990.&#xA;This thread from Gurobi has some discussion on how Gurobi does it.&#xA;An article by Chinneck. These slides from Chinneck. &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; By John Gleeson, Jennifer Ryan. 1990.&#xA;Link&#xA;Notes:&#xA;\( y_i := 1 \text{ iff the i^th constraint is deleted.} \) \( S_i := \text{ the set of constraint indices in the j^th IIS.</description>
     </item>
     <item>
       <title>Simple properties of IIS</title>
