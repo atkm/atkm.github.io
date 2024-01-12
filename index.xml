@@ -6,214 +6,154 @@
     <description>Recent content on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to compute IIS</title>
+      <link>https://atkm.github.io/posts/how-to-compute-iis/</link>
+      <pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://atkm.github.io/posts/how-to-compute-iis/</guid>
+      <description>Gurobi says their algorithm is based on the paper &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo;**&amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; from 1990.&#xA;This thread from Gurobi has some discussion on how Gurobi does it.&#xA;An article by Chinneck. These slides from Chinneck. &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; By John Gleeson, Jennifer Ryan. 1990.&#xA;Link&#xA;Notes:&#xA;\( y_i := 1 \text{ iff the i^th constraint is deleted.} \) \( S_i := \text{ the set of constraint indices in the j^th IIS.</description>
+    </item>
     <item>
       <title>Simple properties of IIS</title>
       <link>https://atkm.github.io/posts/simple-properties-of-iis/</link>
       <pubDate>Mon, 21 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/simple-properties-of-iis/</guid>
-      <description>IIS stands for &amp;ldquo;Irreducible Infeasible Subsystem&amp;rdquo;. There is no Wikipedia entry for it. I&amp;rsquo;ve been using the definition from a Gurobi article.
-Let \( I_0 \) be a subset of constraints. \( I_0 \) is an IIS iff:
-\( I_0 \) is infeasible. Removing any single constraint (&amp;ldquo;or bound&amp;rdquo;) from \( I_0 \) makes it feasible. (I&amp;rsquo;ve never thought about what the &amp;ldquo;or bound&amp;rdquo; part is doing.)
-Property 1: an IIS does not consist of disjoint infeasible systems Example: the following constraints do not comprise an IIS.</description>
+      <description>IIS stands for &amp;ldquo;Irreducible Infeasible Subsystem&amp;rdquo;. There is no Wikipedia entry for it. I&amp;rsquo;ve been using the definition from a Gurobi article.&#xA;Let \( I_0 \) be a subset of constraints. \( I_0 \) is an IIS iff:&#xA;\( I_0 \) is infeasible. Removing any single constraint (&amp;ldquo;or bound&amp;rdquo;) from \( I_0 \) makes it feasible. (I&amp;rsquo;ve never thought about what the &amp;ldquo;or bound&amp;rdquo; part is doing.)&#xA;Property 1: an IIS does not consist of disjoint infeasible systems Example: the following constraints do not comprise an IIS.</description>
     </item>
-    
     <item>
       <title>Notes: Data Diffs</title>
       <link>https://atkm.github.io/posts/data-diffs/</link>
       <pubDate>Sat, 05 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/data-diffs/</guid>
-      <description>I came across Data diffs: Algorithms for explaining what changed in a dataset.
-The two papers discussed are: Scorpion by Eugene Wu and Sam Madden. Finds common properties of outlier points. DIFF. SQL implementation of Scorpion and similar. The computated can be distributed. An author of the DIFF paper, Peter Bailis, founded sisudata.com. The comments on HN list some related work:
-Dolt is a company whose product is a version-controlled SQL database.</description>
+      <description>I came across Data diffs: Algorithms for explaining what changed in a dataset.&#xA;The two papers discussed are: Scorpion by Eugene Wu and Sam Madden. Finds common properties of outlier points. DIFF. SQL implementation of Scorpion and similar. The computated can be distributed. An author of the DIFF paper, Peter Bailis, founded sisudata.com. The comments on HN list some related work:&#xA;Dolt is a company whose product is a version-controlled SQL database.</description>
     </item>
-    
     <item>
       <title>Notes: Compressed Sensing</title>
       <link>https://atkm.github.io/posts/compressed-sensing/</link>
       <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/compressed-sensing/</guid>
-      <description>Lecture video, and what Terrence Tao has to say about the topic.
-The video is associated with this textbook. I came across the Coursera version of this course around 2013. The data analysis section of this course seems to be motivated by signal processing. The course has some overlap with Stanford&amp;rsquo;s EE263 (linear methods).</description>
+      <description>Lecture video, and what Terrence Tao has to say about the topic.&#xA;The video is associated with this textbook. I came across the Coursera version of this course around 2013. The data analysis section of this course seems to be motivated by signal processing. The course has some overlap with Stanford&amp;rsquo;s EE263 (linear methods).</description>
     </item>
-    
     <item>
       <title>Learning Optimization, Stats, and ML</title>
       <link>https://atkm.github.io/posts/learning-optimization-stats/</link>
       <pubDate>Fri, 23 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-optimization-stats/</guid>
-      <description>Optimization I&amp;rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?). Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.
-Stanford EE263 Linear Dynamical Systems
-An applied linear algebra course. Interesting content, good problems. &amp;ldquo;Linear methods can solve lots of things&amp;rdquo; is a statement that I often hear but without examples. This course makes that statement concrete.</description>
+      <description>Optimization I&amp;rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?). Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.&#xA;Stanford EE263 Linear Dynamical Systems&#xA;An applied linear algebra course. Interesting content, good problems. &amp;ldquo;Linear methods can solve lots of things&amp;rdquo; is a statement that I often hear but without examples. This course makes that statement concrete.</description>
     </item>
-    
     <item>
       <title>ML theory papers</title>
       <link>https://atkm.github.io/posts/ml-theory-papers/</link>
       <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/ml-theory-papers/</guid>
-      <description>Mert Pilanci
-Neural Networks are Convex Regularizers
-Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent convex problem. Talk at Stanford. An audience member said that you want SDG to converge to a local minumum (for generalization?). That doesn&amp;rsquo;t sound right? A previous result showed that an infinite-width network is convex. This paper on the other hand gives a convex problem that can be implemented and solved. All Local Minima are Global for Two-Layer ReLU Neural Networks</description>
+      <description>Mert Pilanci&#xA;Neural Networks are Convex Regularizers&#xA;Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent convex problem. Talk at Stanford. An audience member said that you want SDG to converge to a local minumum (for generalization?). That doesn&amp;rsquo;t sound right? A previous result showed that an infinite-width network is convex. This paper on the other hand gives a convex problem that can be implemented and solved. All Local Minima are Global for Two-Layer ReLU Neural Networks</description>
     </item>
-    
     <item>
       <title>Learning CS Systems</title>
       <link>https://atkm.github.io/posts/learning-cs-systems/</link>
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-cs-systems/</guid>
-      <description>Online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.
-Systems Beyond CMU 15-213.
-CMU 15-440 (Fall version)
-The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues. 0. Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
+      <description>Online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.&#xA;Systems Beyond CMU 15-213.&#xA;CMU 15-440 (Fall version)&#xA;The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues. 0. Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
     </item>
-    
     <item>
       <title>Avazu Click-Through Rate Prediction</title>
       <link>https://atkm.github.io/archived-posts/click-thru-rate-prediction/</link>
       <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/click-thru-rate-prediction/</guid>
-      <description>Draft.
-1. Narrative (TODO) Code published on GitHub.
-The data is from a Kaggle competition hosted by Avazu.
-2. Data The columns are:
-id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &amp;hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer). In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.</description>
+      <description>Draft.&#xA;1. Narrative (TODO) Code published on GitHub.&#xA;The data is from a Kaggle competition hosted by Avazu.&#xA;2. Data The columns are:&#xA;id click hour (YYMMDDHH) banner_pos site/app_id/domain/category. device variables: id, ip, model, type, conn_type C1, C14, C15, &amp;hellip;, C21: anonymous features. Some of the anonymous features must be properties of the ad (e.g. id, category, marketer). In most columns, hashed values are given. (As the raw values were not salted prior to hashing, the original strings can be recovered.</description>
     </item>
-    
     <item>
       <title>Notes: Curse of Dimensionality</title>
       <link>https://atkm.github.io/posts/curse-of-dimensionality-notes/</link>
       <pubDate>Sat, 20 Oct 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/curse-of-dimensionality-notes/</guid>
-      <description>Geometry In \( \mathbb{R}^n \) where \( n \) is large,
-The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability. Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.</description>
+      <description>Geometry In \( \mathbb{R}^n \) where \( n \) is large,&#xA;The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability. Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.</description>
     </item>
-    
     <item>
       <title>Prediction of NYC Taxi Demand</title>
       <link>https://atkm.github.io/archived-posts/taxi-demand-prediction/</link>
       <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/taxi-demand-prediction/</guid>
-      <description>1. Narrative (TODO) Code published on GitHub.
-2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.
-For each year, there are about 170 million records, which amount to about 25GB.</description>
+      <description>1. Narrative (TODO) Code published on GitHub.&#xA;2. Data 2.1 Taxi We use the yellow cab trip CSV data available here. The columns that we use are the pickup location (in latitude and longitude), and pickup datetime. The CSVs contain other columns, such as drop-off information, trip distance, and fare; there are many other analyses that are possible with this data.&#xA;For each year, there are about 170 million records, which amount to about 25GB.</description>
     </item>
-    
     <item>
       <title>Some data engineering reading</title>
       <link>https://atkm.github.io/posts/data-eng-reading-2018/</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/data-eng-reading-2018/</guid>
       <description>Model Serving FLIP-23. The document also discusses implementing model training as well as model serving. Two linked documents&amp;mdash;&amp;ldquo;Flink ML Roadmap&amp;rdquo; and &amp;ldquo;Flink-MS&amp;rdquo;&amp;mdash;are also worth reading. Boris Lublinsky&amp;rsquo;s book &amp;ldquo;Serving Machine Learning Models&amp;rdquo;, and talk. Distributed Systems Please Stop Calling Database Systems AP or CP. Kate Matsudaira on distributed systems Distributed Systems for Fun and Profit Martin Kleppmann&amp;rsquo;s book and interview. Use of Formal Methods at Amazon Web Services A tale of two clusters: Mesos and YARN A visual explanation of Raft: link Streaming Systems The Dataflow Model, Apache Beam, and Cloud Dataflow Tyler Akidau&amp;rsquo;s article on the Dataflow model.</description>
     </item>
-    
     <item>
       <title>Keyword Extraction from arXiv - Summary</title>
       <link>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-summary/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-summary/</guid>
-      <description>In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.
-Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &amp;mdash; whenever the speaker used a term that I wasn&amp;rsquo;t familiar with, I would write it down and look it up later.</description>
+      <description>In the previous articles on arXiv keyword extraction, I focused on details of setting up an infrastructure to serve the algorithm. Since then, I wrote a more complete keyword extraction algorithm, and deployed it to Google Cloud Platform. This article a more high-level overview of the end product.&#xA;Motivation I built this app to help myself keep learning mathematics. When I was in graduate school, I learned the terminology of my area of study through attending seminars &amp;mdash; whenever the speaker used a term that I wasn&amp;rsquo;t familiar with, I would write it down and look it up later.</description>
     </item>
-    
     <item>
       <title>Things I studied in 2018</title>
       <link>https://atkm.github.io/posts/learning-2018/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-2018/</guid>
-      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
-Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.
-Stanford CS229 Machine Learning
-One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</description>
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.&#xA;Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.&#xA;Stanford CS229 Machine Learning&#xA;One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</description>
     </item>
-    
     <item>
       <title>Keyword Extraction from arXiv - Part 3</title>
       <link>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part3/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part3/</guid>
-      <description>This is the final part of the tutorial. We furnish the app with an UI, and deploy it to Heroku.
-5. Build UI 5.1 index.html and main.js We first create a dropdown list. The selected category is stored in selected, and it is posted to /start when submit is called. Afterwards, the component polls /results.
-var categoryDropdown = new Vue({ el: &#39;#category-dropdown&#39;, data: { selected: &#39;&#39; }, methods: { submit: function() { keywordsResult.</description>
+      <description>This is the final part of the tutorial. We furnish the app with an UI, and deploy it to Heroku.&#xA;5. Build UI 5.1 index.html and main.js We first create a dropdown list. The selected category is stored in selected, and it is posted to /start when submit is called. Afterwards, the component polls /results.&#xA;var categoryDropdown = new Vue({ el: &#39;#category-dropdown&#39;, data: { selected: &#39;&#39; }, methods: { submit: function() { keywordsResult.</description>
     </item>
-    
     <item>
       <title>Keyword Extraction from arXiv - Part 2</title>
       <link>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part2/</link>
       <pubDate>Thu, 12 Oct 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part2/</guid>
-      <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.
-We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:</description>
+      <description>In Part 1, we developed a keyword extraction algorithm. The next step is to modify the algorithm to use database. Configuring Postgres is more involved than in Flask by Example, since we need models to store article data. The following diagram shows the architecture of our system.&#xA;We use the end product of Flask by Example tutorial as a boilerplate. Complete Part 1-4 of Flask by Example, or clone the repo of and configure Postgres by following these steps:</description>
     </item>
-    
     <item>
       <title>Keyword Extraction from arXiv - Part 1</title>
       <link>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part1/</link>
       <pubDate>Wed, 11 Oct 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/arxiv-keyword-extraction-part1/</guid>
       <description>This is a tutorial on web development written for people with a statistical analysis, scientific computing, or machine learning background. We start with an algorithm using data that fits comfortably into memory, and modify it to accept a large input. We then set up an infrastructure to serve the resulting algorithm. This tutorial focuses on the infrastructure rather than the algorithm, which will remain rudimentary. The end product is a Heroku deployment of a text summarization algorithm that analyzes articles on arXiv to extract keywords from each research category within mathematics.</description>
     </item>
-    
     <item>
       <title>Simple Linear Regression with Heteroskedastic Noise</title>
       <link>https://atkm.github.io/posts/heteroskedasticity/</link>
       <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/heteroskedasticity/</guid>
-      <description>I should come up with a solution that uses optimization instead of doing regression twice.
-Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found.</description>
+      <description>I should come up with a solution that uses optimization instead of doing regression twice.&#xA;Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found.</description>
     </item>
-    
     <item>
       <title>Benchmarking Linear Classifiers</title>
       <link>https://atkm.github.io/archived-posts/linear-classifiers/</link>
       <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/archived-posts/linear-classifiers/</guid>
       <description>I ran linear classifiers on a credit card fraud data. Parallelization. Lasso and ridge. Grid search. Published on kaggle.</description>
     </item>
-    
     <item>
       <title>Math 141 Lecture Notes (Summer 2016)</title>
       <link>https://atkm.github.io/math/141-sum16/lecnotes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/math/141-sum16/lecnotes/</guid>
       <description>Part 3 Chapter 10 10.1 10.2 10.3 10.4 Chapter 11 11.8 11.9 11.10 11.11 Part 2 Indeterminate Forms and Improper Integrals 6.8 7.8 Chapter 11 11.1 11.2 11.3 11.4 11.5 11.6 Part 3 Chapter 6 6.1 6.2 6.3 6.4 6.6 Chapter 7 7.1 7.2 7.3 7.4 </description>
     </item>
-    
     <item>
       <title>Math 141 Miniexams (Summer 2016)</title>
       <link>https://atkm.github.io/math/141-sum16/miniexams/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/math/141-sum16/miniexams/</guid>
       <description> 1 2 3 4 5 6 </description>
     </item>
-    
     <item>
       <title>Math 141 Miniexams from the previous year</title>
       <link>https://atkm.github.io/math/141-sum16/past-miniexams/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/math/141-sum16/past-miniexams/</guid>
       <description> 1 2 3 4 5 6 </description>
     </item>
-    
   </channel>
 </rss>

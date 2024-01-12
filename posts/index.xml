@@ -6,114 +6,84 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atkm.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://atkm.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to compute IIS</title>
+      <link>https://atkm.github.io/posts/how-to-compute-iis/</link>
+      <pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://atkm.github.io/posts/how-to-compute-iis/</guid>
+      <description>Gurobi says their algorithm is based on the paper &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo;**&amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; from 1990.&#xA;This thread from Gurobi has some discussion on how Gurobi does it.&#xA;An article by Chinneck. These slides from Chinneck. &amp;ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&amp;rdquo; By John Gleeson, Jennifer Ryan. 1990.&#xA;Link&#xA;Notes:&#xA;\( y_i := 1 \text{ iff the i^th constraint is deleted.} \) \( S_i := \text{ the set of constraint indices in the j^th IIS.</description>
+    </item>
     <item>
       <title>Simple properties of IIS</title>
       <link>https://atkm.github.io/posts/simple-properties-of-iis/</link>
       <pubDate>Mon, 21 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/simple-properties-of-iis/</guid>
-      <description>IIS stands for &amp;ldquo;Irreducible Infeasible Subsystem&amp;rdquo;. There is no Wikipedia entry for it. I&amp;rsquo;ve been using the definition from a Gurobi article.
-Let \( I_0 \) be a subset of constraints. \( I_0 \) is an IIS iff:
-\( I_0 \) is infeasible. Removing any single constraint (&amp;ldquo;or bound&amp;rdquo;) from \( I_0 \) makes it feasible. (I&amp;rsquo;ve never thought about what the &amp;ldquo;or bound&amp;rdquo; part is doing.)
-Property 1: an IIS does not consist of disjoint infeasible systems Example: the following constraints do not comprise an IIS.</description>
+      <description>IIS stands for &amp;ldquo;Irreducible Infeasible Subsystem&amp;rdquo;. There is no Wikipedia entry for it. I&amp;rsquo;ve been using the definition from a Gurobi article.&#xA;Let \( I_0 \) be a subset of constraints. \( I_0 \) is an IIS iff:&#xA;\( I_0 \) is infeasible. Removing any single constraint (&amp;ldquo;or bound&amp;rdquo;) from \( I_0 \) makes it feasible. (I&amp;rsquo;ve never thought about what the &amp;ldquo;or bound&amp;rdquo; part is doing.)&#xA;Property 1: an IIS does not consist of disjoint infeasible systems Example: the following constraints do not comprise an IIS.</description>
     </item>
-    
     <item>
       <title>Notes: Data Diffs</title>
       <link>https://atkm.github.io/posts/data-diffs/</link>
       <pubDate>Sat, 05 Aug 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/data-diffs/</guid>
-      <description>I came across Data diffs: Algorithms for explaining what changed in a dataset.
-The two papers discussed are: Scorpion by Eugene Wu and Sam Madden. Finds common properties of outlier points. DIFF. SQL implementation of Scorpion and similar. The computated can be distributed. An author of the DIFF paper, Peter Bailis, founded sisudata.com. The comments on HN list some related work:
-Dolt is a company whose product is a version-controlled SQL database.</description>
+      <description>I came across Data diffs: Algorithms for explaining what changed in a dataset.&#xA;The two papers discussed are: Scorpion by Eugene Wu and Sam Madden. Finds common properties of outlier points. DIFF. SQL implementation of Scorpion and similar. The computated can be distributed. An author of the DIFF paper, Peter Bailis, founded sisudata.com. The comments on HN list some related work:&#xA;Dolt is a company whose product is a version-controlled SQL database.</description>
     </item>
-    
     <item>
       <title>Notes: Compressed Sensing</title>
       <link>https://atkm.github.io/posts/compressed-sensing/</link>
       <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/compressed-sensing/</guid>
-      <description>Lecture video, and what Terrence Tao has to say about the topic.
-The video is associated with this textbook. I came across the Coursera version of this course around 2013. The data analysis section of this course seems to be motivated by signal processing. The course has some overlap with Stanford&amp;rsquo;s EE263 (linear methods).</description>
+      <description>Lecture video, and what Terrence Tao has to say about the topic.&#xA;The video is associated with this textbook. I came across the Coursera version of this course around 2013. The data analysis section of this course seems to be motivated by signal processing. The course has some overlap with Stanford&amp;rsquo;s EE263 (linear methods).</description>
     </item>
-    
     <item>
       <title>Learning Optimization, Stats, and ML</title>
       <link>https://atkm.github.io/posts/learning-optimization-stats/</link>
       <pubDate>Fri, 23 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-optimization-stats/</guid>
-      <description>Optimization I&amp;rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?). Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.
-Stanford EE263 Linear Dynamical Systems
-An applied linear algebra course. Interesting content, good problems. &amp;ldquo;Linear methods can solve lots of things&amp;rdquo; is a statement that I often hear but without examples. This course makes that statement concrete.</description>
+      <description>Optimization I&amp;rsquo;m interested in learning mathematical optimization (LP, ILP, convex opt), and stochastic problems of a similar flavor (stochastic control?). Probably for historical reasons, convex optimization is taught in EE, and integer programming is in OR.&#xA;Stanford EE263 Linear Dynamical Systems&#xA;An applied linear algebra course. Interesting content, good problems. &amp;ldquo;Linear methods can solve lots of things&amp;rdquo; is a statement that I often hear but without examples. This course makes that statement concrete.</description>
     </item>
-    
     <item>
       <title>ML theory papers</title>
       <link>https://atkm.github.io/posts/ml-theory-papers/</link>
       <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/ml-theory-papers/</guid>
-      <description>Mert Pilanci
-Neural Networks are Convex Regularizers
-Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent convex problem. Talk at Stanford. An audience member said that you want SDG to converge to a local minumum (for generalization?). That doesn&amp;rsquo;t sound right? A previous result showed that an infinite-width network is convex. This paper on the other hand gives a convex problem that can be implemented and solved. All Local Minima are Global for Two-Layer ReLU Neural Networks</description>
+      <description>Mert Pilanci&#xA;Neural Networks are Convex Regularizers&#xA;Mert Pilanci. Any finite two-layer neural network with ReLU has an equivalent convex problem. Talk at Stanford. An audience member said that you want SDG to converge to a local minumum (for generalization?). That doesn&amp;rsquo;t sound right? A previous result showed that an infinite-width network is convex. This paper on the other hand gives a convex problem that can be implemented and solved. All Local Minima are Global for Two-Layer ReLU Neural Networks</description>
     </item>
-    
     <item>
       <title>Learning CS Systems</title>
       <link>https://atkm.github.io/posts/learning-cs-systems/</link>
       <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-cs-systems/</guid>
-      <description>Online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.
-Systems Beyond CMU 15-213.
-CMU 15-440 (Fall version)
-The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues. 0. Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
+      <description>Online resources that I&amp;rsquo;ve found useful for learning computer science, especially systems. Last updated on 2019-11-23.&#xA;Systems Beyond CMU 15-213.&#xA;CMU 15-440 (Fall version)&#xA;The textbook (Van Steen &amp;amp; Tanenbaum) is readable. The slides are informative as supplements to corresponding textbook chapters and referenced articles. Lab assignments are done in Go. Tons of debugging concurrency issues. 0. Go warm-up. A simple key-value server. Implement a subset of TCP starting with UDP.</description>
     </item>
-    
     <item>
       <title>Notes: Curse of Dimensionality</title>
       <link>https://atkm.github.io/posts/curse-of-dimensionality-notes/</link>
       <pubDate>Sat, 20 Oct 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/curse-of-dimensionality-notes/</guid>
-      <description>Geometry In \( \mathbb{R}^n \) where \( n \) is large,
-The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability. Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.</description>
+      <description>Geometry In \( \mathbb{R}^n \) where \( n \) is large,&#xA;The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of the volume of a n-ball is concentrated around its boundary. Pick two vectors on the surface of the unit ball independently. The two are orthogonal with high probability. Johnson-Lindenstrauss lemma: a set of points can be embedded almost isometrically w.r.t. \( L_2 \) into a space of a much lower dimension.</description>
     </item>
-    
     <item>
       <title>Some data engineering reading</title>
       <link>https://atkm.github.io/posts/data-eng-reading-2018/</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/data-eng-reading-2018/</guid>
       <description>Model Serving FLIP-23. The document also discusses implementing model training as well as model serving. Two linked documents&amp;mdash;&amp;ldquo;Flink ML Roadmap&amp;rdquo; and &amp;ldquo;Flink-MS&amp;rdquo;&amp;mdash;are also worth reading. Boris Lublinsky&amp;rsquo;s book &amp;ldquo;Serving Machine Learning Models&amp;rdquo;, and talk. Distributed Systems Please Stop Calling Database Systems AP or CP. Kate Matsudaira on distributed systems Distributed Systems for Fun and Profit Martin Kleppmann&amp;rsquo;s book and interview. Use of Formal Methods at Amazon Web Services A tale of two clusters: Mesos and YARN A visual explanation of Raft: link Streaming Systems The Dataflow Model, Apache Beam, and Cloud Dataflow Tyler Akidau&amp;rsquo;s article on the Dataflow model.</description>
     </item>
-    
     <item>
       <title>Things I studied in 2018</title>
       <link>https://atkm.github.io/posts/learning-2018/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/learning-2018/</guid>
-      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
-Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.
-Stanford CS229 Machine Learning
-One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</description>
+      <description>Freely available online resources that I&amp;rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.&#xA;Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&amp;rsquo;t skimp on the hard stuff.&#xA;Stanford CS229 Machine Learning&#xA;One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</description>
     </item>
-    
     <item>
       <title>Simple Linear Regression with Heteroskedastic Noise</title>
       <link>https://atkm.github.io/posts/heteroskedasticity/</link>
       <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://atkm.github.io/posts/heteroskedasticity/</guid>
-      <description>I should come up with a solution that uses optimization instead of doing regression twice.
-Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found.</description>
+      <description>I should come up with a solution that uses optimization instead of doing regression twice.&#xA;Introduction The model we consider is \(Y_i = \alpha + \beta x_i + \epsilon_i\), where \( \epsilon_i \) are uncorrelated, and \( \mathbb{V}(\epsilon_i) \) depends on \( i \). We discuss two solutions to finding estimators of \( \alpha, \beta \). Weighted least squares regression leads to best linear unbiased estimators (BLUE). Also, with stronger assumptions on \( \epsilon_i \), maximum likelihood estimators (MLE) can be found.</description>
     </item>
-    
   </channel>
 </rss>

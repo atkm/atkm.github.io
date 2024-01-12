@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Things I studied in 2018</title>
-  <meta property="og:title" content="Things I studied in 2018" />
-  <meta name="twitter:title" content="Things I studied in 2018" />
+  <title>How to compute IIS</title>
+  <meta property="og:title" content="How to compute IIS" />
+  <meta name="twitter:title" content="How to compute IIS" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="https://atkm.github.io/posts/learning-2018/" />
+  <meta property="og:url" content="https://atkm.github.io/posts/how-to-compute-iis/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -35,12 +35,48 @@
   
   
   <link rel='icon' type='image/x-icon' href="https://atkm.github.io/favicon.ico" />
-  
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    // inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    //displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
   
   
 
 </head>
 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    // inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    //displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
 
 <body>
   
@@ -81,25 +117,25 @@
 
 <article class="p-article">
   <header>
-    <h1>Things I studied in 2018</h1>
+    <h1>How to compute IIS</h1>
     
     <div>
         <div class="c-meta">
         
            Posted on
-<time datetime="2018-04-04T00:00:00Z">
-  Apr 4, 2018
+<time datetime="2023-08-22T00:00:00Z">
+  Aug 22, 2023
 </time>
 
         
         
          | 
-           963 words
+           377 words
 
         
         
          | 
-           ~5mins
+           ~2mins
 
         
         </div>
@@ -110,162 +146,58 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>Freely available online resources that I&rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.</p>
-<h2 id="statistics-and-machine-learning">Statistics and Machine Learning</h2>
-<h3 id="ml">ML</h3>
-<p>Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&rsquo;t skimp on the hard stuff.</p>
+    <p><a href="https://support.gurobi.com/hc/en-us/articles/360041448572-How-does-Gurobi-compute-the-IIS-for-infeasible-models-">Gurobi says</a> their algorithm is based on <a href="https://pubsonline.informs.org/doi/10.1287/ijoc.2.1.61">the paper</a> <em>&ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&rdquo;**&ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&rdquo;</em> from 1990.</p>
+<p>This <a href="https://support.gurobi.com/hc/en-us/community/posts/4470121095057-How-Gurobi-compute-IIS-for-MIP-problem-">thread from Gurobi</a> has some discussion on how Gurobi does it.</p>
 <ul>
-<li>
-<p>Stanford CS229 Machine Learning</p>
+<li><a href="http://www.sce.carleton.ca/faculty/chinneck/docs/GuieuChinneck.pdf">An article</a> by Chinneck.</li>
+<li><a href="https://www.sce.carleton.ca/faculty/chinneck/docs/CPAIOR07InfeasibilityTutorial.pdf">These slides</a> from Chinneck.</li>
+</ul>
+<h2 id="identifying-minimally-infeasible-subsystems-of-inequalities">&ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&rdquo;</h2>
+<p>By John Gleeson, Jennifer Ryan. 1990.</p>
+<p><a href="https://www.math.ucdavis.edu/~deloera/MISC/LA-BIBLIO/trunk/RyanJennifer2.pdf">Link</a></p>
+<p>Notes:</p>
 <ul>
-<li>One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.</li>
-<li>Topics: matrix calculus review, logistic regression, gradient descent and its variants, discriminative and generative algorithms, linear programming and SVM, theory of learning (e.g. VC dimension, uniform convergence), K-means clustering and the EM algorithm, PCA, reinforcement learning, &hellip; among many others.</li>
-<li><a href="https://see.stanford.edu/course/cs229">Stanford Engineering Everywhere</a> publishes course materials (including video lectures) from 2008.
-<a href="http://cs229.stanford.edu/">Resources</a> from the most recent iteration of the course (except video lectures) is also accesible.
-Newer iterations of the course spend more time on deep learning towards the end of the course.</li>
-<li>Fun homework problems.</li>
+<li>\( y_i := 1 \text{ iff the i^th constraint is deleted.} \)</li>
+<li>\( S_i := \text{ the set of constraint indices in the j^th IIS. } \)</li>
+<li>The MIP given in the beginning of page 2 says:
+<ul>
+<li>Minimize the number of constraints dropped, while dropping at least one constraint from each IIS.</li>
+<li>Since <em>all</em> IIS are enumerated, a subsystem that this program produces (drop constraints with \( y_i = 1 \)) is feasible.</li>
+<li>So this program produces &ldquo;the minimum number of inequalities that must be dropped in order to achieve a consistent system&rdquo;.</li>
 </ul>
 </li>
-<li>
-<p><code>mathematicalmonk</code>&rsquo;s machine learning <a href="https://www.youtube.com/playlist?list=PLD0F06AA0D2E8FFBA">playlist</a></p>
+<li>Obviously, enumerating all IIS is far from trivial.
+&ldquo;The number of minimally infeasible subsystems is exponential in the number of constraints&rdquo;.</li>
+<li>The &ldquo;pivoting method&rdquo; that the paper proposes is based on <a href="https://www.sciencedirect.com/science/article/abs/pii/0377221781901776">a paper</a> by Van Loon.</li>
+<li>The known vertex enumeration algorithm at the time was O(num_constraints * num_variables^2 * num_extreme_points).
+Looks like the situation hasn&rsquo;t changed since 1996.
+Wikipedia lists the <a href="https://en.wikipedia.org/wiki/Vertex_enumeration_problem">Avis–Fukuda</a> algorithm with the same complexity.</li>
+</ul>
+<h2 id="scip">SCIP</h2>
+<p>It&rsquo;s possible to compute IIS with SCIP. Never tried it.</p>
 <ul>
-<li>Authored by Jeff Miller</li>
-<li>The lectures provide good balance of intuition and mathematical detail.</li>
-<li>A very good exposition on MCMC.</li>
+<li><a href="http://listserv.zib.de/pipermail/scip/2015-December/002613.html">thread 2</a>
+<ul>
+<li>MinIISC is a stand-alone application separate from SCIP.</li>
 </ul>
 </li>
-<li>
-<p>There is an online textbook with a gitbook (blue) interface that seems to be written by someone with a pure math background. I can&rsquo;t find it nor remember its title.
-(Update: maybe <a href="https://jeremykun.com/main-content/">this</a>?)</p>
-</li>
+<li><a href="http://listserv.zib.de/pipermail/scip/2012-October/001095.html">thread 1</a></li>
 </ul>
-<h3 id="stat">Stat</h3>
+<p><a href="https://scipopt.org/doc/html/MINIISC_MAIN.php">MinIISC</a> computes a minimal (in cardinality) IIS.
+The doc cites <a href="https://link.springer.com/article/10.1007/BF02284626"><em>&ldquo;Finding the minimum weight IIS cover of an infeasible system of linear inequalities&rdquo;</em></a>.</p>
 <ul>
-<li>
-<p><a href="http://www.stat.cmu.edu/~cshalizi/">Cosma Shalizi</a> (CMU)</p>
-<ul>
-<li>Good lecture notes.
-They provide an in-depth discussion of assumptions behind statistical models, as well as statistical fallacies and pitfalls.</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/mreg/15/">36-401 Modern Regression</a>
-<ul>
-<li>A deep dive into the linear model. &mdash; What is a statistical model? How to check assumptions? What confidence sets are and what they aren&rsquo;t. Is R-squared distraction or nuisance? &ldquo;Does anyone know when the correlation coefficient is useful, as opposed to, used?&rdquo; Multicollinearity is hard. &mdash; I really enjoyed reading the notes.</li>
+<li>The program described in the &ldquo;Solution Approach&rdquo; section is the same as the program in the page 2 of &ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&rdquo;.</li>
+<li>The main problem that the paper deals with is the enumeration of IIS.</li>
+<li>The &ldquo;Implementation&rdquo; section cites <em>&ldquo;Branch-and-Cut for the Maximum Feasible Subsystem Problem&rdquo;</em>.</li>
 </ul>
-</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/uADA/17/">36-402 Undergraduate Advanced Data Analysis</a>
-<ul>
-<li>Builds on 36-401 to cover more modern techniques.</li>
-</ul>
-</li>
-<li><a href="http://www.stat.cmu.edu/~cshalizi/statcomp/14/">36-350 Statistical Computing</a>
-<ul>
-<li>Introduction to R, functional-style programming, and numerics.</li>
-<li>Topics: R data types, split-apply-combine, testing, random number generation, distributions, optimization, bootstrap, MCMC, regexp.</li>
-<li>Sections on optimization, simulation, and MCMC are good reading for numerical computing in general, not specific to R.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>Wasserman, &ldquo;All of Statistics&rdquo;</p>
-<ul>
-<li>Theoretical statistics at the advanced-undergraduate level.
-Shorter than Casella &amp; Berger, &ldquo;Statistical Inference&rdquo;.</li>
-<li>Every chapter, including end-of-chapter exercises, can be done in a day.</li>
-<li>Later chapters feel like copy-pastes from a lecture note.</li>
-</ul>
-</li>
-</ul>
-<h2 id="cs-and-swe">CS and SWE</h2>
-<ul>
-<li>
-<p><a href="http://15445.courses.cs.cmu.edu/">CMU 15-445 Intro to Database Systems</a></p>
-<ul>
-<li>Great lecturer</li>
-<li>Discusses details of database systems unlike Stanford&rsquo;s CS145.</li>
-<li>This course is a pre-req to <a href="http://15721.courses.cs.cmu.edu/">CMU 15-721 Advanced Database Systems</a>, which covers in-memory systems. The first lecture of the advanced course (History of Database Systems) is a fun watch.</li>
-</ul>
-</li>
-<li>
-<p><a href="http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/">CMU 15-213 Introduction to Computer Systems</a> (Fall 2015)</p>
-<ul>
-<li>Comparable to MIT 6.004 Computation Structures, which is available on OCW. This CMU course takes a &ldquo;programmer&rsquo;s perspective&rdquo;, and skips circuits.</li>
-<li><a href="https://scs.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx#folderID=%22b96d90ae-9871-4fae-91e2-b1627b43e25e%22">Video lectures</a></li>
-</ul>
-</li>
-<li>
-<p><a href="https://courses.cs.washington.edu/courses/csep552/18wi/">U of W CSEP552 Distributed Systems</a></p>
-<ul>
-<li>Lecture videos.</li>
-<li>also see: CMU 15-440 and MIT 6.824. Topics and assignments are similar.</li>
-</ul>
-</li>
-<li>
-<p><a href="http://training.data-artisans.com/">data Artisans Flink Training</a></p>
-<ul>
-<li>Provides exercises that cover most APIs (Streaming, Dataset, Connectors, Fault Tolerance, Table, SQL, CEP). Java or Scala. Exercises come with solutions.</li>
-<li>Should read this article as a pre-requisite: <a href="https://www.oreilly.com/people/09f01-tyler-akidau">The world beyond batch: Streaming 101/102</a>.</li>
-</ul>
-</li>
-<li>
-<p><a href="https://www.coursera.org/learn/scala-spark-big-data">Big Data Analysis with Scala and Spark</a> (Coursera)</p>
-<ul>
-<li>Part of the Functional Programming in Scala specialization</li>
-</ul>
-</li>
-<li>
-<p><a href="http://www.itu.dk/people/sestoft/itu/PCPP/E2016/">Practical Concurrent and Parallel Programming</a></p>
-<ul>
-<li>Covers most of &ldquo;Java Concurrency in Practice&rdquo; by Goetz with a Java 8 twist, and a bit of &ldquo;The Art of Multiprocessor Programming&rdquo;.</li>
-<li>Each week comes with a simple coding assignment, which takes about an hour.</li>
-</ul>
-</li>
-<li>
-<p>Functional Programming in Scala Specialization (Coursera)</p>
-<ul>
-<li>Assignments are fun (i.e. moderately challenging) unlike most Coursera courses.</li>
-<li>Course 1 &amp; 2 comprise an introduction to functional programming and the Scala type system.
-Most of lecture time is spent on discussing various functional programming constructs, but the instructor (Odersky) dips toes into theoretical details sometimes, which I liked.</li>
-<li>Course 3 covers data parallelism, parallel scan (aka prefix sum), and combiners.
-The discussion on combiners using conc-tree as an example is interesting. Programming assignments on Week 2 (reductions and prefix sums) and Week 4 (Barnes-Hut simulation) are great!</li>
-</ul>
-</li>
-<li>
-<p><a href="https://homes.cs.washington.edu/~djg/teachingMaterials/spac/">Sophomoric Parallelism and Concurrency</a> (Dan Grossman, U of W)</p>
-<ul>
-<li>A short introductory course on parallel data structures and concurrency using Java&rsquo;s fork-join framework.</li>
-<li>Homework problems are food for thought.</li>
-</ul>
-</li>
-<li>
-<p>Algorithms Part 1 &amp; 2 by Princeton (Coursera)</p>
-<ul>
-<li>A standard 2nd-year course on algorithms. The instructor sprinkles historical overview, &ldquo;war stories&rdquo;, and applications of algorithms in each of his lectures, which are entertaining.</li>
-<li>Good set of assignments to work through. They don&rsquo;t merely ask you to write a data structure introduced in lecture; each assignment requires some problem solving, such as figuring out what data structures should be used to achieve given performance requirements.</li>
-</ul>
-</li>
-<li>
-<p>Parallel, Concurrent, and Distributed Programming in Java Specialization by Rice (Coursera)</p>
-<ul>
-<li>A massively watered-down version of <a href="https://wiki.rice.edu/confluence/display/PARPROG/COMP322">COMP322</a>.</li>
-<li>The course focuses on concurrent programming, and it does a good job of giving an overview of various concurrency models and constructs.
-Topics covered are: fork-join, race conditions, barriers and phasers, chucking in parallel computing, structured and unstructured locks, liveness, critical section, object-based isolation, monitor pattern, actor model, linearizability, pipeline parallelism,  pub-sub, message passing model, client-server.</li>
-<li>Programming assignments are &ldquo;fill-in-the-blank&rdquo; style, and not edifying &mdash; except the assignments on parallel Boruvka MST and Sieve of Eratosthenes, which are fun.</li>
-</ul>
-</li>
-<li>
-<p>Computer Networks (David Wetherall, U of W)</p>
-<ul>
-<li>An overview of networking from the physical layer all the way up to the application layer.</li>
-<li><a href="http://media.pearsoncmg.com/ph/streaming/esm/tanenbaum5e_videonotes/tanenbaum_videoNotes.html">Video lectures</a>. There used to be a course on Coursera based on the same videos.</li>
-</ul>
-</li>
-<li>
-<p>MIT 6.005 Software Construction (OCW)</p>
-<ul>
-<li>Software engineering best practices. What constitutes a good specification and test? Immutability. Interfaces. Equality. Specification and tests for abstract data types and concurrent programs.</li>
-</ul>
-</li>
-</ul>
+<h2 id="summary">Summary</h2>
+<p>There are two papers that IIS computation is based on.</p>
+<ol>
+<li><em>&ldquo;Identifying Minimally Infeasible Subsystems of Inequalities&rdquo;</em> by John Gleeson and Jennifer Ryan. 1990.</li>
+<li><em>&ldquo;Finding the Minimum Weight IIS Cover of an Infeasible System of Linear Inequalities&rdquo;</em> by Mark Parker and Jennifer Ryan. 1996.</li>
+</ol>
+<h2 id="todo">TODO</h2>
+<p>Understand the two papers (i) the vertex-IIS correspondence theorem in the 1990 paper, and (ii) the algorithm in the 1996 paper.</p>
 
   </section>
   <footer>
@@ -277,12 +209,10 @@ Topics covered are: fork-join, race conditions, barriers and phasers, chucking i
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="https://atkm.github.io/posts/data-eng-reading-2018/">Newer</a>
-          
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://atkm.github.io/posts/heteroskedasticity/">Older</a>
+          <a href="https://atkm.github.io/posts/simple-properties-of-iis/">Older</a>
           
         </div>
       </div>
