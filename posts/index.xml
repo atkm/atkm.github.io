@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://atkm.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Write-ahead log on-disk structure</title>
+      <link>https://atkm.github.io/posts/wal-structure/</link>
+      <pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://atkm.github.io/posts/wal-structure/</guid>
+      <description>1. How does one store WAL on disk? How do you store WAL on disk? This came up when I was working on a database course assignment on recovery. The assignment closely follows the Database System Concepts textbook.&#xA;The only requirement on the WAL structure is that the LSN identifies the on-disk offset of the record. Obviously, we want locality; but that shouldn&amp;rsquo;t be hard to acheive, because these records must be written sequentially.</description>
+    </item>
     <item>
       <title>How to compute IIS</title>
       <link>https://atkm.github.io/posts/how-to-compute-iis/</link>

@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>Notes: Data Diffs</title>
-  <meta property="og:title" content="Notes: Data Diffs" />
-  <meta name="twitter:title" content="Notes: Data Diffs" />
+  <title>Write-ahead log on-disk structure</title>
+  <meta property="og:title" content="Write-ahead log on-disk structure" />
+  <meta name="twitter:title" content="Write-ahead log on-disk structure" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="https://atkm.github.io/posts/data-diffs/" />
+  <meta property="og:url" content="https://atkm.github.io/posts/wal-structure/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -81,25 +81,25 @@
 
 <article class="p-article">
   <header>
-    <h1>Notes: Data Diffs</h1>
+    <h1>Write-ahead log on-disk structure</h1>
     
     <div>
         <div class="c-meta">
         
            Posted on
-<time datetime="2023-08-05T00:00:00Z">
-  Aug 5, 2023
+<time datetime="2024-01-12T00:00:00Z">
+  Jan 12, 2024
 </time>
 
         
         
          | 
-           124 words
+           762 words
 
         
         
          | 
-           ~1mins
+           ~4mins
 
         
         </div>
@@ -110,32 +110,70 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>I came across <a href="https://blog.marcua.net/2022/02/20/data-diffs-algorithms-for-explaining-what-changed-in-a-dataset.html">Data diffs: Algorithms for explaining what changed in a dataset</a>.</p>
-<ul>
-<li>The two papers discussed are:
-<ol>
-<li><a href="http://sirrice.github.io/files/papers/scorpion-vldb13.pdf">Scorpion</a> by <a href="http://www.cs.columbia.edu/~ewu/">Eugene Wu</a> and <a href="http://db.csail.mit.edu/madden/">Sam Madden</a>.
-Finds common properties of outlier points.</li>
-<li><a href="http://www.bailis.org/papers/diff-vldb2019.pdf">DIFF</a>.
-SQL implementation of Scorpion and similar.
-The computated can be distributed.</li>
-</ol>
-</li>
-<li>An author of the DIFF paper, Peter Bailis, founded sisudata.com.</li>
-</ul>
-<p>The <a href="https://news.ycombinator.com/item?id=36888667">comments</a> on HN list some related work:</p>
-<ul>
-<li><a href="https://www.dolthub.com/">Dolt</a> is a company whose product is a version-controlled SQL database.</li>
-<li>A <a href="https://github.com/G-Research/spark-extension/blob/master/DIFF.md">Spark implementation</a> of DIFF by G-Research.</li>
-<li><a href="https://terminusdb.com/">TerminusDB</a>. Another version-controlled db company.</li>
-</ul>
-<p>Searching for &ldquo;data diffs&rdquo; on HN finds related work:</p>
-<ul>
-<li><a href="https://news.ycombinator.com/item?id=36889656">1</a>: <a href="https://github.com/remysucre/blog/blob/main/posts/sql-eq.md">How to check two SQL tables are the same</a>.
-At a glance, no interesting things on the comment thread.</li>
-<li><a href="https://news.ycombinator.com/item?id=34002631">2</a>: <a href="https://github.com/datafold/data-diff/">data-diff</a>.
-Compare datasets across different databases (like Postgres &amp; Snowflake).</li>
-</ul>
+    <h2 id="1-how-does-one-store-wal-on-disk">1. How does one store WAL on disk?</h2>
+<p>How do you store WAL on disk?
+This came up when I was working on a database course assignment on recovery.
+The assignment closely follows the <a href="https://codex.cs.yale.edu/avi/db-book/">Database System Concepts</a> textbook.</p>
+<p>The only requirement on the WAL structure is that the LSN identifies the on-disk offset of the record.
+Obviously, we want locality; but that shouldn&rsquo;t be hard to acheive, because these records must be written sequentially.</p>
+<h2 id="2-dont-allocate-fixed-size-section-for-each-log-record">2. Don&rsquo;t allocate fixed-size section for each log record</h2>
+<p>What one shouldn&rsquo;t do is to make each log record fixed-size, say K bytes.
+Then, the LSNs are contiguous integers, and computing the offset of a record is trivial: <code>offset(LSN) = LSN * K</code>.
+Sadly, this will waste a lot of disk space, because the size discrepancy among record types is large.
+Very roughly speaking, a log record consists of metadata and payload.
+Small record types, such as transaction events (BEGIN, COMMIT, ABORT), only need to store the metadata, which is about 20 bytes.
+The payload section is what makes large record types large, and its size depends on the amount of tuple info that needs to be stored.
+In the worst case, two copies of an entire row need to be stored in the payload section&mdash;this is for update operations, which need to remember the before- and after-state of the row in case of recovery.</p>
+<p>Then, log records for small record types (such as transaction events) will create lots of wasted space.
+Even for a modestly-sized table with 10 4-byte columns, at least 10 * 4 * 2 = 80 bytes need to be reserved for the payload section.
+In this scenario, <em>every</em> small log record wastes <em>80%</em> of their allocated space (80 bytes out of 20+80 bytes is unused).
+And the space utilization gets worse as the table gets wider.</p>
+<h2 id="3-variable-length-record-format">3. Variable-length record format</h2>
+<h3 id="3-1-let-the-lsn-of-a-record-be-the-byte-offset-on-disk">3-1. Let the LSN of a record be the byte offset on disk</h3>
+<p>(TODO)
+The byte offset of a record can be computed when the record is added to the append buffer.</p>
+<h3 id="3-2-dont-map-contiguous-lsns-to-offset">3-2. Don&rsquo;t map contiguous LSNs to offset</h3>
+<p>(TODO)
+Complexity of maintaining consistency of the log record and the mapping.</p>
+<h3 id="3-3-side-note-an-lsn-in-postgres-is-64-bit">3-3. Side note: an LSN in Postgres is 64-bit!</h3>
+<p>Postgres uses a <a href="https://github.com/postgres/postgres/blob/45da69371ebfc4d6982695e58791989660c1cc33/src/include/access/xlogdefs.h#L19"><code>uint64</code></a> for its LSN, with which you can address 16EiB of space.
+This is far more than what typical users need.
+Even a <code>uint32</code> can address up to ~4PB, when large HDDs have about 20TB of capacity.
+Checkpointing ought to happen far before you accumulate that much log data.
+Also&hellip; is recovery at this scale even feasible?
+It takes 15 months to read 4PB of data sequentially at 100MB/s transfer rate; 5000 years for 16EB.
+<a href="https://wiki.postgresql.org/wiki/Parallel_Recovery">Parallel recovery</a> seems to be a thing (though experimental).
+But you need 5000 workers doing work at max disk tput to go through 16EB of data in 1 year.
+Due to its sequential nature, WAL supporting that much parallelism seems unlikely.</p>
+<h2 id="4-leveldbrocksdb-format">4. LevelDB/RocksDB format</h2>
+<p>LevelDB uses a <a href="https://github.com/google/leveldb/blob/main/doc/log_format.md">blocked structure</a> for its WAL.
+Unlike recordio, this structure does not employ per-file and per-block headers.</p>
+<pre tabindex="0"><code>Copy-pasted straight from [RocksDB doc](https://github.com/facebook/rocksdb/wiki/Write-Ahead-Log-File-Format#log-file-format)
+
+       +-----+-------------+--+----+----------+------+-- ... ----+
+ File  | r0  |        r1   |P | r2 |    r3    |  r4  |           |
+       +-----+-------------+--+----+----------+------+-- ... ----+
+       &lt;--- kBlockSize ------&gt;|&lt;-- kBlockSize ------&gt;|
+
+  rn = variable size records
+  P = Padding
+</code></pre><p>(Side note: the log format of RocksDB is the same as LevelDB.
+Makes sense, one is a fork of the other.)</p>
+<p>This forces the database to <em>iterate through the entire WAL for recovery</em>.
+The <a href="https://github.com/facebook/rocksdb/blob/main/db/log_reader.h">log reader</a> class does not provide a random read API.
+Instead, it only provides a front-to-back sequential read API (<code>ReadRecord</code>).
+Why can it get away with this?
+It may have something to do with the fact that LevelDB is internally append-only.
+(A single key may exist in multiple SSTables, but a query reads the latest SSTable.)
+Still, they need to make sure that appends of aborted and unfinished transactions are rolled back, and transaction ordering is respected.
+Upon start, LevelDB <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/db_impl.cc#L385">loads all log records into the in-memory data structure</a>.
+I suppose that the normal flushing logic of memtable enforces transaction guarantees.
+There is an <a href="https://rocksdb.org/blog/2017/12/19/write-prepared-txn.html">article</a> that describes .
+A question that I have is about whether writes from an uncommitted transaction can be persisted, and, if so, what they do about it.</p>
+<h2 id="5-epilogue">5. Epilogue</h2>
+<p>For a single-version database, which is what the course assignment is on, there is a natural and straightforward WAL/LSN scheme.
+That said, the WAL structure depends on the database architecture.
+I should read about recovery processes of MVCC databases to see if they are any different.</p>
 
   </section>
   <footer>
@@ -147,12 +185,10 @@ Compare datasets across different databases (like Postgres &amp; Snowflake).</li
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="https://atkm.github.io/posts/simple-properties-of-iis/">Newer</a>
-          
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://atkm.github.io/posts/compressed-sensing/">Older</a>
+          <a href="https://atkm.github.io/posts/how-to-compute-iis/">Older</a>
           
         </div>
       </div>

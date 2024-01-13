@@ -82,6 +82,44 @@
 
 <article class="c-article p-list-article">
   <header>
+    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/wal-structure/">Write-ahead log on-disk structure</a></h2>
+    <p class="c-article__meta">
+      Posted on
+<time datetime="2024-01-12T00:00:00Z">
+  Jan 12, 2024
+</time>
+
+      
+         | Updated on
+<time datetime="2024-01-12T00:00:00Z">
+  Jan 12, 2024
+</time>
+
+      
+      
+         | 762 words
+
+      
+      
+         | ~4mins
+
+      
+    </p>
+  </header>
+  <div class="c-article__summary">
+    1. How does one store WAL on disk? How do you store WAL on disk? This came up when I was working on a database course assignment on recovery. The assignment closely follows the Database System Concepts textbook.
+The only requirement on the WAL structure is that the LSN identifies the on-disk offset of the record. Obviously, we want locality; but that shouldn&rsquo;t be hard to acheive, because these records must be written sequentially.
+  </div>
+  
+  <a href="https://atkm.github.io/posts/wal-structure/" class="c-article__btn p-list-article__btn">Read more</a>
+  
+</article>
+
+
+
+
+<article class="c-article p-list-article">
+  <header>
     <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/how-to-compute-iis/">How to compute IIS</a></h2>
     <p class="c-article__meta">
       Posted on
@@ -424,46 +462,6 @@ The volume of the unit ball goes to 0 as the dimension goes to infinity. Most of
   </div>
   
   <a href="https://atkm.github.io/posts/data-eng-reading-2018/" class="c-article__btn p-list-article__btn">Read more</a>
-  
-</article>
-
-
-
-
-<article class="c-article p-list-article">
-  <header>
-    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/learning-2018/">Things I studied in 2018</a></h2>
-    <p class="c-article__meta">
-      Posted on
-<time datetime="2018-04-04T00:00:00Z">
-  Apr 4, 2018
-</time>
-
-      
-         | Updated on
-<time datetime="2018-04-04T00:00:00Z">
-  Apr 4, 2018
-</time>
-
-      
-      
-         | 963 words
-
-      
-      
-         | ~5mins
-
-      
-    </p>
-  </header>
-  <div class="c-article__summary">
-    Freely available online resources that I&rsquo;ve found useful for learning Statistics, Machine Learning, Distributed Computing, Database Systems, and other CS and SWE topics.
-Statistics and Machine Learning ML Expositions on machine learning that are freely accessible (like the ones on Coursera) tend to sweep theoretical foundation and mathematical rigor under the carpet; these are resources that don&rsquo;t skimp on the hard stuff.
-Stanford CS229 Machine Learning
-One-line summary: the course teaches you how to set up a cost function based on a model and data, and figure out how to optimize it.
-  </div>
-  
-  <a href="https://atkm.github.io/posts/learning-2018/" class="c-article__btn p-list-article__btn">Read more</a>
   
 </article>
 
