@@ -9,11 +9,11 @@
     <lastBuildDate>Fri, 12 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Write-ahead log on-disk structure</title>
+      <title>On-disk structures of write-ahead log (WAL)</title>
       <link>https://atkm.github.io/posts/wal-structure/</link>
       <pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://atkm.github.io/posts/wal-structure/</guid>
-      <description>1. How does one store WAL on disk? How do you store WAL on disk? This came up when I was working on a database course assignment on recovery. The assignment closely follows the Database System Concepts textbook.&#xA;The only requirement on the WAL structure is that the LSN identifies the on-disk offset of the record. Obviously, we want locality; but that shouldn&amp;rsquo;t be hard to acheive, because these records must be written sequentially.</description>
+      <description>1. How does one store WAL on disk? How do you store WAL on disk? This came up when I was working on a database course assignment on recovery. The assignment closely follows the Database System Concepts textbook.&#xA;The only requirement on the WAL structure is that the LSN can be used to seek to the record on disk. Obviously, we want locality; but that shouldn&amp;rsquo;t be hard to acheive, because these records have to be written sequentially.</description>
     </item>
     <item>
       <title>How to compute IIS</title>

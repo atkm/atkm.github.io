@@ -82,7 +82,7 @@
 
 <article class="c-article p-list-article">
   <header>
-    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/wal-structure/">Write-ahead log on-disk structure</a></h2>
+    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/wal-structure/">On-disk structures of write-ahead log (WAL)</a></h2>
     <p class="c-article__meta">
       Posted on
 <time datetime="2024-01-12T00:00:00Z">
@@ -97,18 +97,18 @@
 
       
       
-         | 762 words
+         | 1346 words
 
       
       
-         | ~4mins
+         | ~7mins
 
       
     </p>
   </header>
   <div class="c-article__summary">
     1. How does one store WAL on disk? How do you store WAL on disk? This came up when I was working on a database course assignment on recovery. The assignment closely follows the Database System Concepts textbook.
-The only requirement on the WAL structure is that the LSN identifies the on-disk offset of the record. Obviously, we want locality; but that shouldn&rsquo;t be hard to acheive, because these records must be written sequentially.
+The only requirement on the WAL structure is that the LSN can be used to seek to the record on disk. Obviously, we want locality; but that shouldn&rsquo;t be hard to acheive, because these records have to be written sequentially.
   </div>
   
   <a href="https://atkm.github.io/posts/wal-structure/" class="c-article__btn p-list-article__btn">Read more</a>
