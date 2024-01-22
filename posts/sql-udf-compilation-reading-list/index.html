@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>On-disk structures of write-ahead log (WAL)</title>
-  <meta property="og:title" content="On-disk structures of write-ahead log (WAL)" />
-  <meta name="twitter:title" content="On-disk structures of write-ahead log (WAL)" />
+  <title>Reading list: UDF compilation</title>
+  <meta property="og:title" content="Reading list: UDF compilation" />
+  <meta name="twitter:title" content="Reading list: UDF compilation" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="Atsuya Kumano" />
-  <meta property="og:url" content="https://atkm.github.io/posts/wal-structure/" />
+  <meta property="og:url" content="https://atkm.github.io/posts/sql-udf-compilation-reading-list/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -81,25 +81,25 @@
 
 <article class="p-article">
   <header>
-    <h1>On-disk structures of write-ahead log (WAL)</h1>
+    <h1>Reading list: UDF compilation</h1>
     
     <div>
         <div class="c-meta">
         
            Posted on
-<time datetime="2024-01-12T00:00:00Z">
-  Jan 12, 2024
+<time datetime="2024-01-21T00:00:00Z">
+  Jan 21, 2024
 </time>
 
         
         
          | 
-           1346 words
+           247 words
 
         
         
          | 
-           ~7mins
+           ~2mins
 
         
         </div>
@@ -110,113 +110,41 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <h2 id="1-how-does-one-store-wal-on-disk">1. How does one store WAL on disk?</h2>
-<p>How do you store WAL on disk?
-This came up when I was working on a database course assignment on recovery.
-The assignment closely follows the <a href="https://codex.cs.yale.edu/avi/db-book/">Database System Concepts</a> textbook.</p>
-<p>The only requirement on the WAL structure is that the LSN can be used to seek to the record on disk.
-Obviously, we want locality; but that shouldn&rsquo;t be hard to acheive, because these records have to be written sequentially.</p>
-<h2 id="2-dont-allocate-fixed-size-section-for-each-log-record">2. Don&rsquo;t allocate fixed-size section for each log record</h2>
-<p>What one shouldn&rsquo;t do is to make each log record fixed-size, say K bytes.
-Then, the LSNs are contiguous integers, and computing the offset of a record is trivial: <code>offset(LSN) = LSN * K</code>.
-Sadly, this will waste a lot of disk space, because the size discrepancy among record types is large.
-Very roughly speaking, a log record consists of metadata and payload.
-Small record types, such as transaction events (BEGIN, COMMIT, ABORT), only need to store the metadata, which is about 20 bytes.
-The payload section is what makes large record types large, and its size depends on the amount of tuple info that needs to be stored.
-In the worst case, two copies of an entire row need to be stored&mdash;this is for update operations, which need to remember the before- and after-state of the row in case of recovery.</p>
-<p>So, log records for small record types create lots of wasted space.
-Even for a modestly-sized table with 10 4-byte columns, at least 10 * 4 * 2 = 80 bytes need to be reserved for the payload section.
-In this scenario, <em>every</em> small log record wastes <em>80%</em> of their allocated space (80 bytes out of 20+80 bytes is unused).
-And space utilization gets worse as the table gets wider.</p>
-<h2 id="3-variable-length-record-format">3. Variable-length record format</h2>
-<h3 id="3-1-let-the-lsn-of-a-record-be-the-byte-offset-on-disk">3-1. Let the LSN of a record be the byte offset on disk</h3>
-<p>Another obvious thing to do is to let LSN be the byte offset of the record on disk (<code>offset(LSN) = LSN</code>).
-This approach works.</p>
-<p>The byte offset of a record must be and can be computed when the record is written to the append buffer.
-To do this, you just take note of the current byte offset of the log tail and the number of bytes ahead of this record in the append buffer.</p>
-<p>Postgres splits the log into &lsquo;segments&rsquo;, which are 16MB files.
-Figuring out which segment an LSN belong is <a href="https://github.com/postgres/postgres/blob/6a3631e251d1390673aee469c0cd672cac6195ef/src/include/access/xlog_internal.h#L117">straightforward</a>.</p>
-<h3 id="3-2-wal-with-block-structure">3-2. WAL with block structure</h3>
-<p>To support (fixed-size) blocks, we need a mapping from an LSN to the block number.
-The offset of the record within the uncompressed block also needs to be encoded into an LSN.
-So, logically, an LSN would be the union of a block number and an offset.</p>
-<p>Suppose that we set the block size to be 8kB.
-To compute the block number of a record, we increment the block counter on every 8kB of buffered data.
-The offset into the block is obtained by mod&rsquo;ing the offset into the uncompressed WAL stream by 8kB.</p>
-<p>One thing not to do is to keep a mapping from LSN to block number in a separate sector.
-First of all, there is the complexity of keeping this metadata in sync with the log records.
-You really don&rsquo;t want that.
-This mapping sector needs to be updated atomically with the records, or else WAL can be corrupted.
-The second reason is performance.
-Every time a log is appended, you need to seek to the mapping sector, then to the log tail, which squanders a benefit of the log structure.
-If you keep this mapping on a separate disk, then you would need to write across two devices atomically.
-Again, you really don&rsquo;t want that.</p>
-<h4 id="block-compression-support">Block compression support</h4>
-<p>This scheme can be modified to support compression of blocks.
-To support block compression, the offsets of compressed blocks need to be encoded into the LSNs.
-To do so, every 8kB of buffered data must be compressed before more data is buffered.
-This is to maintain the on-disk offset of the tail block.
-Since an LSN has to be given out when a record is buffered, I don&rsquo;t think we can split compressed data into chunks (that align with filesystem blocks).
-Another side note is that compression comes with a disadvantage that an entire block needs to be decompressed before records in it can be accessed.
-That&rsquo;s not good for random access.</p>
-<h3 id="3-3-side-note-an-lsn-in-postgres-is-64-bit">3-3. Side note: an LSN in Postgres is 64-bit.</h3>
-<p>Postgres uses a <a href="https://github.com/postgres/postgres/blob/45da69371ebfc4d6982695e58791989660c1cc33/src/include/access/xlogdefs.h#L19"><code>uint64</code></a> for its LSN, with which you can address 16EiB of space.
-(
-&hellip; In theory.
-Its LSN used to be the <a href="https://pgpedia.info/x/xlogrecptr.html">union</a> of the log segment number, and the offset into the segment.
-Each segment is 16MB by default, so this scheme can address up to 16MB * max(uint32) bytes, which is a lot less than max(uint64).
-)
-This is far more than what typical users need.
-Even a <code>uint32</code> can address up to ~4PB, when large HDDs have about 20TB of capacity.
-Checkpointing ought to happen far before you accumulate that much log data.
-Also&hellip; is recovery at this scale even feasible?
-It takes 15 months to read 4PB of data sequentially at 100MB/s transfer rate; 5000 years for 16EB.
-<a href="https://wiki.postgresql.org/wiki/Parallel_Recovery">Parallel recovery</a> seems to be a thing (though experimental).
-But you need 5000 workers doing work at the max disk tput to go through 16EB of data in 1 year.
-Due to its sequential nature, WAL supporting that much parallelism seems unlikely.</p>
-<p>But hey, storing four extra bytes on each record prepares Postgres for a version of the future where non-volatile storage is comically fast by today&rsquo;s standard, why not.</p>
-<h3 id="3-4-how-does-postgres-support-page-level-compression">3-4. How does Postgres support page-level compression?</h3>
-<p>Postgres&rsquo; LSN is a <a href="https://www.postgresql.org/docs/current/datatype-pg-lsn.html">byte offset</a> in the WAL stream.
-Postgres supports <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-COMPRESSION">page-level compression</a>.
-A page is <a href="https://www.postgresql.org/docs/current/wal-internals.html">8kB</a> by default.
-A page can contain <a href="https://github.com/postgres/postgres/blob/6a3631e251d1390673aee469c0cd672cac6195ef/src/include/access/xlog_internal.h#L36">multiple records</a>.</p>
-<p>I don&rsquo;t see how LSN can remain to be an offset into the (uncompressed) WAL stream, since records in the same page are compressed together.
-It doesn&rsquo;t make sense to speak of an offset into compressed data.
-Also, compression throws off the segment number computation.
-I would think the LSN needs to be (logically) the union of the segment number, the offset of the compressed page within the segment, and the offset into the uncompressed page.</p>
-<h2 id="4-leveldbrocksdb-format">4. LevelDB/RocksDB format</h2>
-<p>LevelDB uses a <a href="https://github.com/google/leveldb/blob/main/doc/log_format.md">blocked structure</a> for its WAL.
-Unlike recordio, this structure does not employ per-block headers.</p>
-<pre tabindex="0"><code>Copy-pasted straight from [RocksDB doc](https://github.com/facebook/rocksdb/wiki/Write-Ahead-Log-File-Format#log-file-format)
-
-       +-----+-------------+--+----+----------+------+-- ... ----+
- File  | r0  |        r1   |P | r2 |    r3    |  r4  |           |
-       +-----+-------------+--+----+----------+------+-- ... ----+
-       &lt;--- kBlockSize ------&gt;|&lt;-- kBlockSize ------&gt;|
-
-  rn = variable size records
-  P = Padding
-</code></pre><p>(Side note: the log format of RocksDB is the same as LevelDB.
-Makes sense, one is a fork of the other.)</p>
-<p>This forces the database to <em>iterate through the entire WAL for recovery</em>.
-The <a href="https://github.com/facebook/rocksdb/blob/main/db/log_reader.h">log reader</a> class does not provide a random read API.
-Instead, it only provides a front-to-back sequential read API (<code>ReadRecord</code>).
-Why can it get away with this?
-It may have something to do with the fact that LevelDB is internally append-only.
-(A single key may exist in multiple SSTables, but queries read the latest SSTable.)</p>
-<p>Still, they need to make sure that appends of aborted and unfinished transactions are rolled back, and transaction ordering is respected.
-Upon start, LevelDB <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/db_impl.cc#L385">loads all log records into the in-memory data structure</a>.
-I suppose that the normal flushing logic of memtable enforces transaction guarantees.
-There is an <a href="https://rocksdb.org/blog/2017/12/19/write-prepared-txn.html">article</a> that describes the concurrency protocol of RocksDB.
-A question that I have is whether writes from an uncommitted transaction can be persisted, and, if so, what they do about it.</p>
-<h2 id="5-epilogue">5. Epilogue</h2>
-<p>For a single-version database, which is what the course assignment is on, there is a natural and straightforward WAL/LSN scheme.
-In general, though, the WAL structure depends on the database architecture.
-For example, the WAL in LevelDB is meant to be read sequentially back-to-back.
-I should read about recovery processes of MVCC databases to see if they are any different.</p>
-<h2 id="6-links">6. Links</h2>
+    <p>Results discussed in the &ldquo;Server-side Logic Execution&rdquo; <a href="https://youtu.be/DRFuyLd29eA?si=2sKYDwJCRTc83eJm">lecture</a> of CMU 15-721 were interesting.</p>
 <ul>
-<li>A <a href="https://github.com/grailbio/base/blob/master/recordio/README.md">recordio</a> library in Go.</li>
+<li>
+<p>The main paper is: K. Ramachandra, et al., <em>Froid: Optimization of Imperative Programs in a Relational Database</em> (VLDB, 2017) <a href="https://arxiv.org/abs/1712.00498">https://arxiv.org/abs/1712.00498</a></p>
+<ul>
+<li>A subset of UDF can be compiled to SQL.
+Then standard query optimization routines apply.</li>
+<li><em>Decorrelation of user defined function invocations in queries</em> (2014, <a href="https://ieeexplore.ieee.org/document/6816679">link</a>) is what the Froid paper is based on.</li>
+</ul>
+</li>
+<li>
+<p>C. Duta, et al., <em>Compiling PL/SQL Away</em> (CIDR, 2020, <a href="https://arxiv.org/abs/1909.03291">https://arxiv.org/abs/1909.03291</a>)</p>
+<ul>
+<li>Instead of compiling UDFs to SQL, target &ldquo;common table expressions&rdquo;.</li>
+<li>Supports more UDF constructs (loops!).</li>
+<li>Also, the code is set up as a middleware between the application and the database.
+UDFs are converted to SQL before they reach the database.</li>
+<li>&ldquo;More PL-ey&rdquo;.</li>
+</ul>
+</li>
+<li>
+<p>Umbra&rsquo;s optimizer is better at &ldquo;de-correlating&rdquo; than Froid. (source: lecture &amp; links later in this post)</p>
+<ul>
+<li><em>Orthogonal optimization of subqueries and aggregation</em> (SIGMOD, 2001, <a href="https://dl.acm.org/doi/10.1145/375663.375748">link</a>) is what Froid uses to decorrelate subqueries.</li>
+<li><em>Unnesting Arbitrary Queries</em> (BTW 2015, <a href="https://btw-2015.informatik.uni-hamburg.de/res/proceedings/Hauptband/Wiss/Neumann-Unnesting_Arbitrary_Querie.pdf">link</a>) is what Umbra uses.
+The lecturer says &ldquo;they can systematically decorrelate any subquery&rdquo;.
+What does &ldquo;any subquery&rdquo; here mean?</li>
+</ul>
+</li>
+</ul>
+<p>Looking up the lecturer, I found this paper on batching:
+<em>Dear User-Defined Functions, Inlining isn&rsquo;t working out so great for us. Let&rsquo;s try batching to make our relationship work. Sincerely, SQL</em> (CIDR 2024, <a href="https://samarch.xyz/slides/cidr2024.pdf">slides</a>)</p>
+<ul>
+<li>The gist of it seems to be that if the database system supports Neumann-style (the BTW 2015 paper above), then inlining is preferred.
+But there are cases where batching is better (e.g. certain query shapes against MS SQL).</li>
 </ul>
 
   </section>
@@ -229,12 +157,10 @@ I should read about recovery processes of MVCC databases to see if they are any 
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="https://atkm.github.io/posts/sql-udf-compilation-reading-list/">Newer</a>
-          
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://atkm.github.io/posts/how-to-compute-iis/">Older</a>
+          <a href="https://atkm.github.io/posts/wal-structure/">Older</a>
           
         </div>
       </div>
