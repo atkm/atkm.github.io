@@ -6,8 +6,15 @@
     <description>Recent content on Atsuya Kumano</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://atkm.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reading list: SQL query optimization</title>
+      <link>https://atkm.github.io/posts/sql-query-optimization-reading-list/</link>
+      <pubDate>Sun, 21 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://atkm.github.io/posts/sql-query-optimization-reading-list/</guid>
+      <description>Results discussed in the &amp;ldquo;Server-side Logic Execution&amp;rdquo; lecture of CMU 15-721 were interesting.&#xA;The main paper is: K. Ramachandra, et al., Froid: Optimization of Imperative Programs in a Relational Database (VLDB, 2017) https://arxiv.org/abs/1712.00498&#xA;A subset of UDF can be compiled to SQL. Then standard query optimization routines apply. Decorrelation of user defined function invocations in queries (2014, link) is what the Froid paper is based on. C. Duta, et al., Compiling PL/SQL Away (CIDR, 2020, https://arxiv.</description>
+    </item>
     <item>
       <title>On-disk structures of write-ahead log (WAL)</title>
       <link>https://atkm.github.io/posts/wal-structure/</link>
