@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -130,12 +131,12 @@ MathJax.Hub.Config({
         
         
          | 
-           1243 words
+           1395 words
 
         
         
          | 
-           ~6mins
+           ~7mins
 
         
         </div>
@@ -145,6 +146,27 @@ MathJax.Hub.Config({
     
   </header>
   
+  
+  <div id="toc" class="well col-md-4 col-sm-6">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivating-example">Motivating Example</a></li>
+    <li><a href="#supporting-soft-constraints">Supporting soft constraints</a></li>
+    <li><a href="#outline-of-the-method-to-debug-a-model-by-re-solving">Outline of the method to debug a model by re-solving</a></li>
+    <li><a href="#implementation-analysis-phase">Implementation: Analysis phase</a></li>
+    <li><a href="#implementation-of-the-trigger-and-re-solve-phases-wip">Implementation of the Trigger and Re-solve phases (WIP)</a>
+      <ul>
+        <li><a href="#annotations-on-variables">Annotations on variables</a></li>
+        <li><a href="#trigger-conditions-based-on-annotations">Trigger conditions based on annotations</a></li>
+        <li><a href="#implementations-of-reduce-and-increase-directives-for-the-re-solve-phase">Implementations of REDUCE and INCREASE directives for the Re-solve phase</a></li>
+        <li><a href="#increase-is-tricky">INCREASE is tricky.</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion-wip">Conclusion (WIP)</a></li>
+  </ul>
+</nav>
+  </div>
+  
   <section id="js-article" class="p-article__body">
     <h2 id="motivating-example">Motivating Example</h2>
 <p>Suppose that you have an <a href="https://en.wikipedia.org/wiki/Linear_programming#Integer_unknowns">MLIP</a>:</p>
@@ -152,15 +174,16 @@ MathJax.Hub.Config({
 \text{maximize} \quad &amp; c_1x_1 + c_2x_2 \\
 \text{subject to} \quad &amp; a_1x_1 \leq L_1  \tag{1L} \\
 \quad &amp; a_2x_2 \leq L_2  \tag{2L} \\
-\quad &amp; b_{1,1}x_1 + b_{2,1}x_2 \geq D  \tag{Dem} \\
+\quad &amp; b_{1,1}x_1 + b_{2,1}x_2 \geq D_1  \tag{1D} \\
+\quad &amp; b_{1,2}x_1 + b_{2,2}x_2 \geq D_2  \tag{2D} \\
 \quad &amp; x_1 \geq 0, \quad x_2 \geq 0  \\
 \quad &amp; x_1, x_2 \in \mathbb{N}
 \end{align}$$</p>
 <p>Think of inequalities \( (1L) \) and \((2L)\) as supply limits; actions \(x_1\) and \(x_2\) consume resources, and \(L_1\) and \(L_2\) represent limits of the resources they consume.
-The inequality \((Dem)\), on the other hand, represents demand for a resource.
-Actions \(x_1\) and \(x_2\) are required to supply at least \(D\) units of the resource.
+The inequalities \((1D)\) and \((2D)\), on the other hand, represent demand for a resource.
+Actions \(x_1\) and \(x_2\) are required to supply at least \(D_1\) and \(D_2\) units of the resources.
 Think of actions as translators of supplied resources to the demanded resource, so this model chooses the optimal consumption of resources to provide the demanded resource.
-Because both actions provide the demanded resource, an optimal solution may be a mix of the two actions.</p>
+Because both actions provide both demanded resources, an optimal solution may be a mix of the two actions (one action may be better than the other for providing one resource, and vice versa for the other resource).</p>
 <p>Further suppose that this model is solved at a regular cadence, say, for planning of something, and <em>all coefficients</em> are read from some data sources, which can vary over time.
 For example, the organization in charge of \(c_1\), which represents the cost of action \(x_1\), may change their estimate.</p>
 <p>Now, you solve the model one day, and find that the consumption of \(R_1\), the resource that \(x_1\) consumes, is too high.
@@ -172,27 +195,28 @@ Then, add the constraint \(a_1x_1 &lt;= 0.5 \hat{R_1}\) and re-solve the model.
 The added constraint <em>reduces the consumption of resource \(R_1\)</em> relative to the baseline solution.
 Comparing solutions of the baseline model and the modified model reveals the root cause.
 The objective value of the new solution is greater than the original solution, which has to be the case, because you added a constraint.
-Furthermore, <em>the source</em> of the increase indicates why the consumption of \(R_1\) is higher than your expectation in the original solution.
+The interesting part is that <em>the source</em> of the increase indicates why the consumption of \(R_1\) is higher than your expectation in the original solution.
 In this case, you would find that the increase in \(c_2 x_2\) is greater than the decrease in \(c_1 x_1\).
 This leads you to look at the \(c_i&rsquo;s\) and the \(x_i&rsquo;s\), which is a step in the right direction.</p>
 <p>Another benefit of this technique is that it eliminates possibilities.
 For example, a data configuration that leads to a high usage of \(R_1\) is a low supply of \(R_2\) (i.e. small value of \(L_2\)).
-If this was the case, the re-solve would have been infeasible, and the <a href="https://www.gurobi.com/documentation/current/refman/py_model_computeiis.html">IIS</a> would have contained inequalities \((2L)\), \((Dem)\), and the added constraint.
+If this was the case, the re-solve would have been infeasible, and the <a href="https://www.gurobi.com/documentation/current/refman/py_model_computeiis.html">IIS</a> would have contained three inequalities \((2L)\), \((\text{1D or 2D})\), and the added constraint.
+In words, this IIS says that there is not enough resources to meet the demand.
 In the example, the fact that adding the constraint did not make the model infeasible precludes the possibility of insufficient supply of \(R_2\).</p>
-<h2 id="soft-constraints">Soft constraints</h2>
+<h2 id="supporting-soft-constraints">Supporting soft constraints</h2>
 <p>This method continues to work well in presence of soft constraints.</p>
-<p>Make the inequality \((Dem)\) in the example soft by introducing a slack variable \(s_D\):
+<p>Make one of the demand inequalities in the example, say \((1D)\), soft by introducing a slack variable \(s_D\):
 $$
-b_{1,1}x_1 + b_{2,1}x_2 \geq D + s_D  \tag{Dem&rsquo;}
+b_{1,1}x_1 + b_{2,1}x_2 \geq D_1 + s_D  \tag{1D&rsquo;}
 $$
 with a large objective coefficient \(\gamma\).</p>
-<p>Suppose that, as before, the consumption of \(R_1\) is higher than what is desirable, but it is caused by a lack of \(R_2\).
-Unlike when \((Dem)\) is hard, adding the constraint \(a_1x_1 &lt;= 0.5 \hat{R_1}\) no longer makes the model infeasible.
+<p>Suppose that, as before, the consumption of \(R_1\) is higher than what is desirable, but, unlike before, it is caused by a lack of \(R_2\).
+Unlike when \((1D)\) is hard, adding the constraint \(a_1x_1 &lt;= 0.5 \hat{R_1}\) no longer makes the model infeasible.
 It is, however, still possible to attribute the excessive consumption of \(R_1\) to the lack of \(R_2\).</p>
 <p>As before, you study the changes in objective terms.
 In this case, the increase in the penalty term \(\gamma \cdot s_D\) is the greatest.
-So you conclude that there is insufficient \(R_2\).</p>
-<h2 id="debugging-by-re-solving">Debugging by re-solving</h2>
+So you conclude that, the soft constraint corresponding to the penalty term is violated, and therefore that there is insufficient \(R_2\).</p>
+<h2 id="outline-of-the-method-to-debug-a-model-by-re-solving">Outline of the method to debug a model by re-solving</h2>
 <p>This technique can reliably root-cause various kinds of issues with this class of MIP models.
 Specifically, the technique is:</p>
 <ol>
@@ -255,18 +279,18 @@ ORDER BY obj_value_resolve - obj_value_baseline DESC
 // If you have subcategories within this category, a GROUP BY sum of objective
 // diffs would be very useful.
 ;
-</code></pre><p>In the domain that I worked in, returning the most influential objective category and the most influential terms within the category was enough to debug</p>
+</code></pre><p>In the domain that I worked in, returning the most influential objective category and the most influential terms within the category was enough for experienced <em>owners of the model</em> to immediately see what the issue was.
+In special cases, it was even possible to return actionable messages to <em>consumers of the solutions</em>, who did not know the mathematical details of the model.</p>
 <h2 id="implementation-of-the-trigger-and-re-solve-phases-wip">Implementation of the Trigger and Re-solve phases (WIP)</h2>
 <p>This section assumes that the MIP model is implemented as an <a href="https://github.com/google/or-tools/blob/82750ac12f1ee5354e1c7869894d9af3508778f2/ortools/linear_solver/linear_solver.h#L529">MPModelProto</a> from Google&rsquo;s or-tools, though the implementation is so simple that there really should be no obstacle porting the idea to other solver libraries.</p>
-<h3 id="1-annotation-of-the-model">1. Annotation of the model</h3>
-<h3 id="2">2.</h3>
-<p>The automated diagnosis</p>
-<ol>
-<li>If the re-solve is infeasible, look at the IIS.
-(a) aa</li>
-</ol>
-<h3 id="implementations-of-reduce-and-increase-directives">Implementations of REDUCE and INCREASE directives</h3>
+<h3 id="annotations-on-variables">Annotations on variables</h3>
+<h3 id="trigger-conditions-based-on-annotations">Trigger conditions based on annotations</h3>
+<h3 id="implementations-of-reduce-and-increase-directives-for-the-re-solve-phase">Implementations of REDUCE and INCREASE directives for the Re-solve phase</h3>
 <h3 id="increase-is-tricky">INCREASE is tricky.</h3>
+<h2 id="conclusion-wip">Conclusion (WIP)</h2>
+<p>The analysis phase is the trickiest part. Corner cases, model-dependent.
+It&rsquo;s easy to reliably produce analyses that are useful to the model owners, that leads to basically an immediate identification of the root cause.
+It&rsquo;s significantly more difficult to .</p>
 
   </section>
   <footer>

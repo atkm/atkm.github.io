@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -84,6 +85,23 @@
     <h1>Keyword Extraction from arXiv - Part 2</h1>
     
   </header>
+  
+  
+  <div id="toc" class="well col-md-4 col-sm-6">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#3-modify-keyword-extraction-to-use-postgres">3. Modify keyword extraction to use Postgres</a>
+      <ul>
+        <li><a href="#31-create-data-models">3.1 Create data models</a></li>
+        <li><a href="#32-populate-postgres-with-articles">3.2 Populate Postgres with articles</a></li>
+        <li><a href="#33-updated-load_data">3.3 Updated <code>load_data</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#4-configure-api-endpoints-of-flask">4. Configure API endpoints of Flask</a></li>
+    <li><a href="#conclusion-of-part-2">Conclusion of Part 2</a></li>
+  </ul>
+</nav>
+  </div>
   
   <section id="js-article" class="p-article__body">
     <p>In <a href="/posts/arxiv-keyword-extraction-part1">Part 1</a>, we developed a keyword extraction algorithm.

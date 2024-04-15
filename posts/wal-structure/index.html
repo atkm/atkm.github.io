@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-us">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -104,6 +105,28 @@
     </div>
     
   </header>
+  
+  
+  <div id="toc" class="well col-md-4 col-sm-6">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-how-does-one-store-wal-on-disk">1. How does one store WAL on disk?</a></li>
+    <li><a href="#2-dont-allocate-fixed-size-section-for-each-log-record">2. Don&rsquo;t allocate fixed-size section for each log record</a></li>
+    <li><a href="#3-variable-length-record-format">3. Variable-length record format</a>
+      <ul>
+        <li><a href="#3-1-let-the-lsn-of-a-record-be-the-byte-offset-on-disk">3-1. Let the LSN of a record be the byte offset on disk</a></li>
+        <li><a href="#3-2-wal-with-block-structure">3-2. WAL with block structure</a></li>
+        <li><a href="#3-3-side-note-an-lsn-in-postgres-is-64-bit">3-3. Side note: an LSN in Postgres is 64-bit.</a></li>
+        <li><a href="#3-4-how-does-postgres-support-page-level-compression">3-4. How does Postgres support page-level compression?</a></li>
+        <li><a href="#3-5-let-lsn-be-contiguous-integers">3-5. Let LSN be contiguous integers</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-leveldbrocksdb-format">4. LevelDB/RocksDB format</a></li>
+    <li><a href="#5-epilogue">5. Epilogue</a></li>
+    <li><a href="#6-links">6. Links</a></li>
+  </ul>
+</nav>
+  </div>
   
   <section id="js-article" class="p-article__body">
     <h2 id="1-how-does-one-store-wal-on-disk">1. How does one store WAL on disk?</h2>
