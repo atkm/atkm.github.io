@@ -24,11 +24,7 @@
   <meta property="og:type" content="website" />
   
   
-  <meta name="generator" content="Hugo 0.123.8">
-  
-    
-  
-  
+  <meta name="generator" content="Hugo 0.126.1">
 
   <link rel="stylesheet" href="https://atkm.github.io/css/style.css" />
   
@@ -82,7 +78,7 @@
 
 <article class="c-article p-list-article">
   <header>
-    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/automating-mip-dubugging/">Automated Debugging of Mixed-Integer Models (Draft)</a></h2>
+    <h2 class="c-title c-article__title"><a href="https://atkm.github.io/posts/automating-mip-debugging/">Automated Debugging of Mixed-Integer Models (Draft)</a></h2>
     <p class="c-article__meta">
       Posted on
 <time datetime="2024-04-14T00:00:00Z">
@@ -97,22 +93,21 @@
 
       
       
-         | 1395 words
+         | 3096 words
 
       
       
-         | ~7mins
+         | ~15mins
 
       
     </p>
   </header>
   <div class="c-article__summary">
     Motivating Example Suppose that you have an MLIP:
-$$\begin{align} \text{maximize} \quad &amp; c_1x_1 + c_2x_2 \\ \text{subject to} \quad &amp; a_1x_1 \leq L_1 \tag{1L} \\ \quad &amp; a_2x_2 \leq L_2 \tag{2L} \\ \quad &amp; b_{1,1}x_1 + b_{2,1}x_2 \geq D_1 \tag{1D} \\ \quad &amp; b_{1,2}x_1 + b_{2,2}x_2 \geq D_2 \tag{2D} \\ \quad &amp; x_1 \geq 0, \quad x_2 \geq 0 \\ \quad &amp; x_1, x_2 \in \mathbb{N} \end{align}$$
-Think of inequalities \( (1L) \) and \((2L)\) as supply limits; actions \(x_1\) and \(x_2\) consume resources, and \(L_1\) and \(L_2\) represent limits of the resources they consume.
+$$\begin{align} P_0: \text{maximize} \quad &amp; c_1x_1 + c_2x_2 \\ \text{subject to} \quad &amp; a_1x_1 \leq L_1 \tag{1L, R_1 limit} \\ \quad &amp; a_2x_2 \leq L_2 \tag{2L, R_2 limit} \\ \quad &amp; b_{1,1}x_1 + b_{2,1}x_2 \geq D_1 \tag{1D} \\ \quad &amp; b_{1,2}x_1 + b_{2,2}x_2 \geq D_2 \tag{2D} \\ \quad &amp; x_1 \geq 0, \quad x_2 \geq 0 \\ \quad &amp; x_1, x_2 \in \mathbb{N} \end{align}$$
   </div>
   
-  <a href="https://atkm.github.io/posts/automating-mip-dubugging/" class="c-article__btn p-list-article__btn">Read more</a>
+  <a href="https://atkm.github.io/posts/automating-mip-debugging/" class="c-article__btn p-list-article__btn">Read more</a>
   
 </article>
 
